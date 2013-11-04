@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[svn-remote "svn"]
+	url = https://lab.iisg.agh.edu.pl/svn/to2/branches/PrzeszukiwarkaPlikow
+	fetch = :refs/remotes/git-svn
+[remote "origin"]
+	url = https://github.com/kzemek/PrzeszukiwarkaPlikow.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
