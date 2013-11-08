@@ -11,6 +11,6 @@ namespace FileScanner.FileParser
     {
         Default = 0x0,
         RemoveCapitalLetters = 0x1,
-        RemoveNonASCII = 0x2,
+        RemoveNonASCII = 0x2, 
     }
 }
