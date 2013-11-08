@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SearchSummary
+namespace FileScanner.SearchSummary
 {
     /// <summary>
     /// Structure containing information about a single file that matches search query.
@@ -15,14 +15,14 @@ namespace SearchSummary
         /// Absolute file path, including the drive name (e.g. 'C:/Users/test.txt')
         /// </summary>
         string filePath;
-        
+
         /// <summary>
         /// Dictionary: phrase => occurrence positions inside the file.
         /// Positions should be given as absolute positions inside the original (not preprocessed) file.
         /// Note: occurrence positions will NOT be used in the first iteration.
         /// </summary>
         IDictionary<string, IEnumerable<int>> searchResults;
-        
+
         /// <summary>
         /// Describes how well the file matches the search query.
         /// This value should be greater for better matches.
