@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileScanner.Preprocessing
 {
-    public class Class1
+    public class Preprocessor
     {
     }
 }
