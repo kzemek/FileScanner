@@ -8,11 +8,12 @@ namespace FileScanner.SearchSummary
 {
     class TxtDocumentBuilder : IDocumentBuilder
     {
-        private StringBuilder content;
+        private StringBuilder content = new StringBuilder();
 
         public void AddReportHeader(DateTime generationTime)
         {
-               
+                  content.Append("\nRaport z wyszukiwania fraz <tutaj frazy> w katalogach <>" +
+                                   "Raport został wygenerowany dnia: " + generationTime.ToShortDateString() );
         }
 
         public void AddSectionHeader(string text)
