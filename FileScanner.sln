@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary", "FileScanner.SearchSummary\FileScanner.SearchSummary.csproj", "{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PersistanceManagerTests", "FileScanner.PersistanceManagerTests1\FileScanner.PersistanceManagerTests.csproj", "{B6EF7651-0775-41CA-B86C-55446EDC36A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6EF7651-0775-41CA-B86C-55446EDC36A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6EF7651-0775-41CA-B86C-55446EDC36A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6EF7651-0775-41CA-B86C-55446EDC36A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6EF7651-0775-41CA-B86C-55446EDC36A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
