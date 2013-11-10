@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner", "FileScanner\FileScanner.csproj", "{B1D2BCF1-C47D-4B42-8E4F-DB262AD3ACAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.FileParsing", "FileScanner.FileParsing\FileScanner.FileParsing.csproj", "{AEFBCEB4-8B3B-4D2C-8515-2287AA34FBC3}"
@@ -14,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing", "FileScanner.Preprocessing\FileScanner.Preprocessing.csproj", "{1D5391E8-F712-4415-9910-4362D7AE9A26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary", "FileScanner.SearchSummary\FileScanner.SearchSummary.csproj", "{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary.Tests", "FileScanner.SearchSummary.Tests\FileScanner.SearchSummary.Tests.csproj", "{086265AB-095D-409C-A2F8-418C08D659D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +45,10 @@ Global
 		{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{086265AB-095D-409C-A2F8-418C08D659D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{086265AB-095D-409C-A2F8-418C08D659D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{086265AB-095D-409C-A2F8-418C08D659D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{086265AB-095D-409C-A2F8-418C08D659D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

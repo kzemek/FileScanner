@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace FileScanner.SearchSummary
 {
-	struct SearchResult
+	public struct SearchResult
 	{
-		string fileName;
-		string fullFilePath;
-		DateTime dateCreated;
-		DateTime dateLastAccess;
-		DateTime dateLastModified;
+		public string fileName;
+		public string fullFilePath;
+		public DateTime dateCreated;
+		public DateTime dateLastAccess;
+		public DateTime dateLastModified;
 	}
 
     class SummaryGenerator: ISummaryGenerator
     {
-        void Generate(IEnumerable<FileInfo> searchResults)
+        public void Generate(IEnumerable<FileInfo> searchResults)
         {
             IDocumentBuilder builder = new TxtDocumentBuilder();
 
