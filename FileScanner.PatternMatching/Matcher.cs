@@ -9,21 +9,29 @@ namespace FileScanner.PatternMatching
 {
     public class Matcher
     {
+        private List<string> _patterns;
+
         /// <summary>
         /// Initializes a new instance of the Matcher class for the specified
         /// patterns.
         /// </summary>
         /// <param name="patterns">The patterns to search for in text.</param>
-        public Matcher(List<String> patterns)
-        { }
+        public Matcher(List<string> patterns)
+        {
+            if (patterns.Count() == 0)
+                throw new ArgumentException("No patterns were given.");
+
+            _patterns = patterns;
+        }
 
         /// <summary>
         /// Initializes a new instance of the Matcher class for the specified
         /// patterns. Patterns can be given as comma-separated values.
         /// </summary>
         /// <param name="patterns">The patterns to search for in text.</param>
-        public Matcher(params String[] patterns)
-        { }
+        public Matcher(params string[] patterns) : this(patterns.ToList<string>())
+        {
+        }
 
         /// <summary>
         /// Determines if any of given patterns is present in the text.
@@ -34,7 +42,8 @@ namespace FileScanner.PatternMatching
         /// </returns>
         public bool IsMatch(Stream text)
         {
-            return false;
+            var reader = new StreamReader(text);
+            return IsMatch(reader.ReadToEnd());
         }
 
         /// <summary>
@@ -44,9 +53,9 @@ namespace FileScanner.PatternMatching
         /// <returns>
         /// True if one of patterns is found in the text, false otherwise.
         /// </returns>
-        public bool IsMatch(String text)
+        public bool IsMatch(string text)
         {
-            return false;
+            return _patterns.Any(p => text.Contains(p));
         }
 
         /// <summary>
@@ -59,7 +68,8 @@ namespace FileScanner.PatternMatching
         /// </returns>
         public Match Match(Stream text)
         {
-            return null;
+            var reader = new StreamReader(text);
+            return Match(reader.ReadToEnd());
         }
 
         /// <summary>
@@ -70,9 +80,19 @@ namespace FileScanner.PatternMatching
         /// A <see cref="FileScanner.PatternMatching.Match"/> object
         /// representing the match.
         /// </returns>
-        public Match Match(String text)
+        public Match Match(string text)
         {
-            return null;
+            Match m = null;
+
+            foreach (var p in _patterns)
+            {
+                int index = text.IndexOf(p);
+                if (index != -1)
+                    if (m == null || index < m.Index)
+                        m = new Match(index, p);
+            }
+
+            return m;
         }
 
         /// <summary>
@@ -86,7 +106,8 @@ namespace FileScanner.PatternMatching
         /// </returns>
         public IEnumerable<Match> Matches(Stream text)
         {
-            return null;
+            var reader = new StreamReader(text);
+            return Matches(reader.ReadToEnd());
         }
 
         /// <summary>
@@ -98,9 +119,21 @@ namespace FileScanner.PatternMatching
         /// <see cref="FileScanner.PatternMatching.Match"/> objects
         /// representing the matches.
         /// </returns>
-        public IEnumerable<Match> Matches(String text)
+        public IEnumerable<Match> Matches(string text)
         {
-            return null;
+            var matches = new SortedList<int, string>();
+            foreach (var p in _patterns)
+            {
+                for (int index = 0; (index = text.IndexOf(p, index)) != -1; index += p.Count())
+                    if (!matches.ContainsKey(index))
+                        matches.Add(index, p);
+            }
+
+            var r = new List<Match>();
+            foreach (var match in matches)
+                r.Add(new Match(match.Key, match.Value));
+
+            return r;
         }
     }
 }
