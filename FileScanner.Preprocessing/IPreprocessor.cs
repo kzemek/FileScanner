@@ -15,13 +15,13 @@ namespace FileScanner.Preprocessing
         /// </summary>
         /// <param name="phrase">input phrase</param>
         /// <returns>normalized phrase</returns>
-        public String GetNormalizedPhrase(String phrase);
+        String GetNormalizedPhrase(String phrase);
 
         /// <summary>
         /// Tries to find differenct grammar forms of the input phrase.
         /// </summary>
         /// <param name="phrase">input phrase</param>
         /// <returns>collection of different grammar forms of the input phrase</returns>
-        public IEnumerable<String> GetVariations(String phrase);
+        IEnumerable<String> GetVariations(String phrase);
     }
 }
