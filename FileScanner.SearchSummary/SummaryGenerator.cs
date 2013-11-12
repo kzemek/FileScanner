@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace FileScanner.SearchSummary
 {
-	public struct SearchResult
-	{
-		public string fileName;
-		public string fullFilePath;
-		public DateTime dateCreated;
-		public DateTime dateLastAccess;
-		public DateTime dateLastModified;
-	}
+    public struct SearchResult
+    {
+        public string fileName;
+        public string fullFilePath;
+        public DateTime dateCreated;
+        public DateTime dateLastAccess;
+        public DateTime dateLastModified;
+    }
 
     class SummaryGenerator: ISummaryGenerator
     {
@@ -22,27 +22,27 @@ namespace FileScanner.SearchSummary
         {
             IDocumentBuilder builder = new TxtDocumentBuilder();
 
-			builder.AddReportHeader(DateTime.Now);
-			builder.AddSectionHeader("Summary");
+            builder.AddReportHeader(DateTime.Now);
+            builder.AddSectionHeader("Summary");
 
-			// TODO
-			//builder.AddText(String.Format("search query: {0}", "searchQuery"));
-			builder.AddText(String.Format("total results: {0}", searchResults.Count()));
+            // TODO
+            //builder.AddText(String.Format("search query: {0}", "searchQuery"));
+            builder.AddText(String.Format("total results: {0}", searchResults.Count()));
 
-			builder.AddSectionHeader("Search results");
-			foreach (FileInfo fileInfo in searchResults.OrderByDescending(info => info.accuracy))
-			{
-				SearchResult result = new SearchResult();
-				result.fileName = Path.GetFileName(fileInfo.filePath);
-				result.fullFilePath = fileInfo.filePath;
-				result.dateCreated = File.GetCreationTime(fileInfo.filePath);
-				result.dateLastAccess = File.GetLastAccessTime(fileInfo.filePath);
-				result.dateLastModified = File.GetLastAccessTime(fileInfo.filePath);
+            builder.AddSectionHeader("Search results");
+            foreach (FileInfo fileInfo in searchResults.OrderByDescending(info => info.accuracy))
+            {
+                SearchResult result = new SearchResult();
+                result.fileName = Path.GetFileName(fileInfo.filePath);
+                result.fullFilePath = fileInfo.filePath;
+                result.dateCreated = File.GetCreationTime(fileInfo.filePath);
+                result.dateLastAccess = File.GetLastAccessTime(fileInfo.filePath);
+                result.dateLastModified = File.GetLastAccessTime(fileInfo.filePath);
 
-				builder.AddSearchResult(result);
-			}
+                builder.AddSearchResult(result);
+            }
 
-			builder.Save("report.txt");
+            builder.Save("report.txt");
         }
     }
 }
