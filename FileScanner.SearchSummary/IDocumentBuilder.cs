@@ -8,7 +8,6 @@ namespace FileScanner.SearchSummary
         void AddReportHeader(DateTime generationTime,
                              String userQuery,
                              IEnumerable<String> searchedLocations);
-        void AddReportHeader(DateTime generationTime);
         void AddSectionHeader(string text);
         void AddText(string text);
         void AddSearchResult(SearchResult result);

@@ -24,7 +24,7 @@ namespace FileScanner.SearchSummary
         {
             IDocumentBuilder builder = new TxtDocumentBuilder();
 
-            builder.AddReportHeader(DateTime.Now);
+            builder.AddReportHeader(DateTime.Now, searchQuery, inputPaths);
             builder.AddSectionHeader("Summary");
 
             // TODO

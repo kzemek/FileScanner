@@ -10,7 +10,11 @@ namespace FileScanner.SearchSummary
     public class TxtDocumentBuilder : IDocumentBuilder
     {
         private StringBuilder content = new StringBuilder();
-
+        
+        public String getContent(){
+            return this.content.ToString();
+        }
+        
         public void AddReportHeader(DateTime generationTime,
                                     String userQuery,
                                     IEnumerable<String> searchedLocations)
@@ -18,28 +22,18 @@ namespace FileScanner.SearchSummary
             StringBuilder directories = new StringBuilder();
             foreach(String location in searchedLocations)
             {
-                directories.Append(location+"\r\n");
+                directories.Append("    "+location+"\r\n");
             }
-            content.Append("\r\n Raport z wyszukiwania\r\n\r\n" +
-                " Wyszukiwane frazy: \r\n" +
+            content.Append("\r\nRaport z wyszukiwania\r\n\r\n" +
+                "Wyszukiwane frazy:\r\n    " +
                 userQuery+
-                " \r\nPrzeszukiwane katalogi:" + directories.ToString()+
+                "\r\nPrzeszukiwane katalogi:\r\n" + directories.ToString()+
                 "\r\nRaport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
                 "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
                 " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
                 " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
                 "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
                 "\r\n\r\n");
-        }
-
-        public void AddReportHeader(DateTime generationTime)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        public void SeePartialResults()
-        {
-            Console.WriteLine(this.content);
         }
 
         public void AddSectionHeader(string text)
