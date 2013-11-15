@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.searchButton = new System.Windows.Forms.Button();
-            this.searchPathLabel = new System.Windows.Forms.Label();
-            this.searchPathTextBox = new System.Windows.Forms.TextBox();
-            this.searchPathPickerButton = new System.Windows.Forms.Button();
+            this.searchFileLabel = new System.Windows.Forms.Label();
+            this.searchFileTextBox = new System.Windows.Forms.TextBox();
+            this.searchFilePickerButton = new System.Windows.Forms.Button();
             this.searchPhraseTextBox = new System.Windows.Forms.TextBox();
             this.searchPhraseLabel = new System.Windows.Forms.Label();
             this.searchBox = new System.Windows.Forms.GroupBox();
@@ -55,33 +55,33 @@
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
-            // searchPathLabel
+            // searchFileLabel
             // 
-            this.searchPathLabel.AutoSize = true;
-            this.searchPathLabel.Location = new System.Drawing.Point(6, 44);
-            this.searchPathLabel.Name = "searchPathLabel";
-            this.searchPathLabel.Size = new System.Drawing.Size(32, 13);
-            this.searchPathLabel.TabIndex = 1;
-            this.searchPathLabel.Text = "In file";
+            this.searchFileLabel.AutoSize = true;
+            this.searchFileLabel.Location = new System.Drawing.Point(6, 44);
+            this.searchFileLabel.Name = "searchFileLabel";
+            this.searchFileLabel.Size = new System.Drawing.Size(32, 13);
+            this.searchFileLabel.TabIndex = 1;
+            this.searchFileLabel.Text = "In file";
             // 
-            // searchPathTextBox
+            // searchFileTextBox
             // 
-            this.searchPathTextBox.Location = new System.Drawing.Point(44, 41);
-            this.searchPathTextBox.Name = "searchPathTextBox";
-            this.searchPathTextBox.Size = new System.Drawing.Size(502, 20);
-            this.searchPathTextBox.TabIndex = 5;
-            this.searchPathTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchPathTextbox_MouseClick);
-            this.searchPathTextBox.TextChanged += new System.EventHandler(this.searchPathTextbox_TextChanged);
+            this.searchFileTextBox.Location = new System.Drawing.Point(44, 41);
+            this.searchFileTextBox.Name = "searchFileTextBox";
+            this.searchFileTextBox.Size = new System.Drawing.Size(502, 20);
+            this.searchFileTextBox.TabIndex = 5;
+            this.searchFileTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchFileTextbox_MouseClick);
+            this.searchFileTextBox.TextChanged += new System.EventHandler(this.searchFileTextbox_TextChanged);
             // 
-            // searchPathPickerButton
+            // searchFilePickerButton
             // 
-            this.searchPathPickerButton.Location = new System.Drawing.Point(552, 39);
-            this.searchPathPickerButton.Name = "searchPathPickerButton";
-            this.searchPathPickerButton.Size = new System.Drawing.Size(24, 23);
-            this.searchPathPickerButton.TabIndex = 3;
-            this.searchPathPickerButton.Text = "...";
-            this.searchPathPickerButton.UseVisualStyleBackColor = true;
-            this.searchPathPickerButton.Click += new System.EventHandler(this.searchPathPickerButton_Click);
+            this.searchFilePickerButton.Location = new System.Drawing.Point(552, 39);
+            this.searchFilePickerButton.Name = "searchFilePickerButton";
+            this.searchFilePickerButton.Size = new System.Drawing.Size(24, 23);
+            this.searchFilePickerButton.TabIndex = 3;
+            this.searchFilePickerButton.Text = "...";
+            this.searchFilePickerButton.UseVisualStyleBackColor = true;
+            this.searchFilePickerButton.Click += new System.EventHandler(this.searchFilePickerButton_Click);
             // 
             // searchPhraseTextBox
             // 
@@ -104,10 +104,10 @@
             // 
             this.searchBox.Controls.Add(this.searchPhraseTextBox);
             this.searchBox.Controls.Add(this.searchButton);
-            this.searchBox.Controls.Add(this.searchPathPickerButton);
+            this.searchBox.Controls.Add(this.searchFilePickerButton);
             this.searchBox.Controls.Add(this.searchPhraseLabel);
-            this.searchBox.Controls.Add(this.searchPathTextBox);
-            this.searchBox.Controls.Add(this.searchPathLabel);
+            this.searchBox.Controls.Add(this.searchFileTextBox);
+            this.searchBox.Controls.Add(this.searchFileLabel);
             this.searchBox.Location = new System.Drawing.Point(13, 13);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(582, 102);
@@ -178,9 +178,9 @@
         #endregion
 
         private System.Windows.Forms.Button searchButton;
-        private System.Windows.Forms.Label searchPathLabel;
-        private System.Windows.Forms.TextBox searchPathTextBox;
-        private System.Windows.Forms.Button searchPathPickerButton;
+        private System.Windows.Forms.Label searchFileLabel;
+        private System.Windows.Forms.TextBox searchFileTextBox;
+        private System.Windows.Forms.Button searchFilePickerButton;
         private System.Windows.Forms.TextBox searchPhraseTextBox;
         private System.Windows.Forms.Label searchPhraseLabel;
         private System.Windows.Forms.GroupBox searchBox;

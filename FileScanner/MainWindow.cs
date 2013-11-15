@@ -19,36 +19,36 @@ namespace FileScanner
 
         #region GUI Helper Methods
 
-        private void _pickSearchPath()
+        private void _pickSearchFile()
         {
-            using (var dialog = new FolderBrowserDialog())
+            using (var dialog = new OpenFileDialog())
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    searchPathTextBox.Text = dialog.SelectedPath;
+                    searchFileTextBox.Text = dialog.FileName;
                 }
             }
         }
 
         private bool _isSearchDataProvided()
         {
-            return !string.IsNullOrEmpty(searchPhraseTextBox.Text) && !string.IsNullOrEmpty(searchPathTextBox.Text);
+            return !string.IsNullOrEmpty(searchPhraseTextBox.Text) && !string.IsNullOrEmpty(searchFileTextBox.Text);
         }
 
         #endregion
 
         #region Events
 
-        private void searchPathPickerButton_Click(object sender, EventArgs e)
+        private void searchFilePickerButton_Click(object sender, EventArgs e)
         {
-            _pickSearchPath();
+            _pickSearchFile();
         }
 
-        private void searchPathTextbox_MouseClick(object sender, MouseEventArgs e)
+        private void searchFileTextbox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (string.IsNullOrEmpty(searchPathTextBox.Text))
+            if (string.IsNullOrEmpty(searchFileTextBox.Text))
             {
-                _pickSearchPath();
+                _pickSearchFile();
             }
         }
 
@@ -62,7 +62,7 @@ namespace FileScanner
             searchButton.Enabled = _isSearchDataProvided();
         }
 
-        private void searchPathTextbox_TextChanged(object sender, EventArgs e)
+        private void searchFileTextbox_TextChanged(object sender, EventArgs e)
         {
             searchButton.Enabled = _isSearchDataProvided();
         }
