@@ -49,6 +49,8 @@ namespace FileScanner.SearchSummary
         /// <param name="searchResults">
         /// Collection of files matching the search query. For details, see FileInfo struct documentation.
         /// </param>
-        void Generate(string searchQuery, IEnumerable<string> inputPaths, IEnumerable<MatchingFile> searchResults);
+        void Generate(string searchQuery,
+                      IEnumerable<string> inputPaths,
+                      IEnumerable<MatchingFile> searchResults);
     }
 }

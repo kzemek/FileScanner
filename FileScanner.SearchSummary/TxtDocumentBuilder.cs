@@ -11,7 +11,9 @@ namespace FileScanner.SearchSummary
     {
         private StringBuilder content = new StringBuilder();
 
-        public void AddReportHeader(DateTime generationTime, String userQuery, IEnumerable<String> searchedLocations)
+        public void AddReportHeader(DateTime generationTime,
+                                    String userQuery,
+                                    IEnumerable<String> searchedLocations)
         {
             StringBuilder directories = new StringBuilder();
             foreach(String location in searchedLocations)
@@ -28,6 +30,11 @@ namespace FileScanner.SearchSummary
                 " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
                 "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
                 "\r\n\r\n");
+        }
+
+        public void AddReportHeader(DateTime generationTime)
+        {
+            throw new Exception("The method or operation is not implemented.");
         }
 
         public void SeePartialResults()
