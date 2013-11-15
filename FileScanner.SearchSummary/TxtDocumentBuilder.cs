@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace FileScanner.SearchSummary
 {
@@ -10,16 +11,22 @@ namespace FileScanner.SearchSummary
     {
         private StringBuilder content = new StringBuilder();
 
-        public void AddReportHeader(DateTime generationTime)
+        public void AddReportHeader(DateTime generationTime, String userQuery, IEnumerable<String> searchedLocations)
         {
+            StringBuilder directories = new StringBuilder();
+            foreach(String location in searchedLocations)
+            {
+                directories.Append(location+"\r\n");
+            }
             content.Append("\r\n Raport z wyszukiwania\r\n\r\n" +
-                            " Wyszukiwane frazy: <tutaj frazy>\r\n" +
-                            " Przeszukiwane katalogi: <tutaj katalogi> \r\n" +
-                " Raport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
-                  "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
-                  " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
-                  " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
-                  "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
+                " Wyszukiwane frazy: \r\n" +
+                userQuery+
+                " \r\nPrzeszukiwane katalogi:" + directories.ToString()+
+                "\r\nRaport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
+                "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
+                " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
+                " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
+                "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
                 "\r\n\r\n");
         }
 
