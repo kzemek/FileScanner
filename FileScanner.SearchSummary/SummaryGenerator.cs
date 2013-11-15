@@ -31,8 +31,9 @@ namespace FileScanner.SearchSummary
 
             builder.AddText(String.Format("search query: {0}", searchQuery));
             builder.AddText(String.Format("total results: {0}", searchResults.Count()));
-            builder.AddText(String.Format("input paths:\n\t{0}",
-                                          inputPaths.Aggregate("", (all, next) => all + "\n" + next)));
+            builder.AddText(String.Format("input paths:{0}\t{1}",
+                                          Environment.NewLine,
+                                          inputPaths.Aggregate("", (all, next) => all + Environment.NewLine + "\t" + next)));
 
             builder.AddSectionHeader("Search results");
             foreach (MatchingFile match in searchResults.OrderByDescending(info => info.accuracy))
