@@ -18,7 +18,9 @@ namespace FileScanner.SearchSummary
 
     class SummaryGenerator: ISummaryGenerator
     {
-        public void Generate(IEnumerable<FileInfo> searchResults)
+        public void Generate(string searchQuery,
+                             IEnumerable<string> inputPaths,
+                             IEnumerable<MatchingFile> searchResults)
         {
             IDocumentBuilder builder = new TxtDocumentBuilder();
 
@@ -30,14 +32,14 @@ namespace FileScanner.SearchSummary
             builder.AddText(String.Format("total results: {0}", searchResults.Count()));
 
             builder.AddSectionHeader("Search results");
-            foreach (FileInfo fileInfo in searchResults.OrderByDescending(info => info.accuracy))
+            foreach (MatchingFile match in searchResults.OrderByDescending(info => info.accuracy))
             {
                 SearchResult result = new SearchResult();
-                result.fileName = Path.GetFileName(fileInfo.filePath);
-                result.fullFilePath = fileInfo.filePath;
-                result.dateCreated = File.GetCreationTime(fileInfo.filePath);
-                result.dateLastAccess = File.GetLastAccessTime(fileInfo.filePath);
-                result.dateLastModified = File.GetLastAccessTime(fileInfo.filePath);
+                result.fileName = match.fileInfo.Name;
+                result.fullFilePath = match.fileInfo.ToString();
+                result.dateCreated = match.fileInfo.CreationTime;
+                result.dateLastAccess = match.fileInfo.LastAccessTime;
+                result.dateLastModified = match.fileInfo.LastWriteTime;
 
                 builder.AddSearchResult(result);
             }

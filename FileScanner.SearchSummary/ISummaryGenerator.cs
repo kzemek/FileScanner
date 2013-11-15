@@ -15,7 +15,7 @@ namespace FileScanner.SearchSummary
         /// <summary>
         /// A file containing data that matches the search query.
         /// </summary>
-        FileInfo fileInfo;
+        public FileInfo fileInfo;
 
         /// <summary>
         /// Dictionary: phrase => occurrence positions inside the file.
