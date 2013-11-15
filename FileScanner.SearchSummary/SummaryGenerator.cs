@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("FileScanner.SearchSummary.Tests")]
 
 namespace FileScanner.SearchSummary
 {
@@ -14,22 +17,22 @@ namespace FileScanner.SearchSummary
         public DateTime dateCreated;
         public DateTime dateLastAccess;
         public DateTime dateLastModified;
-    }
-
-    class SummaryGenerator: ISummaryGenerator
+    }
+    public class SummaryGenerator: ISummaryGenerator
     {
-        public void Generate(string searchQuery,
-                             IEnumerable<string> inputPaths,
-                             IEnumerable<MatchingFile> searchResults)
+        internal void Generate(IDocumentBuilder builder,
+                               string outputFilename,
+                               string searchQuery,
+                               IEnumerable<string> inputPaths,
+                               IEnumerable<MatchingFile> searchResults)
         {
-            IDocumentBuilder builder = new TxtDocumentBuilder();
-
             builder.AddReportHeader(DateTime.Now, searchQuery, inputPaths);
             builder.AddSectionHeader("Summary");
 
-            // TODO
-            //builder.AddText(String.Format("search query: {0}", "searchQuery"));
+            builder.AddText(String.Format("search query: {0}", searchQuery));
             builder.AddText(String.Format("total results: {0}", searchResults.Count()));
+            builder.AddText(String.Format("input paths:\n\t{0}",
+                                          inputPaths.Aggregate("", (all, next) => all + "\n" + next)));
 
             builder.AddSectionHeader("Search results");
             foreach (MatchingFile match in searchResults.OrderByDescending(info => info.accuracy))
@@ -44,7 +47,14 @@ namespace FileScanner.SearchSummary
                 builder.AddSearchResult(result);
             }
 
-            builder.Save("report.txt");
+            builder.Save(outputFilename);
+        }
+
+        public void Generate(string searchQuery,
+                             IEnumerable<string> inputPaths,
+                             IEnumerable<MatchingFile> searchResults)
+        {
+            Generate(new TxtDocumentBuilder(), "output.txt", searchQuery, inputPaths, searchResults);
         }
     }
 }

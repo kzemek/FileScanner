@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileScanner.SearchSummary
 {
-	interface IDocumentBuilder
+	public interface IDocumentBuilder
 	{
         void AddReportHeader(DateTime generationTime,
                              String userQuery,
