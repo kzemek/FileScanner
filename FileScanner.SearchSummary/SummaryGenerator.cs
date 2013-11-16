@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("FileScanner.SearchSummary.Tests")]
 
 namespace FileScanner.SearchSummary
 {
@@ -11,38 +14,59 @@ namespace FileScanner.SearchSummary
     {
         public string fileName;
         public string fullFilePath;
-        public DateTime dateCreated;
-        public DateTime dateLastAccess;
-        public DateTime dateLastModified;
+        public DateTime? dateCreated;
+        public DateTime? dateLastAccess;
+        public DateTime? dateLastModified;
+
+        public SearchResult(String fileName, String fullFilePath, DateTime? dateCreated, DateTime? dateLastAccess, DateTime? dateLastModified)
+        {
+            this.fileName = fileName;
+            this.fullFilePath = fullFilePath;
+            this.dateCreated = dateCreated;
+            this.dateLastAccess = dateLastAccess;
+            this.dateLastModified = dateLastModified;
+        }
+
     }
 
-    class SummaryGenerator: ISummaryGenerator
+    public class SummaryGenerator: ISummaryGenerator
     {
-        public void Generate(IEnumerable<FileInfo> searchResults)
+        internal void Generate(IDocumentBuilder builder,
+                               string outputFilename,
+                               string searchQuery,
+                               IEnumerable<string> inputPaths,
+                               IEnumerable<MatchingFile> searchResults)
         {
-            IDocumentBuilder builder = new TxtDocumentBuilder();
-
-            builder.AddReportHeader(DateTime.Now);
+            builder.AddReportHeader(DateTime.Now, searchQuery, inputPaths);
             builder.AddSectionHeader("Summary");
 
-            // TODO
-            //builder.AddText(String.Format("search query: {0}", "searchQuery"));
+            builder.AddText(String.Format("search query: {0}", searchQuery));
             builder.AddText(String.Format("total results: {0}", searchResults.Count()));
+            builder.AddText(String.Format("input paths:{0}\t{1}",
+                                          Environment.NewLine,
+                                          inputPaths.Aggregate("", (all, next) => all + Environment.NewLine + "\t" + next)));
 
             builder.AddSectionHeader("Search results");
-            foreach (FileInfo fileInfo in searchResults.OrderByDescending(info => info.accuracy))
+            foreach (MatchingFile match in searchResults.OrderByDescending(info => info.accuracy))
             {
                 SearchResult result = new SearchResult();
-                result.fileName = Path.GetFileName(fileInfo.filePath);
-                result.fullFilePath = fileInfo.filePath;
-                result.dateCreated = File.GetCreationTime(fileInfo.filePath);
-                result.dateLastAccess = File.GetLastAccessTime(fileInfo.filePath);
-                result.dateLastModified = File.GetLastAccessTime(fileInfo.filePath);
+                result.fileName = match.fileInfo.Name;
+                result.fullFilePath = match.fileInfo.ToString();
+                result.dateCreated = match.fileInfo.CreationTime;
+                result.dateLastAccess = match.fileInfo.LastAccessTime;
+                result.dateLastModified = match.fileInfo.LastWriteTime;
 
                 builder.AddSearchResult(result);
             }
 
-            builder.Save("report.txt");
+            builder.Save(outputFilename);
+        }
+
+        public void Generate(string searchQuery,
+                             IEnumerable<string> inputPaths,
+                             IEnumerable<MatchingFile> searchResults)
+        {
+            Generate(new TxtDocumentBuilder(), "output.txt", searchQuery, inputPaths, searchResults);
         }
     }
 }

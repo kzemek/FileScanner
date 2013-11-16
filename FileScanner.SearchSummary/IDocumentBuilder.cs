@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace FileScanner.SearchSummary
 {
-	interface IDocumentBuilder
+	public interface IDocumentBuilder
 	{
-        void AddReportHeader(DateTime generationTime);
+        void AddReportHeader(DateTime generationTime,
+                             String userQuery,
+                             IEnumerable<String> searchedLocations);
         void AddSectionHeader(string text);
         void AddText(string text);
         void AddSearchResult(SearchResult result);

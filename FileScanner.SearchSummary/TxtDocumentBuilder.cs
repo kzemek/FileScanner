@@ -3,49 +3,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace FileScanner.SearchSummary
 {
     public class TxtDocumentBuilder : IDocumentBuilder
     {
-        private StringBuilder content = new StringBuilder();
+        public StringBuilder content = new StringBuilder();
 
-        public void AddReportHeader(DateTime generationTime)
+        public String getCurrentContent()
         {
-            content.Append("\r\n Raport z wyszukiwania\r\n\r\n" +
-                            " Wyszukiwane frazy: <tutaj frazy>\r\n" +
-                            " Przeszukiwane katalogi: <tutaj katalogi> \r\n" +
-                " Raport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
-                  "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
-                  " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
-                  " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
-                  "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
-                "\r\n\r\n");
+            return content.ToString();
         }
 
-        public void SeePartialResults()
+        public void AddReportHeader(DateTime generationTime,
+                                    String userQuery,
+                                    IEnumerable<String> searchedLocations)
         {
-            Console.WriteLine(this.content);
+            StringBuilder directories = new StringBuilder();
+            foreach(String location in searchedLocations)
+            {
+                directories.Append("    "+location+"\r\n");
+            }
+            content.Append("\r\nRaport z wyszukiwania\r\n\r\n" +
+                "Wyszukiwane frazy:\r\n    " +
+                userQuery+
+                "\r\nPrzeszukiwane lokalizacje:\r\n" + directories.ToString()+
+                "\r\nRaport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
+                "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
+                " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
+                " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
+                "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
+                "\r\n\r\n");
         }
 
         public void AddSectionHeader(string text)
         {
             content.Append("  " + text + "\r\n" +
-               "----------------------------------------\r\n" );
+               "----------------------------------------\r\n");
         }
 
         public void AddText(string text)
         {
-            content.Append("     " + text + "\r\n");
+            content.Append(text + "\r\n");
    
         }
 
         public void AddSearchResult(SearchResult result)
         {
-            content.Append("   * Nazwa:         \t" + result.fileName+"\r\n");
-            content.Append("   * Ścieżka:       \t" + result.fullFilePath + "\r\n");
-            content.Append("   * Ostatni dost.: \t " + result.dateLastAccess + "\r\n");
-            content.Append("   * Ostatnia mod.: \t " + result.dateLastModified + "\r\n\r\n");
+            if (!result.Equals(null))
+            {
+               Append("Nazwa:          \t", result.fileName);
+               Append("Ścieżka:        \t", result.fullFilePath);
+               Append("Data utworzenia:\t", result.dateCreated);
+               Append("Ostatni dost.:  \t", result.dateLastAccess);
+               Append("Ostatnia mod.:  \t", result.dateLastModified); 
+            }
+        }
+
+        private void Append(String prefix, Object field){
+            if (field != null)
+            {
+                content.Append("   * "+prefix+field.ToString()+"\r\n");
+            }
         }
 
         public void AddReaportFooter()
