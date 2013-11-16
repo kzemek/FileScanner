@@ -14,11 +14,11 @@ namespace FileScanner.SearchSummary
     {
         public string fileName;
         public string fullFilePath;
-        public DateTime dateCreated;
-        public DateTime dateLastAccess;
-        public DateTime dateLastModified;
+        public DateTime? dateCreated;
+        public DateTime? dateLastAccess;
+        public DateTime? dateLastModified;
 
-        public SearchResult(String fileName, String fullFilePath, DateTime dateCreated, DateTime dateLastAccess, DateTime dateLastModified)
+        public SearchResult(String fileName, String fullFilePath, DateTime? dateCreated, DateTime? dateLastAccess, DateTime? dateLastModified)
         {
             this.fileName = fileName;
             this.fullFilePath = fullFilePath;

@@ -18,7 +18,7 @@ namespace FileScanner.SearchSummary.Tests
         }
 
         [TestMethod]
-        public void AddReportHeaderTest()
+        public void AddReportHeader_Add_Example_Raport_Header()
         {
 
             List<String> paths = new List<string>()
@@ -31,7 +31,7 @@ namespace FileScanner.SearchSummary.Tests
             Assert.AreEqual("\r\nRaport z wyszukiwania\r\n\r\n" +
                 "Wyszukiwane frazy:\r\n    " +
                 "idzie wojna idzie wojna" +
-                "\r\nPrzeszukiwane katalogi:\r\n    /jakas/sciezka\r\n    ./inna/sciezka\r\n" +
+                "\r\nPrzeszukiwane lokalizacje:\r\n    /jakas/sciezka\r\n    ./inna/sciezka\r\n" +
                 "\r\nRaport został wygenerowany dnia: 2012-09-07\r\n\r\n" +
                 "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
                 " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
@@ -41,7 +41,7 @@ namespace FileScanner.SearchSummary.Tests
         }
 
         [TestMethod]
-        public void AddSectionHeader()
+        public void AddSectionHeader_Add_Example_Section_Header()
         {
             documentBuilder.AddSectionHeader("ExampleText");
             Assert.AreEqual("  ExampleText\r\n----------------------------------------\r\n", documentBuilder.getCurrentContent());
@@ -59,46 +59,94 @@ namespace FileScanner.SearchSummary.Tests
                             "   * Ostatni dost.:  \t2012-03-04 00:00:00\r\n" +
                             "   * Ostatnia mod.:  \t2012-05-07 00:00:00\r\n", documentBuilder.getCurrentContent());
         }
-        /*
+        
         [TestMethod]
         public void AddSearchResult_Some_Field_Equal_Null()
         {
-            DateTime dt = null;
-            SearchResult searchResult = new SearchResult("SomeFile", null,new DateTime(2012, 02, 13), new DateTime(2012, 03, 04), new DateTime(2012, 05, 7));
+            SearchResult searchResult = new SearchResult("SomeFile", null, null, new DateTime(2012, 03, 04), new DateTime(2012, 05, 7));
             documentBuilder.AddSearchResult(searchResult);
             Assert.AreEqual("   * Nazwa:          \tSomeFile\r\n" +
                             "   * Ostatni dost.:  \t2012-03-04 00:00:00\r\n" +
                             "   * Ostatnia mod.:  \t2012-05-07 00:00:00\r\n", documentBuilder.getCurrentContent());
         }
-        */
+        
+
         [TestMethod]
-        public void Save_FileCreation()
+        public void Save_File_Creation()
         {
-            var filePath = @".\testFile.txt";
+            var filePath = "./testFile.txt";
+            documentBuilder.AddText("Some Text");
             documentBuilder.Save(filePath);
             var text = File.ReadAllText(filePath);
-            Assert.AreEqual("",text);
+            Assert.AreEqual("Some Text\r\n", text);
             File.Delete(filePath);   
         }
 
-            /*
+        [TestMethod]
+        public void TxtDocumentBuilder_Comprehensive_Test()
+        {
+            documentBuilder.AddReportHeader(new DateTime(2012,02,02),"Butelka z piwa", 
+                new List<String>(){"C:/glowny_folder/troche/dalej","C:/jakis/inny/folder"});
             documentBuilder.AddSectionHeader("Plik numer 1");
-            SearchResult sr = new SearchResult();
-            
-            
-            sr.fileName = "Wykopaliska";
-            sr.fullFilePath = "C:/Doc/Deskt/Wykopaliska";
-            sr.dateLastModified = DateTime.Now; 
-            sr.dateLastAccess = DateTime.Now;
-            documentBuilder.AddSearchResult(sr);
+            documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
+                "C:/glowny_folder/troche/dalej/FajneWykopaliska.txt", new DateTime(2011, 02, 01), null, null));
             documentBuilder.AddSectionHeader("Plik numer 2");
-            documentBuilder.AddSearchResult(sr);
+            documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
+                "C:/glowny_folder/troche/dalej/InneWykopaliska.txt", new DateTime(2012, 01, 01), null, null));
             documentBuilder.AddSectionHeader("Plik numer 3");
-            documentBuilder.AddSearchResult(sr);
+            documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
+               "C:/glowny_folder/troche/dalej/JeszczeInneWykopaliska.txt", new DateTime(2010, 01, 01), null, null));
             documentBuilder.AddReaportFooter();
-            documentBuilder.Save("C:\\Users\\blost\\Desktop\\example.txt");
-            documentBuilder.SeePartialResults();
-             */ 
-        
+            String filePath = "./result.txt";
+            documentBuilder.Save(filePath);
+            var text = File.ReadAllText(filePath);
+            Assert.AreEqual(@"
+Raport z wyszukiwania
+
+Wyszukiwane frazy:
+    Butelka z piwa
+Przeszukiwane lokalizacje:
+    C:/glowny_folder/troche/dalej
+    C:/jakis/inny/folder
+
+Raport został wygenerowany dnia: 2012-02-02
+
+-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,
+ )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (
+ (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )
+  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'
+
+
+  Plik numer 1
+----------------------------------------
+   * Nazwa:          	Wykopaliska
+   * Ścieżka:        	C:/glowny_folder/troche/dalej/FajneWykopaliska.txt
+   * Data utworzenia:	2011-02-01 00:00:00
+  Plik numer 2
+----------------------------------------
+   * Nazwa:          	Wykopaliska
+   * Ścieżka:        	C:/glowny_folder/troche/dalej/InneWykopaliska.txt
+   * Data utworzenia:	2012-01-01 00:00:00
+  Plik numer 3
+----------------------------------------
+   * Nazwa:          	Wykopaliska
+   * Ścieżka:        	C:/glowny_folder/troche/dalej/JeszczeInneWykopaliska.txt
+   * Data utworzenia:	2010-01-01 00:00:00
+
+
+
+      /'^'\                                  /'^'\
+     ( o o )                                ( o o )
+-oOOO--(_)--OOOo------------------------oOOO--(_)--OOOo----
+             	Technologie Obiektowe II
+                   Grupa Wtorek 9:30
+  .oooO       Akademia Gorniczo Hutnicza    oooO
+  (   )   Oooo.                             (   )   Oooo
+---\ (----(  )------------------------------\ (----(  )-----
+    \_)    ) /                               \_)   ) /
+          (_/                                     (_/
+", text);
+            File.Delete(filePath);
+        }        
     }
 }

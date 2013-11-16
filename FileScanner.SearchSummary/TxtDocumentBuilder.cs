@@ -28,7 +28,7 @@ namespace FileScanner.SearchSummary
             content.Append("\r\nRaport z wyszukiwania\r\n\r\n" +
                 "Wyszukiwane frazy:\r\n    " +
                 userQuery+
-                "\r\nPrzeszukiwane katalogi:\r\n" + directories.ToString()+
+                "\r\nPrzeszukiwane lokalizacje:\r\n" + directories.ToString()+
                 "\r\nRaport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
                 "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
                 " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
@@ -45,7 +45,7 @@ namespace FileScanner.SearchSummary
 
         public void AddText(string text)
         {
-            content.Append("     " + text + "\r\n");
+            content.Append(text + "\r\n");
    
         }
 
