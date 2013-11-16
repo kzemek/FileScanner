@@ -17,7 +17,18 @@ namespace FileScanner.SearchSummary
         public DateTime dateCreated;
         public DateTime dateLastAccess;
         public DateTime dateLastModified;
-    }
+
+        public SearchResult(String fileName, String fullFilePath, DateTime dateCreated, DateTime dateLastAccess, DateTime dateLastModified)
+        {
+            this.fileName = fileName;
+            this.fullFilePath = fullFilePath;
+            this.dateCreated = dateCreated;
+            this.dateLastAccess = dateLastAccess;
+            this.dateLastModified = dateLastModified;
+        }
+
+    }
+
     public class SummaryGenerator: ISummaryGenerator
     {
         internal void Generate(IDocumentBuilder builder,

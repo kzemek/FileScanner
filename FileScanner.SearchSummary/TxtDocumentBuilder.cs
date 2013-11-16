@@ -9,12 +9,13 @@ namespace FileScanner.SearchSummary
 {
     public class TxtDocumentBuilder : IDocumentBuilder
     {
-        private StringBuilder content = new StringBuilder();
-        
-        public String getContent(){
-            return this.content.ToString();
+        public StringBuilder content = new StringBuilder();
+
+        public String getCurrentContent()
+        {
+            return content.ToString();
         }
-        
+
         public void AddReportHeader(DateTime generationTime,
                                     String userQuery,
                                     IEnumerable<String> searchedLocations)
@@ -39,7 +40,7 @@ namespace FileScanner.SearchSummary
         public void AddSectionHeader(string text)
         {
             content.Append("  " + text + "\r\n" +
-               "----------------------------------------\r\n" );
+               "----------------------------------------\r\n");
         }
 
         public void AddText(string text)
@@ -50,10 +51,21 @@ namespace FileScanner.SearchSummary
 
         public void AddSearchResult(SearchResult result)
         {
-            content.Append("   * Nazwa:         \t" + result.fileName+"\r\n");
-            content.Append("   * Ścieżka:       \t" + result.fullFilePath + "\r\n");
-            content.Append("   * Ostatni dost.: \t " + result.dateLastAccess + "\r\n");
-            content.Append("   * Ostatnia mod.: \t " + result.dateLastModified + "\r\n\r\n");
+            if (!result.Equals(null))
+            {
+               Append("Nazwa:          \t", result.fileName);
+               Append("Ścieżka:        \t", result.fullFilePath);
+               Append("Data utworzenia:\t", result.dateCreated);
+               Append("Ostatni dost.:  \t", result.dateLastAccess);
+               Append("Ostatnia mod.:  \t", result.dateLastModified); 
+            }
+        }
+
+        private void Append(String prefix, Object field){
+            if (field != null)
+            {
+                content.Append("   * "+prefix+field.ToString()+"\r\n");
+            }
         }
 
         public void AddReaportFooter()
