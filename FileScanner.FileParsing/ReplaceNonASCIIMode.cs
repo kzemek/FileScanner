@@ -11,7 +11,7 @@ namespace FileScanner.FileParsing
         public ReplaceNonASCIIMode() : base() { }
         public ReplaceNonASCIIMode(IParseMode parseMode) : base(parseMode) { }
 
-        public override string InternalExecute(string text)
+        protected override string InternalExecute(string text)
         {
             StringBuilder sb = new StringBuilder(text);
             sb.Replace('ą', 'a')

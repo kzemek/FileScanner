@@ -11,7 +11,7 @@ namespace FileScanner.FileParsing
         public RemoveCapitalLettersMode() : base() { }
         public RemoveCapitalLettersMode(IParseMode parseMode) : base(parseMode) { }
 
-        public override string InternalExecute(string text)
+        protected override string InternalExecute(string text)
         {
             text = text.ToLower();
             if (parseMode != null)
