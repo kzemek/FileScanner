@@ -16,6 +16,8 @@ namespace FileScanner
 {
     public partial class MainWindow : Form
     {
+        private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace FileScanner
 
         #region GUI Helper Methods
 
-        private void _pickSearchFile()
+        private void PickSearchFile()
         {
             using (var dialog = new OpenFileDialog())
             {
@@ -34,73 +36,67 @@ namespace FileScanner
             }
         }
 
-        private bool _isSearchDataProvided()
+        private bool IsSearchDataProvided()
         {
             return !string.IsNullOrEmpty(searchPhraseTextBox.Text) && !string.IsNullOrEmpty(searchFileTextBox.Text);
         }
 
+        /// <summary>
+        /// Generates human-readable format of matches.
+        /// </summary>
+        /// <param name="matches"></param>
+        /// <returns>String of matches in format "Match.Index Match.Value", one match per line</returns>
+        private string BuildResults(IEnumerable<Match> matches)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var m in matches)
+            {
+                sb.Append(m.Index).Append(' ').Append(m.Value).AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
         #endregion
+
 
         #region Events
 
         private void searchFilePickerButton_Click(object sender, EventArgs e)
         {
-            _pickSearchFile();
+            PickSearchFile();
         }
 
         private void searchFileTextbox_MouseClick(object sender, MouseEventArgs e)
         {
             if (string.IsNullOrEmpty(searchFileTextBox.Text))
             {
-                _pickSearchFile();
+                PickSearchFile();
             }
         }
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            StreamReader streamReader = FileParser.ParseFile(searchFileTextBox.Text);
-            Preprocessor preprocessor = new Preprocessor();
-            string phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
-            //IEnumerable<string> variations = preprocessor.GetVariations(phrases);
-            //Matcher matcher = new Matcher(variations.ToList());
-            Matcher matcher = new Matcher(phrases);
-            /*
-            if (!matcher.IsMatch(streamReader.BaseStream))
-            {
-                resultsTextBox.Text = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
-            }
-            else
-            {
-              */
-                IEnumerable<Match> matches = matcher.Matches(streamReader.BaseStream);
-                if (matches.Count() == 0)
-                {
-                    resultsTextBox.Text = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
-                }
-                else
-                {
-                    string output = "";
-                    foreach (Match m in matches)
-                    {
-                        output += m.Index.ToString() + " " + m.Value + Environment.NewLine;
-                    }
-                    resultsTextBox.Text = output;
-                }
-                
-            //}
+            var streamReader = FileParser.ParseFile(searchFileTextBox.Text);
+            var preprocessor = new Preprocessor();
+            var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
 
-            //resultsTextBox.Text = isMatch.ToString();
+            var matcher = new Matcher(phrases);
+            var matches = matcher.Matches(streamReader.BaseStream);
 
+            resultsTextBox.Text = matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
         }
+
 
         private void searchPhraseTextBox_TextChanged(object sender, EventArgs e)
         {
-            searchButton.Enabled = _isSearchDataProvided();
+            searchButton.Enabled = IsSearchDataProvided();
         }
 
         private void searchFileTextbox_TextChanged(object sender, EventArgs e)
         {
-            searchButton.Enabled = _isSearchDataProvided();
+            searchButton.Enabled = IsSearchDataProvided();
         }
 
         private void saveResultsButton_Click(object sender, EventArgs e)
