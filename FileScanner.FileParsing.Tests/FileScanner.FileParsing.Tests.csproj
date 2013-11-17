@@ -53,6 +53,12 @@
     <Compile Include="FileParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileScanner.FileParsing\FileScanner.FileParsing.csproj">
+      <Project>{aefbceb4-8b3b-4d2c-8515-2287aa34fbc3}</Project>
+      <Name>FileScanner.FileParsing</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
