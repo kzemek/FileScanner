@@ -58,7 +58,7 @@ namespace FileScanner
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            StreamReader streamReader = FileParser.ParseFile(searchFileTextBox.Text, ParseModeFactory.Default());
+            StreamReader streamReader = FileParser.ParseFile(searchFileTextBox.Text);
             Preprocessor preprocessor = new Preprocessor();
             string phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
             //IEnumerable<string> variations = preprocessor.GetVariations(phrases);
