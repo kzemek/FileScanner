@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{086265AB-095D-409C-A2F8-418C08D659D3}</ProjectGuid>
+    <ProjectGuid>{3A35C124-1CC7-48E4-9814-CA86BFBCE85D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileScanner.SearchSummary.Tests</RootNamespace>
-    <AssemblyName>FileScanner.SearchSummary.Tests</AssemblyName>
+    <RootNamespace>FileScanner.FileParsing.Tests</RootNamespace>
+    <AssemblyName>FileScanner.FileParsing.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,10 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NMock3, Version=3.5.44.0, Culture=neutral, PublicKeyToken=cf53a760d95f4c33, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NMock3.3.5.44\lib\net40\NMock3.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -54,20 +50,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="NMock3\NMockTest.cs" />
-    <Compile Include="TxtDocumentBuilderTest.cs" />
+    <Compile Include="FileParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SummaryGeneratorTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileScanner.SearchSummary\FileScanner.SearchSummary.csproj">
-      <Project>{79e8173b-4cb0-4d58-96b4-d43270baa8a7}</Project>
-      <Name>FileScanner.SearchSummary</Name>
+    <ProjectReference Include="..\FileScanner.FileParsing\FileScanner.FileParsing.csproj">
+      <Project>{aefbceb4-8b3b-4d2c-8515-2287aa34fbc3}</Project>
+      <Name>FileScanner.FileParsing</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="NMock3\NMock3 Cheat Sheet.pdf" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
