@@ -15,7 +15,7 @@ namespace FileScanner.FileParsing
         /*
             Example of usage: 
             StreamReader s = FileParser.ParseFile(@"C:\Users\Dawid\Desktop\test.txt", 
-                ParseModeFactory.RemoveCapitalLetters().ReplaceNonASCII(), Encoding.UTF8);
+                ParseMode.RemoveCapitalLetters().ReplaceNonASCII(), Encoding.UTF8);
             Console.WriteLine(s.ReadToEnd());
             For now only tested file format is UTF8
         */

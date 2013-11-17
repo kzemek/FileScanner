@@ -13,8 +13,28 @@ namespace FileScanner.FileParsing
 
         public override string InternalExecute(string text)
         {
-            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(text);
-            text = System.Text.Encoding.ASCII.GetString(bytes);
+            StringBuilder sb = new StringBuilder(text);
+            sb.Replace('ą', 'a')
+              .Replace('ć', 'c')
+              .Replace('ę', 'e')
+              .Replace('ł', 'l')
+              .Replace('ń', 'n')
+              .Replace('ó', 'o')
+              .Replace('ś', 's')
+              .Replace('ż', 'z')
+              .Replace('ź', 'z')
+              .Replace('Ą', 'A')
+              .Replace('Ć', 'C')
+              .Replace('Ę', 'E')
+              .Replace('Ł', 'L')
+              .Replace('Ń', 'N')
+              .Replace('Ó', 'O')
+              .Replace('Ś', 'S')
+              .Replace('Ż', 'Z')
+              .Replace('Ź', 'Z');
+            text = sb.ToString();
+            //byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(text);
+            //text = System.Text.Encoding.ASCII.GetString(bytes);
             if(parseMode!=null)
                 return parseMode.Parse(text);
             return text;

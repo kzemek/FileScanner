@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
-    public class BaseParseMode : IParseMode
+    class BaseParseMode : IParseMode
     {
         protected IParseMode parseMode;
         public BaseParseMode(){}
