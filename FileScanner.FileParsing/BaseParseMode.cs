@@ -14,7 +14,7 @@ namespace FileScanner.FileParsing
         {
             this.parseMode = parseMode;
         }
-        public virtual string InternalExecute(string text)
+        protected virtual string InternalExecute(string text)
         {
             return text;
         }
