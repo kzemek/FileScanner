@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileScanner.PersistanceManager
+namespace FileScanner.FileParser
 {
-    public class Class1
+    public interface IParseMode
     {
+        string Parse(string text);
     }
 }

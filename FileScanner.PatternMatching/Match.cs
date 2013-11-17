@@ -8,16 +8,25 @@ namespace FileScanner.PatternMatching
 {
     public class Match
     {
+        private int _index;
+        private string _value;
+
+        public Match(int index, string value)
+        {
+            _index = index;
+            _value = value;
+        }
+
         /// <summary>
         /// The position in the original string where the first character of
         /// the captured substring is found.
         /// </summary>
-        public int Index { get { return 0; } }
+        public int Index { get { return _index; } }
 
         /// <summary>
         /// Gets the captured substring from the input string.
         /// </summary>
-        public String Value { get { return null; } }
+        public string Value { get { return _value; } }
 
         /// <summary>
         /// Returns a new Match object with the results for the next match,
@@ -28,6 +37,12 @@ namespace FileScanner.PatternMatching
         public Match NextMatch()
         {
             return null;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = (Match)obj;
+            return _index == other._index && _value == other._value;
         }
     }
 }
