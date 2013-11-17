@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NUnit.Framework;
 
 namespace FileScanner.PatternMatching.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MatcherTest
     {
         private Stream StringToStream(String text)
@@ -15,163 +15,76 @@ namespace FileScanner.PatternMatching.Tests
             return new MemoryStream(encoding.GetBytes(text));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException),
-            "No patterns were given.")]
+            ExpectedMessage = "No patterns were given.")]
         public void ParamsConstructor_GivenNoPatterns_ThrowsArgumentException()
         {
             var m = new Matcher();
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException),
-            "No patterns were given.")]
+            ExpectedMessage = "No patterns were given.")]
         public void ListConstructor_GivenNoPatterns_ThrowsArgumentException()
         {
             var m = new Matcher(new List<String>());
         }
 
-        [TestMethod]
-        public void IsMatch_GivenOnePattern_AndTextWithNoMatches_ReturnsFalse()
+        static object[] TextWithNoMatches_TestCaseFactory = 
         {
-            var m = new Matcher("p1");
-            var testString = "1234abcd1p";
-
+            new object[] { new Matcher("p1"), "1234abcd1p" },
+            new object[] { new Matcher("p1", "p2"), "1234pabcd1p"},
+            new object[] { new Matcher("p1", "ab", "b3", "d4"), "1234papbcd1p"}
+        };
+        [Test, TestCaseSource("TextWithNoMatches_TestCaseFactory")]
+        public void IsMatch_TextWithNoMatches_ReturnsFalse(Matcher m, String testString)
+        {
             Assert.IsFalse(m.IsMatch(testString));
             using (var stream = StringToStream(testString))
                 Assert.IsFalse(m.IsMatch(stream));
         }
 
-        [TestMethod]
-        public void IsMatch_GivenMultiplePatterns_AndTextWithNoMatches_ReturnsFalse()
+        static object[] TextWithMatches_TestCaseFactory = 
+        {                  // Matcher, Input text, Expected result
+            // Single match cases:
+            new object[] { new Matcher("p1"), "1234abp1cd1p", new Match(6, "p1") },                
+            new object[] { new Matcher("p1", "p2"), "1p234pabcd1p", new Match(1, "p2")},
+            new object[] { new Matcher("p1", "p2"), "1234pabcdp1", new Match(9, "p1")},
+            new object[] { new Matcher("p1", "p2"), "p234pabcd1p", new Match(0, "p2")},
+            new object[] { new Matcher("p1", "46", "b3", "p2"), "1234567p2890", new Match(7, "p2")},
+            // Multiple matches cases:
+            new object[] { new Matcher("p1"), "12p134567p189p10" , new Match(2, "p1")},
+            new object[] { new Matcher("p2", "33"), "12p3334567p289p20", new Match(3, "33")},
+            new object[] { new Matcher("p1", "46", "b3", "p2"), "12p334567p289p20", new Match(9, "p2")}
+        };
+        [Test, TestCaseSource("TextWithMatches_TestCaseFactory")]
+        public void IsMatch_TextWithMatches_ReturnsTrue(Matcher m, String testString, Match _expectedMatch)
         {
-            var m = new Matcher("p1", "p2", "p3", "p4");
-            var testString = "1234abcd1pts[9ertk54";
-
-            Assert.IsFalse(m.IsMatch(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsFalse(m.IsMatch(stream));
-        }
-
-        [TestMethod]
-        public void IsMatch_GivenOnePattern_AndTextWithSingleMatch_ReturnsTrue()
-        {
-            var m = new Matcher("p1");
-            var testString = "1234abp1cd1p";
-
             Assert.IsTrue(m.IsMatch(testString));
             using (var stream = StringToStream(testString))
                 Assert.IsTrue(m.IsMatch(stream));
         }
 
-        [TestMethod]
-        public void IsMatch_GivenMultiplePatterns_AndTextWithSingleMatch_ReturnsTrue()
+        [Test, TestCaseSource("TextWithNoMatches_TestCaseFactory")]
+        public void Match_TextWithNoMatches_ReturnsNull(Matcher m, String testString)
         {
-            var m = new Matcher("p1", "p2", "p3");
-            var testString = "1234567p2890";
-
-            Assert.IsTrue(m.IsMatch(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(m.IsMatch(stream));
-        }
-
-        [TestMethod]
-        public void IsMatch_GivenOnePattern_AndTextWithMultipleMatches_ReturnsTrue()
-        {
-            var m = new Matcher("p1");
-            var testString = "12p134567p189p10";
-
-            Assert.IsTrue(m.IsMatch(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(m.IsMatch(stream));
-        }
-
-        [TestMethod]
-        public void IsMatch_GivenMultiplePatterns_AndTextWithMultipleMatches_ReturnsTrue()
-        {
-            var m = new Matcher("p1", "p2", "p3");
-            var testString = "12p334567p289p20";
-
-            Assert.IsTrue(m.IsMatch(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(m.IsMatch(stream));
-        }
-
-        [TestMethod]
-        public void Match_GivenOnePattern_AndTextWithNoMatches_ReturnsNull()
-        {
-            var m = new Matcher("p1");
-            var testString = "1234567p2890";
-
             Assert.IsNull(m.Match(testString));
             using (var stream = StringToStream(testString))
                 Assert.IsNull(m.Match(stream));
         }
 
-        [TestMethod]
-        public void Match_GivenMultiplePatterns_AndTextWithNoMatches_ReturnsNull()
+        [Test, TestCaseSource("TextWithMatches_TestCaseFactory")]
+        public void Match_TextWithMatches_ReturnsMatch(Matcher m, String testString, Match expectedMatch)
         {
-            var m = new Matcher("p1", "p2", "p3");
-            var testString = "1234567pe890";
-
-            Assert.IsNull(m.Match(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsNull(m.Match(stream));
-        }
-
-        [TestMethod]
-        public void Match_GivenOnePattern_AndTextWithSingleMatch_ReturnsTheMatch()
-        {
-            var m = new Matcher("p1");
-            var testString = "0123456p1890";
-            var expectedMatch = new Match(7, "p1");
-
             Assert.AreEqual(m.Match(testString), expectedMatch);
             using (var stream = StringToStream(testString))
                 Assert.AreEqual(m.Match(stream), expectedMatch);
         }
 
-        [TestMethod]
-        public void Match_GivenMultiplePatterns_AndTextWithSingleMatch_ReturnsTheMatch()
+        [Test, TestCaseSource("TextWithNoMatches_TestCaseFactory")]
+        public void Matches_TextWithNoMatches_ReturnsEmptyList(Matcher m, String testString)
         {
-            var m = new Matcher("p1", "p2", "p3");
-            var testString = "012345678p290";
-            var expectedMatch = new Match(9, "p2");
-
-            Assert.AreEqual(m.Match(testString), expectedMatch);
-            using (var stream = StringToStream(testString))
-                Assert.AreEqual(m.Match(stream), expectedMatch);
-        }
-
-        [TestMethod]
-        public void Match_GivenOnePattern_AndTextWithMultipleMatches_ReturnsTheFirstMatch()
-        {
-            var m = new Matcher("p1");
-            var testString = "0p1345p18p190";
-            var expectedMatch = new Match(1, "p1");
-            
-            Assert.AreEqual(m.Match(testString), expectedMatch);
-            using (var stream = StringToStream(testString))
-                Assert.AreEqual(m.Match(stream), expectedMatch);
-        }
-
-        [TestMethod]
-        public void Match_GivenMultiplePatterns_AndTextWithMultipleMatches_ReturnsTheFirstMatch()
-        {
-            var m = new Matcher("p1", "p2", "p3");
-            var testString = "0p3345p28p190";
-            var expectedMatch = new Match(1, "p3");
-
-            Assert.AreEqual(m.Match(testString), expectedMatch);
-            using (var stream = StringToStream(testString))
-                Assert.AreEqual(m.Match(stream), expectedMatch);
-        }
-
-        [TestMethod]
-        public void Matches_GivenOnePattern_AndTextWithNoMatches_ReturnsEmptyList()
-        {
-            var m = new Matcher("p1");
-            var testString = "0p3345p28p290";
             var expectedMatches = new List<Match>();
 
             Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(testString), expectedMatches));
@@ -179,19 +92,7 @@ namespace FileScanner.PatternMatching.Tests
                 Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
         }
 
-        [TestMethod]
-        public void Matches_GivenMultiplePatterns_AndTextWithNoMatches_ReturnsEmptyList()
-        {
-            var m = new Matcher("p1", "p2", "p3");
-            var testString = "0pa3345pd28pz290";
-            var expectedMatches = new List<Match>();
-
-            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(testString), expectedMatches));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
-        }
-
-        [TestMethod]
+        [Test]
         public void Matches_GivenOnePattern_AndTextWithSingleMatch_ReturnsListWithTheMatch()
         {
             var m = new Matcher("p1");
@@ -204,7 +105,7 @@ namespace FileScanner.PatternMatching.Tests
                 Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
         }
 
-        [TestMethod]
+        [Test]
         public void Matches_GivenMultiplePatterns_AndTextWithSingleMatch_ReturnsListWithTheMatch()
         {
             var m = new Matcher("p1", "p2", "p3", "p4");
@@ -217,7 +118,7 @@ namespace FileScanner.PatternMatching.Tests
                 Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
         }
 
-        [TestMethod]
+        [Test]
         public void Matches_GivenOnePattern_AndTextWithMultipleMatches_ReturnsListOfAllMatches()
         {
             var m = new Matcher("p1");
@@ -231,7 +132,7 @@ namespace FileScanner.PatternMatching.Tests
                 Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
         }
 
-        [TestMethod]
+        [Test]
         public void Matches_GivenMultiplePatterns_AndTextWithMultipleMatches_ReturnsListOfAllMatches()
         {
             var m = new Matcher("p1", "p2", "p3", "p4");
@@ -246,7 +147,7 @@ namespace FileScanner.PatternMatching.Tests
                 Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
         }
 
-        [TestMethod]
+        [Test]
         public void IsMatch_GivenMultipleLinesStream_AndTextWithAMatch_ReturnsTrue()
         {
             var m = new Matcher("p1");
@@ -264,7 +165,7 @@ namespace FileScanner.PatternMatching.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Match_GivenMultipleLinesStream_AndTextWithAMatch_ReturnsTheMatch_CountingTheNewline()
         {
             var m = new Matcher("p1");
@@ -282,7 +183,7 @@ namespace FileScanner.PatternMatching.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Matches_GivenMultipleLinesStream_AndTextWithAMatch_ReturnsListWithTheMatch_CountingTheNewline()
         {
             var m = new Matcher("p1");
@@ -301,7 +202,7 @@ namespace FileScanner.PatternMatching.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void IsMatch_GivenMultipleLinesString_AndTextWithAMatch_ReturnsTrue()
         {
             var m = new Matcher("p1");
@@ -309,7 +210,7 @@ namespace FileScanner.PatternMatching.Tests
             Assert.IsTrue(m.IsMatch(text));
         }
 
-        [TestMethod]
+        [Test]
         public void Match_GivenMultipleLinesString_AndTextWithAMatch_ReturnsTheMatch_CountingTheNewline()
         {
             var m = new Matcher("p1");
@@ -317,7 +218,7 @@ namespace FileScanner.PatternMatching.Tests
             Assert.AreEqual(m.Match(text), new Match(4, "p1"));
         }
 
-        [TestMethod]
+        [Test]
         public void Matches_GivenMultipleLinesSring_AndTextWithAMatch_ReturnsListWithTheMatch_CountingTheNewline()
         {
             var m = new Matcher("p1");
