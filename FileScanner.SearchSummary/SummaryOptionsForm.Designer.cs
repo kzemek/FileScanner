@@ -28,180 +28,218 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.ResultFileNameCheckbox = new System.Windows.Forms.CheckBox();
+            this.ResultCreationTimeCheckbox = new System.Windows.Forms.CheckBox();
+            this.ResultAccessTimeCheckbox = new System.Windows.Forms.CheckBox();
+            this.ResultFileSizeCheckbox = new System.Windows.Forms.CheckBox();
+            this.ResultFullFilePathCheckbox = new System.Windows.Forms.CheckBox();
+            this.HeaderSearchQueryCheckbox = new System.Windows.Forms.CheckBox();
+            this.HeaderGenerationDateCheckbox = new System.Windows.Forms.CheckBox();
+            this.HeaderInpuPathsCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ResultLastModificationTime = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.SelectFileButton = new System.Windows.Forms.Button();
+            this.OutputFilePath = new System.Windows.Forms.TextBox();
+            this.OKButton = new System.Windows.Forms.Button();
+            this.CancelReportButton = new System.Windows.Forms.Button();
+            this.OutputFilePathLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // checkBox1
+            // ResultFileNameCheckbox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(71, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "File name";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.ResultFileNameCheckbox.AutoSize = true;
+            this.ResultFileNameCheckbox.Checked = true;
+            this.ResultFileNameCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ResultFileNameCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.ResultFileNameCheckbox.Name = "ResultFileNameCheckbox";
+            this.ResultFileNameCheckbox.Size = new System.Drawing.Size(71, 17);
+            this.ResultFileNameCheckbox.TabIndex = 0;
+            this.ResultFileNameCheckbox.Text = "File name";
+            this.ResultFileNameCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // ResultCreationTimeCheckbox
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(6, 65);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(87, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Creation time";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.ResultCreationTimeCheckbox.AutoSize = true;
+            this.ResultCreationTimeCheckbox.Location = new System.Drawing.Point(6, 88);
+            this.ResultCreationTimeCheckbox.Name = "ResultCreationTimeCheckbox";
+            this.ResultCreationTimeCheckbox.Size = new System.Drawing.Size(87, 17);
+            this.ResultCreationTimeCheckbox.TabIndex = 1;
+            this.ResultCreationTimeCheckbox.Text = "Creation time";
+            this.ResultCreationTimeCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // ResultAccessTimeCheckbox
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 89);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(105, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Last access time";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.ResultAccessTimeCheckbox.AutoSize = true;
+            this.ResultAccessTimeCheckbox.Location = new System.Drawing.Point(6, 112);
+            this.ResultAccessTimeCheckbox.Name = "ResultAccessTimeCheckbox";
+            this.ResultAccessTimeCheckbox.Size = new System.Drawing.Size(105, 17);
+            this.ResultAccessTimeCheckbox.TabIndex = 2;
+            this.ResultAccessTimeCheckbox.Text = "Last access time";
+            this.ResultAccessTimeCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // ResultFileSizeCheckbox
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(6, 113);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(93, 17);
-            this.checkBox4.TabIndex = 3;
-            this.checkBox4.Text = "Last write time";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.ResultFileSizeCheckbox.AutoSize = true;
+            this.ResultFileSizeCheckbox.Checked = true;
+            this.ResultFileSizeCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ResultFileSizeCheckbox.Location = new System.Drawing.Point(6, 65);
+            this.ResultFileSizeCheckbox.Name = "ResultFileSizeCheckbox";
+            this.ResultFileSizeCheckbox.Size = new System.Drawing.Size(63, 17);
+            this.ResultFileSizeCheckbox.TabIndex = 3;
+            this.ResultFileSizeCheckbox.Text = "File size";
+            this.ResultFileSizeCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // ResultFullFilePathCheckbox
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(6, 42);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(82, 17);
-            this.checkBox5.TabIndex = 4;
-            this.checkBox5.Text = "Full file path";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.ResultFullFilePathCheckbox.AutoSize = true;
+            this.ResultFullFilePathCheckbox.Checked = true;
+            this.ResultFullFilePathCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ResultFullFilePathCheckbox.Location = new System.Drawing.Point(6, 42);
+            this.ResultFullFilePathCheckbox.Name = "ResultFullFilePathCheckbox";
+            this.ResultFullFilePathCheckbox.Size = new System.Drawing.Size(82, 17);
+            this.ResultFullFilePathCheckbox.TabIndex = 4;
+            this.ResultFullFilePathCheckbox.Text = "Full file path";
+            this.ResultFullFilePathCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox6
+            // HeaderSearchQueryCheckbox
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(6, 19);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(89, 17);
-            this.checkBox6.TabIndex = 5;
-            this.checkBox6.Text = "Search query";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.HeaderSearchQueryCheckbox.AutoSize = true;
+            this.HeaderSearchQueryCheckbox.Checked = true;
+            this.HeaderSearchQueryCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.HeaderSearchQueryCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.HeaderSearchQueryCheckbox.Name = "HeaderSearchQueryCheckbox";
+            this.HeaderSearchQueryCheckbox.Size = new System.Drawing.Size(89, 17);
+            this.HeaderSearchQueryCheckbox.TabIndex = 5;
+            this.HeaderSearchQueryCheckbox.Text = "Search query";
+            this.HeaderSearchQueryCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // HeaderGenerationDateCheckbox
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(6, 42);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(102, 17);
-            this.checkBox7.TabIndex = 6;
-            this.checkBox7.Text = "Generation date";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.HeaderGenerationDateCheckbox.AutoSize = true;
+            this.HeaderGenerationDateCheckbox.Checked = true;
+            this.HeaderGenerationDateCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.HeaderGenerationDateCheckbox.Location = new System.Drawing.Point(6, 42);
+            this.HeaderGenerationDateCheckbox.Name = "HeaderGenerationDateCheckbox";
+            this.HeaderGenerationDateCheckbox.Size = new System.Drawing.Size(102, 17);
+            this.HeaderGenerationDateCheckbox.TabIndex = 6;
+            this.HeaderGenerationDateCheckbox.Text = "Generation date";
+            this.HeaderGenerationDateCheckbox.UseVisualStyleBackColor = true;
             // 
-            // checkBox8
+            // HeaderInpuPathsCheckbox
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(6, 65);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(79, 17);
-            this.checkBox8.TabIndex = 7;
-            this.checkBox8.Text = "Input paths";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.HeaderInpuPathsCheckbox.AutoSize = true;
+            this.HeaderInpuPathsCheckbox.Checked = true;
+            this.HeaderInpuPathsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.HeaderInpuPathsCheckbox.Location = new System.Drawing.Point(6, 65);
+            this.HeaderInpuPathsCheckbox.Name = "HeaderInpuPathsCheckbox";
+            this.HeaderInpuPathsCheckbox.Size = new System.Drawing.Size(79, 17);
+            this.HeaderInpuPathsCheckbox.TabIndex = 7;
+            this.HeaderInpuPathsCheckbox.Text = "Input paths";
+            this.HeaderInpuPathsCheckbox.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.checkBox2);
-            this.groupBox1.Controls.Add(this.checkBox3);
-            this.groupBox1.Controls.Add(this.checkBox4);
-            this.groupBox1.Controls.Add(this.checkBox5);
-            this.groupBox1.Location = new System.Drawing.Point(168, 12);
+            this.groupBox1.Controls.Add(this.ResultLastModificationTime);
+            this.groupBox1.Controls.Add(this.ResultFileNameCheckbox);
+            this.groupBox1.Controls.Add(this.ResultCreationTimeCheckbox);
+            this.groupBox1.Controls.Add(this.ResultAccessTimeCheckbox);
+            this.groupBox1.Controls.Add(this.ResultFileSizeCheckbox);
+            this.groupBox1.Controls.Add(this.ResultFullFilePathCheckbox);
+            this.groupBox1.Location = new System.Drawing.Point(220, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(150, 136);
+            this.groupBox1.Size = new System.Drawing.Size(202, 160);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Search results";
             // 
+            // ResultLastModificationTime
+            // 
+            this.ResultLastModificationTime.AutoSize = true;
+            this.ResultLastModificationTime.Location = new System.Drawing.Point(6, 135);
+            this.ResultLastModificationTime.Name = "ResultLastModificationTime";
+            this.ResultLastModificationTime.Size = new System.Drawing.Size(127, 17);
+            this.ResultLastModificationTime.TabIndex = 5;
+            this.ResultLastModificationTime.Text = "Last modification time";
+            this.ResultLastModificationTime.UseVisualStyleBackColor = true;
+            // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox6);
-            this.groupBox2.Controls.Add(this.checkBox7);
-            this.groupBox2.Controls.Add(this.checkBox8);
+            this.groupBox2.Controls.Add(this.HeaderSearchQueryCheckbox);
+            this.groupBox2.Controls.Add(this.HeaderGenerationDateCheckbox);
+            this.groupBox2.Controls.Add(this.HeaderInpuPathsCheckbox);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(150, 136);
+            this.groupBox2.Size = new System.Drawing.Size(202, 160);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Report header";
             // 
-            // openFileDialog1
+            // SelectFileButton
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.SelectFileButton.Location = new System.Drawing.Point(322, 197);
+            this.SelectFileButton.Name = "SelectFileButton";
+            this.SelectFileButton.Size = new System.Drawing.Size(100, 23);
+            this.SelectFileButton.TabIndex = 9;
+            this.SelectFileButton.Text = "Select file";
+            this.SelectFileButton.UseVisualStyleBackColor = true;
+            this.SelectFileButton.Click += new System.EventHandler(this.SelectFileButton_Click);
             // 
-            // button1
+            // OutputFilePath
             // 
-            this.button1.Location = new System.Drawing.Point(244, 154);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.OutputFilePath.Enabled = false;
+            this.OutputFilePath.Location = new System.Drawing.Point(12, 199);
+            this.OutputFilePath.Name = "OutputFilePath";
+            this.OutputFilePath.Size = new System.Drawing.Size(304, 20);
+            this.OutputFilePath.TabIndex = 10;
             // 
-            // textBox1
+            // OKButton
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 156);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(226, 20);
-            this.textBox1.TabIndex = 10;
+            this.OKButton.Location = new System.Drawing.Point(176, 236);
+            this.OKButton.Name = "OKButton";
+            this.OKButton.Size = new System.Drawing.Size(120, 23);
+            this.OKButton.TabIndex = 11;
+            this.OKButton.Text = "OK";
+            this.OKButton.UseVisualStyleBackColor = true;
+            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
             // 
-            // button2
+            // CancelReportButton
             // 
-            this.button2.Location = new System.Drawing.Point(73, 183);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 23);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.CancelReportButton.Location = new System.Drawing.Point(302, 236);
+            this.CancelReportButton.Name = "CancelReportButton";
+            this.CancelReportButton.Size = new System.Drawing.Size(120, 23);
+            this.CancelReportButton.TabIndex = 12;
+            this.CancelReportButton.Text = "Cancel";
+            this.CancelReportButton.UseVisualStyleBackColor = true;
+            this.CancelReportButton.Click += new System.EventHandler(this.CancelReportButton_Click);
             // 
-            // button3
+            // OutputFilePathLabel
             // 
-            this.button3.Location = new System.Drawing.Point(199, 183);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(120, 23);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.OutputFilePathLabel.AutoSize = true;
+            this.OutputFilePathLabel.Location = new System.Drawing.Point(13, 180);
+            this.OutputFilePathLabel.Name = "OutputFilePathLabel";
+            this.OutputFilePathLabel.Size = new System.Drawing.Size(82, 13);
+            this.OutputFilePathLabel.TabIndex = 13;
+            this.OutputFilePathLabel.Text = "Output file path:";
             // 
             // SummaryOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 214);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(434, 271);
+            this.ControlBox = false;
+            this.Controls.Add(this.OutputFilePathLabel);
+            this.Controls.Add(this.CancelReportButton);
+            this.Controls.Add(this.OKButton);
+            this.Controls.Add(this.OutputFilePath);
+            this.Controls.Add(this.SelectFileButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SummaryOptionsForm";
             this.Text = "SummaryOptionsForm";
             this.groupBox1.ResumeLayout(false);
@@ -215,20 +253,21 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox ResultFileNameCheckbox;
+        private System.Windows.Forms.CheckBox ResultCreationTimeCheckbox;
+        private System.Windows.Forms.CheckBox ResultAccessTimeCheckbox;
+        private System.Windows.Forms.CheckBox ResultFileSizeCheckbox;
+        private System.Windows.Forms.CheckBox ResultFullFilePathCheckbox;
+        private System.Windows.Forms.CheckBox HeaderSearchQueryCheckbox;
+        private System.Windows.Forms.CheckBox HeaderGenerationDateCheckbox;
+        private System.Windows.Forms.CheckBox HeaderInpuPathsCheckbox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button SelectFileButton;
+        private System.Windows.Forms.TextBox OutputFilePath;
+        private System.Windows.Forms.Button OKButton;
+        private System.Windows.Forms.Button CancelReportButton;
+        private System.Windows.Forms.CheckBox ResultLastModificationTime;
+        private System.Windows.Forms.Label OutputFilePathLabel;
     }
 }

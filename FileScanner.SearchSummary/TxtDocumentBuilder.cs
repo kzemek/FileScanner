@@ -16,25 +16,40 @@ namespace FileScanner.SearchSummary
             return content.ToString();
         }
 
-        public void AddReportHeader(DateTime generationTime,
+        public void AddReportHeader(Nullable<DateTime> generationTime,
                                     String userQuery,
                                     IEnumerable<String> searchedLocations)
         {
-            StringBuilder directories = new StringBuilder();
-            foreach(String location in searchedLocations)
+            content.Append("\r\nRaport z wyszukiwania\r\n\r\n");
+
+            if (generationTime.HasValue)
             {
-                directories.Append("    "+location+"\r\n");
+                content.Append("Raport został wygenerowany dnia: ")
+                       .Append(generationTime.Value.ToShortDateString())
+                       .Append("\r\n");
             }
-            content.Append("\r\nRaport z wyszukiwania\r\n\r\n" +
-                "Wyszukiwane frazy:\r\n    " +
-                userQuery+
-                "\r\nPrzeszukiwane lokalizacje:\r\n" + directories.ToString()+
-                "\r\nRaport został wygenerowany dnia: " + generationTime.ToShortDateString() + "\r\n\r\n" +
-                "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
-                " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (" + "\r\n" +
-                " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
-                "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'" + "\r\n" +
-                "\r\n\r\n");
+
+            if (userQuery != null)
+            {
+                content.Append("Wyszukiwane frazy:\r\n    " + userQuery);
+            }
+
+            if (searchedLocations != null)
+            {
+                content.Append("\r\nPrzeszukiwane lokalizacje:\r\n");
+               
+                foreach (String location in searchedLocations)
+                {
+                    content.Append("    " + location + "\r\n");
+                }
+            }
+
+            content.Append("\r\n" +
+                           "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ," + "\r\n" +
+                           " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) ("  + "\r\n" +
+                           " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )" + "\r\n" +
+                           "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'"  + "\r\n" +
+                           "\r\n\r\n");
         }
 
         public void AddSectionHeader(string text)
@@ -53,11 +68,13 @@ namespace FileScanner.SearchSummary
         {
             if (!result.Equals(null))
             {
-               Append("Nazwa:          \t", result.fileName);
-               Append("Ścieżka:        \t", result.fullFilePath);
-               Append("Data utworzenia:\t", result.dateCreated);
-               Append("Ostatni dost.:  \t", result.dateLastAccess);
-               Append("Ostatnia mod.:  \t", result.dateLastModified); 
+                Append("Nazwa:          \t", result.fileName);
+                Append("Ścieżka:        \t", result.fullFilePath);
+                Append("Rozmiar (bajty):\t", result.fileSizeBytes);
+                Append("Data utworzenia:\t", result.dateCreated);
+                Append("Ostatni dost.:  \t", result.dateLastAccess);
+                Append("Ostatnia mod.:  \t", result.dateLastModified);
+                content.Append("\r\n");
             }
         }
 
@@ -68,7 +85,7 @@ namespace FileScanner.SearchSummary
             }
         }
 
-        public void AddReaportFooter()
+        public void AddReportFooter()
         {
             content.Append("\r\n\r\n\r\n" +
 "      /'^'\\                                  /'^'\\" + "\r\n" +
