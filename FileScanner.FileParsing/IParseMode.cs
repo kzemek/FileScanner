@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParser
 {
-    [Flags]
-    public enum ParseMode
+    public interface IParseMode
     {
-        Default = 0x0,
-        RemoveCapitalLetters = 0x1,
-        RemoveNonASCII = 0x2, 
+        string Parse(string text);
     }
 }
