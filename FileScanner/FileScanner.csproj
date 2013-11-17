@@ -74,6 +74,28 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileScanner.FileParsing\FileScanner.FileParsing.csproj">
+      <Project>{aefbceb4-8b3b-4d2c-8515-2287aa34fbc3}</Project>
+      <Name>FileScanner.FileParsing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileScanner.PatternMatching\FileScanner.PatternMatching.csproj">
+      <Project>{a2616891-1f0c-4fe9-bf55-ff2a1283e6b7}</Project>
+      <Name>FileScanner.PatternMatching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileScanner.PersistanceManager\FileScanner.PersistanceManager.csproj">
+      <Project>{a69354ff-4d15-4b39-894f-94f0ccb236bc}</Project>
+      <Name>FileScanner.PersistanceManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileScanner.Preprocessing\FileScanner.Preprocessing.csproj">
+      <Project>{1d5391e8-f712-4415-9910-4362d7ae9a26}</Project>
+      <Name>FileScanner.Preprocessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileScanner.SearchSummary\FileScanner.SearchSummary.csproj">
+      <Project>{79e8173b-4cb0-4d58-96b4-d43270baa8a7}</Project>
+      <Name>FileScanner.SearchSummary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
