@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
@@ -20,7 +22,38 @@ namespace FileScanner.PersistanceManager
 
         public void SaveSearch(ISearch search)
         {
-            //_sqLiteDatabase.GetDataTable("SELECT ")
+            var searchData = new Dictionary<string, string>
+            {
+                {"startTime", search.StartTime.ToString(CultureInfo.InvariantCulture)},
+                {"endTime", search.EndTime.ToString(CultureInfo.InvariantCulture)},
+                {"processedFilesCount", search.ProcessedFilesCount.ToString(CultureInfo.InvariantCulture)}
+            };
+            _sqLiteDatabase.Insert("[searches]", searchData);
+            var searchID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT last_insert_rowid()"));
+
+            foreach (MatchingFile file in search)
+            {
+                var fileData = new Dictionary<string, string>
+                {
+                    {"search_id", searchID.ToString(CultureInfo.InvariantCulture)},
+                    {"fileName", file.FileName},
+                    {"fullPath", file.FullPath},
+                    {"sizeInBytes", file.SizeInBytes.ToString(CultureInfo.InvariantCulture)}
+                };
+                _sqLiteDatabase.Insert("[files]", fileData);
+                var fileID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT last_insert_rowid()"));
+
+                foreach (Match match in file.Matches)
+                {
+                    var matchData = new Dictionary<string, string>
+                    {
+                        {"file_id", fileID.ToString(CultureInfo.InvariantCulture)},
+                        {"index", match.Index.ToString(CultureInfo.InvariantCulture)},
+                        {"value", match.Value},
+                    };
+                    _sqLiteDatabase.Insert("[matches]", matchData);
+                }
+            }
         }
 
         public ICollection<ISearch> GetFullHistory()
