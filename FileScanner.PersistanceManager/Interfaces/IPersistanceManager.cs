@@ -1,14 +1,10 @@
-﻿
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using FileScanner.PatternMatching;
+﻿using System.Collections.Generic;
 
 namespace FileScanner.PersistanceManager.Interfaces
 {
     public interface IPersistanceManager
     {
-        void SaveData(ISearch search);
+        void SaveSearch(ISearch search);
         ICollection<ISearch> GetFullHistory();
-        ISearch GetSearch(int id);
     }
 }

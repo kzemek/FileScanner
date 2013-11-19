@@ -42,16 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="History.cs" />
     <Compile Include="HistorySearch.cs" />
-    <Compile Include="Interfaces\IMatch.cs" />
-    <Compile Include="Interfaces\IPhrase.cs" />
-    <Compile Include="Interfaces\ISearchFile.cs" />
     <Compile Include="Interfaces\ISQLDatabase.cs" />
-    <Compile Include="Phrase.cs" />
+    <Compile Include="MatchingFile.cs" />
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="Interfaces\ISearch.cs" />
-    <Compile Include="HistoryMach.cs" />
     <Compile Include="Interfaces\IPersistanceManager.cs" />
     <Compile Include="PersistantceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

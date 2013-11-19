@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace FileScanner.PersistanceManager
+namespace FileScanner.PersistanceManager.Interfaces
 {
     public interface ISQLDatabase
     {

@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
-using System.Data;
 
 namespace FileScanner.PersistanceManager
 {
     public class PersistanceManager : IPersistanceManager
     {
-        readonly ISQLDatabase _sqLiteDatabase;
+        private readonly ISQLDatabase _sqLiteDatabase;
 
         public PersistanceManager(ISQLDatabase sqLiteDatabase)
         {
@@ -20,7 +18,7 @@ namespace FileScanner.PersistanceManager
             _sqLiteDatabase = new SQLiteDatabase();
         }
 
-        public void SaveData(ISearch search)
+        public void SaveSearch(ISearch search)
         {
             //_sqLiteDatabase.GetDataTable("SELECT ")
         }
@@ -30,16 +28,12 @@ namespace FileScanner.PersistanceManager
             var dataTable = _sqLiteDatabase.GetDataTable("SELECT * FROM [searches]");
             var history = new List<ISearch>();
 
-            foreach( DataRow row in dataTable.Rows){
+            foreach (DataRow row in dataTable.Rows)
+            {
                 history.Add(new HistorySearch(row, _sqLiteDatabase));
             }
+
             return history;
-
-        }
-
-        public ISearch GetSearch(int id)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
