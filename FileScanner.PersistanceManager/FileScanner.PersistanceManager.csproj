@@ -45,6 +45,7 @@
     <Compile Include="HistorySearch.cs" />
     <Compile Include="Interfaces\ISQLDatabase.cs" />
     <Compile Include="MatchingFile.cs" />
+    <Compile Include="NewSearch.cs" />
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="Interfaces\ISearch.cs" />
     <Compile Include="Interfaces\IPersistanceManager.cs" />
