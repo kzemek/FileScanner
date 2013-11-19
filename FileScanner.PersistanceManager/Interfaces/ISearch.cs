@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FileScanner.PersistanceManager.Interfaces
 {
-    public interface ISearch: IEnumerable<ISearchFile>
+    public interface ISearch: IEnumerable<SearchSummary.MatchingFile>
     {
         DateTime SearchTime { get; }
     }

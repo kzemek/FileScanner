@@ -2,6 +2,7 @@
 using System.Data;
 using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
+using System.Data;
 
 namespace FileScanner.PersistanceManager
 {
@@ -26,7 +27,13 @@ namespace FileScanner.PersistanceManager
 
         public ICollection<ISearch> GetFullHistory()
         {
-            DataTable dataTable = _sqLiteDatabase.GetDataTable("SELECT * FROM [searches]");
+            var dataTable = _sqLiteDatabase.GetDataTable("SELECT * FROM [searches]");
+            var history = new List<ISearch>();
+
+            foreach( DataRow row in dataTable.Rows){
+                history.Add(new HistorySearch(row, _sqLiteDatabase));
+            }
+            return history;
 
         }
 

@@ -61,6 +61,10 @@
       <Project>{A2616891-1F0C-4FE9-BF55-FF2A1283E6B7}</Project>
       <Name>FileScanner.PatternMatching</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileScanner.SearchSummary\FileScanner.SearchSummary.csproj">
+      <Project>{79e8173b-4cb0-4d58-96b4-d43270baa8a7}</Project>
+      <Name>FileScanner.SearchSummary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

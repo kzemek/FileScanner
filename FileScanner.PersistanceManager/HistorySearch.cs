@@ -26,8 +26,14 @@ namespace FileScanner.PersistanceManager
             _id = id;
             _sql = sql;
         }
+        public HistorySearch(DataRow row, ISQLDatabase sql)
+        {
+            SearchTime = Convert.ToDateTime(row["searchDate"]);
+            _id = int.Parse(row["id"].ToString());
+            _sql = sql; 
+        }
 
-        public IEnumerator<ISearchFile> GetEnumerator()
+        public IEnumerator<SearchSummary.MatchingFile> GetEnumerator()
         {
             if (_searchTable == null)
             {
@@ -36,8 +42,9 @@ namespace FileScanner.PersistanceManager
                                                  "    INNER JOIN [matches] USING ([file_id])" +
                                                  "    INNER JOIN [phrases] USING ([phrase_id], [serach_id])" +
                                                  "WHERE search_id=" + _id +
-                                                 "ORDER BY file_id");
+                                                 "ORDER BY file_id");           
             }
+            return (from DataRow row in _searchTable.Rows select new HistorySearchFile()).GetEnumerator();
 
         }
 
