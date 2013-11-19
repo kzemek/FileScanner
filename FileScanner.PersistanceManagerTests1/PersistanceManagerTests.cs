@@ -56,7 +56,7 @@ namespace FileScanner.PersistanceManager.Tests
             searchMock.Setup(search => search.GetEnumerator())
                 .Returns(new List<ISearchFile> {searchFile1Mock.Object, searchFile2Mock.Object}.GetEnumerator());
 
-            Instace.SaveData(searchMock.Object);
+            Instace.SaveSearch(searchMock.Object);
 
 
         }
