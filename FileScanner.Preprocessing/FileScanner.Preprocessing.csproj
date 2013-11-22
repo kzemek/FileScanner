@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Inflector.cs" />
     <Compile Include="IPreprocessor.cs" />
+    <Compile Include="Normalizer.cs" />
     <Compile Include="Preprocessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,31 +8,22 @@ namespace FileScanner.Preprocessing
 {
     public class Preprocessor : IPreprocessor
     {
-        private static Dictionary<char, char> _mappings = new Dictionary<char, char>() {
-            {'ą', 'a'},
-            {'ć', 'c'},
-            {'ę', 'e'},
-            {'ł', 'l'},
-            {'ń', 'n'},
-            {'ó', 'o'},
-            {'ś', 's'},
-            {'ź', 'z'},
-            {'ż', 'z'}
-        };
-
+        private Normalizer n;
+        private Inflector i;
+        public Preprocessor()
+        {
+            n = new Normalizer();
+            i = new Inflector();
+        }
+        public Preprocessor(Normalizer _n, Inflector _i)
+        {
+            this.n = _n;
+            this.i = _i;
+        }
         public String GetNormalizedPhrase(String phrase)
         {
-            char[] phraseCharacters = phrase.ToCharArray();
-            var normalizedCharacters = phraseCharacters.Select(GetNormalizedCharacter);
-            return new String(normalizedCharacters.ToArray());
-        }
+            return n.RemovePolishCharacters(phrase);
 
-        private char GetNormalizedCharacter(char c)
-        {
-            if (_mappings.ContainsKey(c))
-                return _mappings[c];
-            else
-                return c;
         }
 
         public IEnumerable<String> GetVariations(String phrase)
