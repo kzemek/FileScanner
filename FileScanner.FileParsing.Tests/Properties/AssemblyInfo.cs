@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FileScanner.PersistanceManagerTests1")]
+[assembly: AssemblyTitle("FileScanner.FileParsing.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FileScanner.PersistanceManagerTests1")]
+[assembly: AssemblyProduct("FileScanner.FileParsing.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f5337e45-b14a-42ba-b360-1b5a3fcdf985")]
+[assembly: Guid("afe86b94-b8a2-482a-9a81-9a39b4514cfb")]
 
 // Version information for an assembly consists of the following four values:
 //

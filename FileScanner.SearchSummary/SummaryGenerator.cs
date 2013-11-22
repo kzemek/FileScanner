@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 [assembly:InternalsVisibleTo("FileScanner.SearchSummary.Tests")]
 
@@ -14,14 +15,21 @@ namespace FileScanner.SearchSummary
     {
         public string fileName;
         public string fullFilePath;
+        public long? fileSizeBytes;
         public DateTime? dateCreated;
         public DateTime? dateLastAccess;
         public DateTime? dateLastModified;
 
-        public SearchResult(String fileName, String fullFilePath, DateTime? dateCreated, DateTime? dateLastAccess, DateTime? dateLastModified)
+        public SearchResult(String fileName,
+                            String fullFilePath,
+                            long? fileSizeBytes,
+                            DateTime? dateCreated,
+                            DateTime? dateLastAccess,
+                            DateTime? dateLastModified)
         {
             this.fileName = fileName;
             this.fullFilePath = fullFilePath;
+            this.fileSizeBytes = fileSizeBytes;
             this.dateCreated = dateCreated;
             this.dateLastAccess = dateLastAccess;
             this.dateLastModified = dateLastModified;
@@ -32,41 +40,43 @@ namespace FileScanner.SearchSummary
     public class SummaryGenerator: ISummaryGenerator
     {
         internal void Generate(IDocumentBuilder builder,
-                               string outputFilename,
+                               ReportOptions options,
                                string searchQuery,
                                IEnumerable<string> inputPaths,
                                IEnumerable<MatchingFile> searchResults)
         {
-            builder.AddReportHeader(DateTime.Now, searchQuery, inputPaths);
-            builder.AddSectionHeader("Summary");
-
-            builder.AddText(String.Format("search query: {0}", searchQuery));
-            builder.AddText(String.Format("total results: {0}", searchResults.Count()));
-            builder.AddText(String.Format("input paths:{0}\t{1}",
-                                          Environment.NewLine,
-                                          inputPaths.Aggregate("", (all, next) => all + Environment.NewLine + "\t" + next)));
+            builder.AddReportHeader(options.headerHasGenerationDate ? DateTime.Now : (DateTime?)null,
+                                    options.headerHasSearchQuery ? searchQuery : null,
+                                    options.headerHasInputPaths ? inputPaths : null);
 
             builder.AddSectionHeader("Search results");
             foreach (MatchingFile match in searchResults.OrderByDescending(info => info.accuracy))
             {
                 SearchResult result = new SearchResult();
-                result.fileName = match.fileInfo.Name;
-                result.fullFilePath = match.fileInfo.ToString();
-                result.dateCreated = match.fileInfo.CreationTime;
-                result.dateLastAccess = match.fileInfo.LastAccessTime;
-                result.dateLastModified = match.fileInfo.LastWriteTime;
+                result.fileName = options.resultHasFileName ? match.fileInfo.Name : null;
+                result.fullFilePath = options.resultHasFullFilePath ? match.fileInfo.ToString() : null;
+                result.fileSizeBytes = options.resultHasFileSize ? match.fileInfo.Length : (long?)null;
+                result.dateCreated = options.resultHasCreationTime ? match.fileInfo.CreationTime : (DateTime?)null;
+                result.dateLastAccess = options.resultHasLastAccessTime ? match.fileInfo.LastAccessTime : (DateTime?)null;
+                result.dateLastModified = options.resultHasLastModificationTime ? match.fileInfo.LastWriteTime : (DateTime?)null;
 
                 builder.AddSearchResult(result);
             }
 
-            builder.Save(outputFilename);
+            builder.AddReportFooter();
+            builder.Save(options.outputFilePath);
         }
 
         public void Generate(string searchQuery,
                              IEnumerable<string> inputPaths,
                              IEnumerable<MatchingFile> searchResults)
         {
-            Generate(new TxtDocumentBuilder(), "output.txt", searchQuery, inputPaths, searchResults);
+            SummaryOptionsForm form = new SummaryOptionsForm();
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Generate(new TxtDocumentBuilder(), form.Options, searchQuery, inputPaths, searchResults);
+            }
         }
     }
 }

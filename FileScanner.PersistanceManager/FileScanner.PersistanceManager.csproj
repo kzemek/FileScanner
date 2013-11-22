@@ -32,9 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\..\Program Files (x86)\SQLite.NET\bin\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,20 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\ISearchFile.cs" />
-    <Compile Include="Interfaces\ISQLDatabase.cs" />
-    <Compile Include="SQLiteDatabase.cs" />
-    <Compile Include="Interfaces\ISearch.cs" />
-    <Compile Include="HistoryMach.cs" />
-    <Compile Include="Interfaces\IPersistanceManager.cs" />
-    <Compile Include="PersistantceManager.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FileScanner.PatternMatching\FileScanner.PatternMatching.csproj">
-      <Project>{A2616891-1F0C-4FE9-BF55-FF2A1283E6B7}</Project>
-      <Name>FileScanner.PatternMatching</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

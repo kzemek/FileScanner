@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B6EF7651-0775-41CA-B86C-55446EDC36A3}</ProjectGuid>
+    <ProjectGuid>{3A35C124-1CC7-48E4-9814-CA86BFBCE85D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileScanner.PersistanceManagerTests1</RootNamespace>
-    <AssemblyName>FileScanner.PersistanceManagerTests1</AssemblyName>
+    <RootNamespace>FileScanner.FileParsing.Tests</RootNamespace>
+    <AssemblyName>FileScanner.FileParsing.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,12 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\..\..\Downloads\Moq.4.0.10827.Final\Moq.4.0.10827\NET35\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -49,19 +43,20 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise />
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="PersistanceManagerTests.cs" />
+    <Compile Include="FileParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FileScanner.PersistanceManager\FileScanner.PersistanceManager.csproj">
-      <Project>{A69354FF-4D15-4B39-894F-94F0CCB236BC}</Project>
-      <Name>FileScanner.PersistanceManager</Name>
+    <ProjectReference Include="..\FileScanner.FileParsing\FileScanner.FileParsing.csproj">
+      <Project>{aefbceb4-8b3b-4d2c-8515-2287aa34fbc3}</Project>
+      <Name>FileScanner.FileParsing</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

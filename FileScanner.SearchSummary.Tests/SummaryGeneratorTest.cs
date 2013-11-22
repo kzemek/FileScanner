@@ -11,31 +11,26 @@ namespace FileScanner.SearchSummary.Tests
     {
         MockFactory mockFactory;
         FileInfo emptyFileInfo;
+
+        string searchQuery;
+        string outputFilename;
+        List<String> inputPaths;
+        List<MatchingFile> matchingFiles;
         
         [TestInitialize]
         public void Setup()
         {
             mockFactory = new MockFactory();
-
             emptyFileInfo = new FileInfo("someTestFile.txt");
-        }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            emptyFileInfo.Delete();
-        }
-
-        [TestMethod]
-        public void TestSummaryGenerator_Internal_Generate_WithDocumentBuilder()
-        {
-            string searchQuery = "foo bar baz";
-            string outputFilename = "testOutput";
-            List<string> inputPaths = new List<string> {
+            searchQuery = "foo bar baz";
+            outputFilename = "testOutput";
+            inputPaths = new List<string> {
                 @"c:\some_folder",
                 @"c:\other_folder\file.txt"
             };
-            List<MatchingFile> matchingFiles = new List<MatchingFile>();
+
+            matchingFiles = new List<MatchingFile>();
             for (int i = 0; i < 5; ++i)
             {
                 MatchingFile file;
@@ -45,6 +40,17 @@ namespace FileScanner.SearchSummary.Tests
                 matchingFiles.Add(file);
             }
 
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            emptyFileInfo.Delete();
+        }
+
+        [TestMethod]
+        public void Internal_Generate()
+        {
             Mock<IDocumentBuilder> builder = mockFactory.CreateMock<IDocumentBuilder>();
             builder.Expects.One
                            .Method(b => b.AddReportHeader(new DateTime(), null, null))
@@ -55,16 +61,23 @@ namespace FileScanner.SearchSummary.Tests
             builder.Expects.Exactly(matchingFiles.Count)
                            .Method(b => b.AddSearchResult(new SearchResult()))
                            .WithAnyArguments();
-            builder.Expects.Any
-                           .Method(b => b.AddText(null))
-                           .WithAnyArguments();
+            builder.Expects.One
+                           .Method(b => b.AddReportFooter());
             builder.Expects.One
                            .Method(b => b.Save(null))
                            .With(outputFilename);
 
             SummaryGenerator generator = new SummaryGenerator();
+            ReportOptions options = new ReportOptions();
+            options.outputFilePath = outputFilename;
 
-            generator.Generate(builder.MockObject, outputFilename, searchQuery, inputPaths, matchingFiles);
+            generator.Generate(builder.MockObject, options, searchQuery, inputPaths, matchingFiles);
+        }
+
+        public void Manual_Generate()
+        {
+            SummaryGenerator generator = new SummaryGenerator();
+            generator.Generate(searchQuery, inputPaths, matchingFiles);
         }
     }
 }
