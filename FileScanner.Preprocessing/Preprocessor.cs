@@ -37,8 +37,8 @@ namespace FileScanner.Preprocessing
 
         public IEnumerable<String> GetVariations(String phrase)
         {
-            IEnumerable<String> result = new List<String>();
-            return result;
+            Inflector i = new Inflector();
+            return i.GetVariations(phrase);
         }
     }
 }
