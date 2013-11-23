@@ -59,28 +59,27 @@ namespace FileScanner.Preprocessing
         {
             StringBuilder mutablePhrase = new StringBuilder(phrase);
             bool changed = false;
-            foreach (var suffixMapping in suffixMappings)
+            foreach (var suffixMapping in suffixWithPalatilizingMappings)
             {
                 string suffix = suffixMapping.Key;
                 if (mutablePhrase.ToString().EndsWith(suffix))
                 {
                     string newSuffix = suffixMapping.Value;
                     replaceSuffix(mutablePhrase, suffix, newSuffix);
+                    removePalatization(mutablePhrase);
                     changed = true;
                     break;
                 }
             }
             if (!changed)
             {
-                foreach (var suffixMapping in suffixWithPalatilizingMappings)
+                foreach (var suffixMapping in suffixMappings)
                 {
                     string suffix = suffixMapping.Key;
                     if (mutablePhrase.ToString().EndsWith(suffix))
                     {
                         string newSuffix = suffixMapping.Value;
                         replaceSuffix(mutablePhrase, suffix, newSuffix);
-                        removePalatization(mutablePhrase);
-                        changed = true;
                         break;
                     }
                 }
