@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FileScanner.Preprocessing
 {
-    class PreprocessorFactory : IPreprocessorFactory
+    public class PreprocessorFactory : IPreprocessorFactory
     {
+        public PreprocessorFactory() { }
+
         /// <summary>
         /// Creates and returns a new Proprocessor instance.
         /// </summary>

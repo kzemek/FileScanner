@@ -11,10 +11,11 @@ namespace FileScanner.Preprocessing
         private Normalizer _normalizer;
         private Inflector _inflector;
 
-        [Obsolete("Please use PreprocessorFactory to get an instance od Preprocessor")]
+        [Obsolete("Please use PreprocessorFactory to get an instance of Preprocessor")]
         public Preprocessor()
         {
-
+            _normalizer = new Normalizer();
+            _inflector = new Inflector();
         }
 
         public Preprocessor(Normalizer normalizer, Inflector inflector)
