@@ -8,28 +8,32 @@ namespace FileScanner.Preprocessing
 {
     public class Preprocessor : IPreprocessor
     {
-        private Normalizer n;
-        private Inflector i;
+        private Normalizer _normalizer;
+        private Inflector _inflector;
+
+        [Obsolete("Please use PreprocessorFactory to get an instance od Preprocessor")]
         public Preprocessor()
         {
-            n = new Normalizer();
-            i = new Inflector();
+
         }
-        public Preprocessor(Normalizer _n, Inflector _i)
+
+        public Preprocessor(Normalizer normalizer, Inflector inflector)
         {
-            this.n = _n;
-            this.i = _i;
+            this._normalizer = normalizer;
+            this._inflector = inflector;
         }
+
         public String GetNormalizedPhrase(String phrase)
         {
-            return n.RemovePolishCharacters(phrase);
-
+            string phraseWithoutPolishCharacters = _normalizer.RemovePolishCharacters(phrase);
+            string basicForm = _normalizer.GetBasicForm(phraseWithoutPolishCharacters);
+            return basicForm;
         }
 
         public IEnumerable<String> GetVariations(String phrase)
         {
-            Inflector i = new Inflector();
-            return i.GetVariations(phrase);
+            IEnumerable<String> variations = _inflector.GetVariations(phrase);
+            return variations;
         }
     }
 }
