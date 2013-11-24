@@ -12,14 +12,14 @@ namespace FileScanner.PersistanceManager
     using System.Data;
     using System.Data.SQLite;
 
-    internal class SQLiteDatabase : ISQLDatabase
+    internal class SqLiteDatabase : ISQLDatabase
     {
         readonly String _dbConnection;
 
         /// <summary>
         ///     Default Constructor for SQLiteDatabase Class.
         /// </summary>
-        public SQLiteDatabase()
+        public SqLiteDatabase()
         {
             _dbConnection = "Data Source=PreviousSearches.s3db";
         }
@@ -28,7 +28,7 @@ namespace FileScanner.PersistanceManager
         ///     Single Param Constructor for specifying the DB file.
         /// </summary>
         /// <param name="inputFile">The File containing the DB</param>
-        public SQLiteDatabase(String inputFile)
+        public SqLiteDatabase(String inputFile)
         {
             _dbConnection = String.Format("Data Source={0}", inputFile);
         }
