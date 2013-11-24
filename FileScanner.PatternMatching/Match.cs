@@ -34,8 +34,16 @@ namespace FileScanner.PatternMatching
         
         public override bool Equals(object obj)
         {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
             var other = (Match)obj;
             return _index == other._index && _value == other._value;
+        }
+
+        public override int GetHashCode()
+        {
+            return _index.GetHashCode() * _value.GetHashCode();
         }
     }
 }
