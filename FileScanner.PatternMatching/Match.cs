@@ -27,18 +27,7 @@ namespace FileScanner.PatternMatching
         /// Gets the captured substring from the input string.
         /// </summary>
         public string Value { get { return _value; } }
-
-        /// <summary>
-        /// Returns a new Match object with the results for the next match,
-        /// starting at the position at which the last match ended (at the
-        /// character after the last matched character).
-        /// </summary>
-        /// <returns>Match object representing the next match.</returns>
-        public Match NextMatch()
-        {
-            return null;
-        }
-
+        
         public override bool Equals(object obj)
         {
             var other = (Match)obj;
