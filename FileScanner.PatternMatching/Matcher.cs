@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace FileScanner.PatternMatching
 {
+    /// <summary>
+    /// The Matcher class serves to find any of given patterns in a given text.
+    /// The Matcher's API is similar to that of
+    /// <see cref="System.Text.RegularExpressions.Regex"/>.
+    /// The available Matcher's method serve to check if a match exists,
+    /// return the first match found in text as a
+    /// <see cref="FileScanner.PatternMatching.Match"/> object, and return
+    /// a list of all of the matches found in text.
+    /// </summary>
     public class Matcher
     {
         private List<string> _patterns;
