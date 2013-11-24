@@ -83,7 +83,7 @@ namespace FileScanner
             var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
 
             var matcher = new Matcher(phrases);
-            var matches = matcher.Matches(streamReader.BaseStream);
+            var matches = matcher.Matches(streamReader);
 
             resultsTextBox.Text = matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
         }

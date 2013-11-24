@@ -9,12 +9,6 @@ namespace FileScanner.PatternMatching.Tests
     [TestFixture]
     public class MatcherTest
     {
-        private Stream StringToStream(String text)
-        {
-            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-            return new MemoryStream(encoding.GetBytes(text));
-        }
-
         [Test]
         [ExpectedException(typeof(ArgumentException),
             ExpectedMessage = "No patterns were given.")]
@@ -40,9 +34,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("TextWithNoMatches_TestCaseFactory")]
         public void IsMatch_GivenTextWithNoMatches_ReturnsFalse(Matcher m, String testString)
         {
-            Assert.IsFalse(m.IsMatch(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsFalse(m.IsMatch(stream));
+            Assert.IsFalse(m.IsMatch(new StringReader(testString)));
         }
 
         static object[] TextWithMatches_TestCaseFactory = 
@@ -61,25 +53,19 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("TextWithMatches_TestCaseFactory")]
         public void IsMatch_GivenTextWithMatches_ReturnsTrue(Matcher m, String testString, Match _expectedMatch)
         {
-            Assert.IsTrue(m.IsMatch(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(m.IsMatch(stream));
+            Assert.IsTrue(m.IsMatch(new StringReader(testString)));
         }
 
         [Test, TestCaseSource("TextWithNoMatches_TestCaseFactory")]
         public void Match_GivenTextWithNoMatches_ReturnsNull(Matcher m, String testString)
         {
-            Assert.IsNull(m.Match(testString));
-            using (var stream = StringToStream(testString))
-                Assert.IsNull(m.Match(stream));
+            Assert.IsNull(m.Match(new StringReader(testString)));
         }
 
         [Test, TestCaseSource("TextWithMatches_TestCaseFactory")]
         public void Match_GivenTextWithMatches_ReturnsMatch(Matcher m, String testString, Match expectedMatch)
         {
-            Assert.AreEqual(m.Match(testString), expectedMatch);
-            using (var stream = StringToStream(testString))
-                Assert.AreEqual(m.Match(stream), expectedMatch);
+            Assert.AreEqual(m.Match(new StringReader(testString)), expectedMatch);
         }
 
         [Test, TestCaseSource("TextWithNoMatches_TestCaseFactory")]
@@ -87,9 +73,7 @@ namespace FileScanner.PatternMatching.Tests
         {
             var expectedMatches = new List<Match>();
 
-            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(testString), expectedMatches));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
+            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(new StringReader(testString)), expectedMatches));
         }
 
         static object[] TextWithMatches_ResultAsList_TestCaseFactory = 
@@ -111,9 +95,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("TextWithMatches_ResultAsList_TestCaseFactory")]
         public void Matches_GivenTextWithMatches_ReturnsListWithMatches(Matcher m, String testString, List<Match> expectedMatches)
         {
-            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(testString), expectedMatches));
-            using (var stream = StringToStream(testString))
-                Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
+            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(new StringReader(testString)), expectedMatches));
         }
 
         [Test]
@@ -130,7 +112,7 @@ namespace FileScanner.PatternMatching.Tests
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
 
-                Assert.IsTrue(m.IsMatch(stream));
+                Assert.IsTrue(m.IsMatch(new StreamReader(stream)));
             }
         }
 
@@ -148,7 +130,7 @@ namespace FileScanner.PatternMatching.Tests
                 writer.Flush();
                 stream.Seek(0, SeekOrigin.Begin);
 
-                Assert.AreEqual(m.Match(stream), new Match(4, "p1"));
+                Assert.AreEqual(m.Match(new StreamReader(stream)), new Match(4, "p1"));
             }
         }
 
@@ -167,7 +149,7 @@ namespace FileScanner.PatternMatching.Tests
                 stream.Seek(0, SeekOrigin.Begin);
 
                 var expectedMatches = new List<Match> { new Match(4, "p1"), new Match(13, "p1"), new Match(17, "p1") };
-                Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(stream), expectedMatches));
+                Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(new StreamReader(stream)), expectedMatches));
             }
         }
 
@@ -176,7 +158,7 @@ namespace FileScanner.PatternMatching.Tests
         {
             var m = new Matcher("p1");
             var text = "12\r\np13456\r\n7p189p10";
-            Assert.IsTrue(m.IsMatch(text));
+            Assert.IsTrue(m.IsMatch(new StringReader(text)));
         }
 
         [Test]
@@ -184,7 +166,7 @@ namespace FileScanner.PatternMatching.Tests
         {
             var m = new Matcher("p1");
             var text = "12\r\np13456\r\n7p189p10";
-            Assert.AreEqual(m.Match(text), new Match(4, "p1"));
+            Assert.AreEqual(m.Match(new StringReader(text)), new Match(4, "p1"));
         }
 
         [Test]
@@ -193,7 +175,7 @@ namespace FileScanner.PatternMatching.Tests
             var m = new Matcher("p1");
             var text = "12\r\np13456\r\n7p189p10";
             var expectedMatches = new List<Match> { new Match(4, "p1"), new Match(13, "p1"), new Match(17, "p1") };
-            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(text), expectedMatches));
+            Assert.IsTrue(Enumerable.SequenceEqual(m.Matches(new StringReader(text)), expectedMatches));
         }
     }
 }
