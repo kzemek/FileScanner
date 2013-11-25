@@ -53,7 +53,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="PersistanceManagerTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -71,6 +70,9 @@
       <Project>{79e8173b-4cb0-4d58-96b4-d43270baa8a7}</Project>
       <Name>FileScanner.SearchSummary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
