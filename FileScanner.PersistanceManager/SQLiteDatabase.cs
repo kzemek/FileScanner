@@ -12,8 +12,14 @@ namespace FileScanner.PersistanceManager
     using System.Data;
     using System.Data.SQLite;
 
+    /// <summary>
+    /// Contains methods for interacting with an SQLite database.
+    /// Source: http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
+    /// </summary>
+
     internal class SqLiteDatabase : ISQLDatabase
     {
+        private const string DefaultDatabaseFile = "Data Source=PreviousSearches.s3db";
         readonly String _dbConnection;
 
         /// <summary>
@@ -21,16 +27,16 @@ namespace FileScanner.PersistanceManager
         /// </summary>
         public SqLiteDatabase()
         {
-            _dbConnection = "Data Source=PreviousSearches.s3db";
+            _dbConnection = DefaultDatabaseFile;
         }
 
         /// <summary>
         ///     Single Param Constructor for specifying the DB file.
         /// </summary>
-        /// <param name="inputFile">The File containing the DB</param>
-        public SqLiteDatabase(String inputFile)
+        /// <param name="databaseFile">The File containing the DB</param>
+        public SqLiteDatabase(String databaseFile)
         {
-            _dbConnection = String.Format("Data Source={0}", inputFile);
+            _dbConnection = String.Format("Data Source={0}", databaseFile);
         }
         
         /// <summary>
