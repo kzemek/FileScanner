@@ -31,6 +31,16 @@ namespace FileScanner.PersistanceManager
             _sqLiteDatabase.Insert("[searches]", searchData);
             var searchID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT last_insert_rowid()"));
 
+            foreach (string phrase in search.Phrases)
+            {
+                var phraseData = new Dictionary<string, string>
+                {
+                    {"search_id", searchID.ToString(CultureInfo.InvariantCulture)},
+                    {"phrase", phrase},
+                };
+                _sqLiteDatabase.Insert("[phrases]", phraseData);
+            }
+
             foreach (MatchingFile file in search)
             {
                 var fileData = new Dictionary<string, string>
