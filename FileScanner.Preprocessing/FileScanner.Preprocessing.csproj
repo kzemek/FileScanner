@@ -39,8 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inflector.cs" />
     <Compile Include="IPreprocessor.cs" />
+    <Compile Include="IPreprocessorFactory.cs" />
+    <Compile Include="Normalizer.cs" />
     <Compile Include="Preprocessor.cs" />
+    <Compile Include="PreprocessorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

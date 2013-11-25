@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace FileScanner.PatternMatching
 {
+    /// <summary>
+    /// The Matcher class serves to find any of given patterns in a given text.
+    /// The Matcher's API is similar to that of
+    /// <see cref="System.Text.RegularExpressions.Regex"/>.
+    /// The available Matcher's method serve to check if a match exists,
+    /// return the first match found in text as a
+    /// <see cref="FileScanner.PatternMatching.Match"/> object, and return
+    /// an object implementing IEnumerable containing all of the matches found
+    /// in text.
+    /// </summary>
     public class Matcher
     {
         private List<string> _patterns;
@@ -36,52 +46,32 @@ namespace FileScanner.PatternMatching
         /// <summary>
         /// Determines if any of given patterns is present in the text.
         /// </summary>
-        /// <param name="text">Text in which to search for patterns.</param>
+        /// <param name="reader">
+        /// TextReader object from which the text is read.
+        /// </param>
         /// <returns>
         /// True if one of patterns is found in the text, false otherwise.
         /// </returns>
-        public bool IsMatch(Stream text)
+        public bool IsMatch(TextReader reader)
         {
-            var reader = new StreamReader(text);
-            return IsMatch(reader.ReadToEnd());
-        }
-
-        /// <summary>
-        /// Determines if any of given patterns is present in the text.
-        /// </summary>
-        /// <param name="text">Text in which to search for patterns.</param>
-        /// <returns>
-        /// True if one of patterns is found in the text, false otherwise.
-        /// </returns>
-        public bool IsMatch(string text)
-        {
+            var text = reader.ReadToEnd();
             return _patterns.Any(p => text.Contains(p));
         }
 
         /// <summary>
         /// Find a single match of any of given patterns in the text.
         /// </summary>
-        /// <param name="text">Text in which to search for patterns.</param>
+        /// <param name="reader">
+        /// TextReader object from which the text is read.
+        /// </param>
         /// <returns>
         /// A <see cref="FileScanner.PatternMatching.Match"/> object
         /// representing the match.
         /// </returns>
-        public Match Match(Stream text)
+        public Match Match(TextReader reader)
         {
-            var reader = new StreamReader(text);
-            return Match(reader.ReadToEnd());
-        }
+            var text = reader.ReadToEnd();
 
-        /// <summary>
-        /// Find a single match of any of given patterns in the text.
-        /// </summary>
-        /// <param name="text">Text in which to search for patterns.</param>
-        /// <returns>
-        /// A <see cref="FileScanner.PatternMatching.Match"/> object
-        /// representing the match.
-        /// </returns>
-        public Match Match(string text)
-        {
             Match m = null;
 
             foreach (var p in _patterns)
@@ -98,29 +88,18 @@ namespace FileScanner.PatternMatching
         /// <summary>
         /// Find all matches of given patterns in the text.
         /// </summary>
-        /// <param name="text">Text in which to search for patterns.</param>
+        /// <param name="reader">
+        /// TextReader object from which the text is read.
+        /// </param>
         /// <returns>
         /// An iterable collection of
         /// <see cref="FileScanner.PatternMatching.Match"/> objects
         /// representing the matches.
         /// </returns>
-        public IEnumerable<Match> Matches(Stream text)
+        public IEnumerable<Match> Matches(TextReader reader)
         {
-            var reader = new StreamReader(text);
-            return Matches(reader.ReadToEnd());
-        }
+            var text = reader.ReadToEnd();
 
-        /// <summary>
-        /// Find all matches of given patterns in the text.
-        /// </summary>
-        /// <param name="text">Text in which to search for patterns.</param>
-        /// <returns>
-        /// An iterable collection of
-        /// <see cref="FileScanner.PatternMatching.Match"/> objects
-        /// representing the matches.
-        /// </returns>
-        public IEnumerable<Match> Matches(string text)
-        {
             var matches = new SortedList<int, string>();
             foreach (var p in _patterns)
             {

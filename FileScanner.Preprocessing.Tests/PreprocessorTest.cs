@@ -8,16 +8,24 @@ namespace FileScanner.Preprocessing.Tests
     [TestClass]
     public class PreprocessorTest
     {
+        private Preprocessor _preprocessor;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            PreprocessorFactory factory = new PreprocessorFactory();
+            _preprocessor = (Preprocessor) factory.GetIPreprocessor();
+        }
+
         [TestMethod]
         public void GetNormalizedPhraseTest()
         {
-            var preprocessor = new Preprocessor();
             var inputWords = new List<string> { "łódź", "gżegżółka", "mąka", "ćma", "ręka", "koń", "śmieć", "źdźbło" };
             var expectedWords = new List<string> { "lodz", "gzegzolka", "maka", "cma", "reka", "kon", "smiec", "zdzblo" };
             var outputWords = new List<string>();
             foreach (string inputWord in inputWords)
             {
-                string preprocessedWord = preprocessor.GetNormalizedPhrase(inputWord);
+                string preprocessedWord = _preprocessor.GetNormalizedPhrase(inputWord);
                 outputWords.Add(preprocessedWord);
             }
             Assert.IsTrue(Enumerable.SequenceEqual(expectedWords, outputWords));

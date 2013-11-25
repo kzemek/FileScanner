@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace FileScanner.PatternMatching
 {
+    /// <summary>
+    /// The Match object represents a single match of a pattern given, in text
+    /// given to a <see cref="FileScanner.PatternMatching.Matcher"/> method.
+    /// </summary>
     public class Match
     {
         private int _index;
@@ -27,22 +31,19 @@ namespace FileScanner.PatternMatching
         /// Gets the captured substring from the input string.
         /// </summary>
         public string Value { get { return _value; } }
-
-        /// <summary>
-        /// Returns a new Match object with the results for the next match,
-        /// starting at the position at which the last match ended (at the
-        /// character after the last matched character).
-        /// </summary>
-        /// <returns>Match object representing the next match.</returns>
-        public Match NextMatch()
-        {
-            return null;
-        }
-
+        
         public override bool Equals(object obj)
         {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
             var other = (Match)obj;
             return _index == other._index && _value == other._value;
+        }
+
+        public override int GetHashCode()
+        {
+            return _index.GetHashCode() * _value.GetHashCode();
         }
     }
 }

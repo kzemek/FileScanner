@@ -8,37 +8,33 @@ namespace FileScanner.Preprocessing
 {
     public class Preprocessor : IPreprocessor
     {
-        private static Dictionary<char, char> _mappings = new Dictionary<char, char>() {
-            {'ą', 'a'},
-            {'ć', 'c'},
-            {'ę', 'e'},
-            {'ł', 'l'},
-            {'ń', 'n'},
-            {'ó', 'o'},
-            {'ś', 's'},
-            {'ź', 'z'},
-            {'ż', 'z'}
-        };
+        private Normalizer _normalizer;
+        private Inflector _inflector;
+
+        [Obsolete("Please use PreprocessorFactory to get an instance of Preprocessor")]
+        public Preprocessor()
+        {
+            _normalizer = new Normalizer();
+            _inflector = new Inflector();
+        }
+
+        public Preprocessor(Normalizer normalizer, Inflector inflector)
+        {
+            this._normalizer = normalizer;
+            this._inflector = inflector;
+        }
 
         public String GetNormalizedPhrase(String phrase)
         {
-            char[] phraseCharacters = phrase.ToCharArray();
-            var normalizedCharacters = phraseCharacters.Select(GetNormalizedCharacter);
-            return new String(normalizedCharacters.ToArray());
-        }
-
-        private char GetNormalizedCharacter(char c)
-        {
-            if (_mappings.ContainsKey(c))
-                return _mappings[c];
-            else
-                return c;
+            string phraseWithoutPolishCharacters = _normalizer.RemovePolishCharacters(phrase);
+            string basicForm = _normalizer.GetBasicForm(phraseWithoutPolishCharacters);
+            return basicForm;
         }
 
         public IEnumerable<String> GetVariations(String phrase)
         {
-            IEnumerable<String> result = new List<String>();
-            return result;
+            IEnumerable<String> variations = _inflector.GetVariations(phrase);
+            return variations;
         }
     }
 }
