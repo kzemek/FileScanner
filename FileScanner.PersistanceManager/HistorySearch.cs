@@ -18,6 +18,7 @@ namespace FileScanner.PersistanceManager
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
         public int ProcessedFilesCount { get; private set; }
+        public IEnumerable<string> Phrases { get; private set; }
 
         public HistorySearch(DataRow row, ISQLDatabase database)
         {
@@ -25,6 +26,7 @@ namespace FileScanner.PersistanceManager
             EndTime = Convert.ToDateTime(row["endTime"]);
             ProcessedFilesCount = int.Parse(row["processedFilesCount"].ToString());
             _id = int.Parse(row["id"].ToString());
+            
             _database = database;
         }
 
@@ -48,7 +50,7 @@ namespace FileScanner.PersistanceManager
 
             int fileId = -1;
             var matches = new LinkedList<Match>();
-            DataRow row_= null;
+            DataRow row_ = null;
 
             foreach (DataRow row in _searchTable.Rows)
             {
@@ -59,16 +61,15 @@ namespace FileScanner.PersistanceManager
                     {
                         yield return new MatchingFile(row_, matches);
                     }
-                    row_ = row; 
+                    row_ = row;
 
                     matches = new LinkedList<Match>();
                     fileId = newFileId;
                 }
                 matches.AddLast(new Match(int.Parse(row["index"].ToString()), row["value"].ToString()));
             }
-            if(row_ != null)
-                yield return new MatchingFile(row_, matches);                 
-
+            if (row_ != null)
+                yield return new MatchingFile(row_, matches);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
