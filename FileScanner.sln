@@ -15,14 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary", "FileScanner.SearchSummary\FileScanner.SearchSummary.csproj", "{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PersistanceManagerTests", "FileScanner.PersistanceManagerTests1\FileScanner.PersistanceManagerTests.csproj", "{B6EF7651-0775-41CA-B86C-55446EDC36A3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PatternMatching.Tests", "FileScanner.PatternMatching.Tests\FileScanner.PatternMatching.Tests.csproj", "{5C8718B6-0D43-4E16-80ED-EE8C40EC5638}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A2616891-1F0C-4FE9-BF55-FF2A1283E6B7} = {A2616891-1F0C-4FE9-BF55-FF2A1283E6B7}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing.Tests", "FileScanner.Preprocessing.Tests\FileScanner.Preprocessing.Tests.csproj", "{7CC2A681-7C33-4766-A338-387356ECE08C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PersistanceManager.Tests", "FileScanner.PersistanceManagerTests1\FileScanner.PersistanceManager.Tests.csproj", "{B6EF7651-0775-41CA-B86C-55446EDC36A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary.Tests", "FileScanner.SearchSummary.Tests\FileScanner.SearchSummary.Tests.csproj", "{086265AB-095D-409C-A2F8-418C08D659D3}"
 EndProject
