@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using FileScanner.PersistanceManager.Interfaces;
 using Moq;
 using NUnit.Framework;
-using FileScanner.PatternMatching;
-using Match = FileScanner.PatternMatching.Match;
 
 namespace FileScanner.PersistanceManager.Tests
 {
