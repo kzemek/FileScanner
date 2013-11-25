@@ -59,9 +59,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileScanner.PatternMatching\FileScanner.PatternMatching.csproj">
+      <Project>{a2616891-1f0c-4fe9-bf55-ff2a1283e6b7}</Project>
+      <Name>FileScanner.PatternMatching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileScanner.PersistanceManager\FileScanner.PersistanceManager.csproj">
       <Project>{A69354FF-4D15-4B39-894F-94F0CCB236BC}</Project>
       <Name>FileScanner.PersistanceManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileScanner.SearchSummary\FileScanner.SearchSummary.csproj">
+      <Project>{79e8173b-4cb0-4d58-96b4-d43270baa8a7}</Project>
+      <Name>FileScanner.SearchSummary</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

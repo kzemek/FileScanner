@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using FileScanner.PatternMatching;
 
@@ -12,6 +13,10 @@ namespace FileScanner.PersistanceManager
             FullPath = fullPath;
             SizeInBytes = sizeInBytes;
             Matches = matches;
+        }
+
+        internal MatchingFile(DataRow row, IEnumerable<Match> matches): this(row["fileName"].ToString(), row["fullPath"].ToString(), long.Parse(row["sizeInBytes"].ToString()), matches)
+        {
         }
 
         public string FileName { get; private set; }
