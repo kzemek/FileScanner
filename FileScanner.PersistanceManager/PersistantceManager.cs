@@ -17,7 +17,7 @@ namespace FileScanner.PersistanceManager
 
         public PersistanceManager()
         {
-            _sqLiteDatabase = new SQLiteDatabase();
+            _sqLiteDatabase = new SqLiteDatabase();
         }
 
         public void SaveSearch(ISearch search)
