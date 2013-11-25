@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
 
@@ -11,30 +10,34 @@ namespace FileScanner.PersistanceManager
 {
     internal class HistorySearch : ISearch
     {
-        private readonly int _id;
         private readonly ISQLDatabase _database;
+        private readonly int _id;
+        private DataTable _phraseTable;
         private DataTable _searchTable;
-
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
-        public int ProcessedFilesCount { get; private set; }
-        public IEnumerable<string> Phrases { get; private set; }
 
         public HistorySearch(DataRow row, ISQLDatabase database)
         {
             StartTime = Convert.ToDateTime(row["startTime"]);
             EndTime = Convert.ToDateTime(row["endTime"]);
             ProcessedFilesCount = int.Parse(row["processedFilesCount"].ToString());
-            _id = int.Parse(row["id"].ToString());
-            
+            _id = int.Parse(row["search_id"].ToString());
             _database = database;
         }
 
-        public IEnumerable<String> GetPhrases()
-        {
-            var phraseTable = _database.GetDataTable("SELECT * FROM [phrases] WHERE [search_id] = " + _id);
+        public DateTime StartTime { get; private set; }
+        public DateTime EndTime { get; private set; }
+        public int ProcessedFilesCount { get; private set; }
 
-            return (from DataRow row in phraseTable.Rows select row["phraseText"].ToString());
+        public IEnumerable<string> Phrases
+        {
+            get
+            {
+                if (_phraseTable == null)
+                {
+                    _phraseTable = _database.GetDataTable("SELECT * FROM [phrases] WHERE [search_id] = " + _id);
+                }
+                return (from DataRow row in _phraseTable.Rows select row["phrase"].ToString());
+            }
         }
 
         public IEnumerator<MatchingFile> GetEnumerator()
@@ -48,28 +51,31 @@ namespace FileScanner.PersistanceManager
                                                       "    ORDER BY file_id");
             }
 
-            int fileId = -1;
+            int previousFileId = -1;
             var matches = new LinkedList<Match>();
-            DataRow row_ = null;
+            DataRow previousRow = null;
 
             foreach (DataRow row in _searchTable.Rows)
             {
                 int newFileId = int.Parse(row["file_id"].ToString());
-                if (fileId != newFileId)
+                if (previousFileId != newFileId)
                 {
-                    if (row_ != null)
+                    if (previousRow != null)
                     {
-                        yield return new MatchingFile(row_, matches);
+                        yield return new MatchingFile(previousRow, matches);
                     }
-                    row_ = row;
+                    previousRow = row;
 
                     matches = new LinkedList<Match>();
-                    fileId = newFileId;
+                    previousFileId = newFileId;
                 }
                 matches.AddLast(new Match(int.Parse(row["index"].ToString()), row["value"].ToString()));
             }
-            if (row_ != null)
-                yield return new MatchingFile(row_, matches);
+
+            if (previousRow != null)
+            {
+                yield return new MatchingFile(previousRow, matches);
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

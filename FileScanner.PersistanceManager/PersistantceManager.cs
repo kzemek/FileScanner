@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
 
@@ -69,14 +70,9 @@ namespace FileScanner.PersistanceManager
         public ICollection<ISearch> GetFullHistory()
         {
             var dataTable = _sqLiteDatabase.GetDataTable("SELECT * FROM [searches]");
-            var history = new List<ISearch>();
-
-            foreach (DataRow row in dataTable.Rows)
-            {
-                history.Add(new HistorySearch(row, _sqLiteDatabase));
-            }
-
-            return history;
+            return
+                (from DataRow row in dataTable.Rows select new HistorySearch(row, _sqLiteDatabase)).Cast<ISearch>()
+                    .ToList();
         }
     }
 }
