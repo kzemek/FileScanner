@@ -21,6 +21,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.FileParsing.Tests", "FileScanner.FileParsing.Tests\FileScanner.FileParsing.Tests.csproj", "{3A35C124-1CC7-48E4-9814-CA86BFBCE85D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PatternMatching.Tests", "FileScanner.PatternMatching.Tests\FileScanner.PatternMatching.Tests.csproj", "{5C8718B6-0D43-4E16-80ED-EE8C40EC5638}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A2616891-1F0C-4FE9-BF55-FF2A1283E6B7} = {A2616891-1F0C-4FE9-BF55-FF2A1283E6B7}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing.Tests", "FileScanner.Preprocessing.Tests\FileScanner.Preprocessing.Tests.csproj", "{7CC2A681-7C33-4766-A338-387356ECE08C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
