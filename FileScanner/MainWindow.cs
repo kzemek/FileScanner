@@ -78,10 +78,9 @@ namespace FileScanner
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            var streamReader = FileParser.ParseFile(searchFileTextBox.Text);
-            var preprocessor = new Preprocessor();
+            var streamReader = FileParser.ParseFile(searchFileTextBox.Text,ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
+            var preprocessor = new PreprocessorFactory().GetIPreprocessor();
             var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
-
             var matcher = new Matcher(phrases);
             var matches = matcher.Matches(streamReader);
 
