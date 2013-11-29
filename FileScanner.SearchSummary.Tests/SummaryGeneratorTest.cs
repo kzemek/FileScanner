@@ -11,6 +11,7 @@ namespace FileScanner.SearchSummary.Tests
     {
         MockFactory mockFactory;
         FileInfo emptyFileInfo;
+        bool emptyFileExisted;
 
         string searchQuery;
         string outputFilename;
@@ -22,6 +23,9 @@ namespace FileScanner.SearchSummary.Tests
         {
             mockFactory = new MockFactory();
             emptyFileInfo = new FileInfo("someTestFile.txt");
+            emptyFileExisted = emptyFileInfo.Exists;
+            if (!emptyFileExisted)
+                emptyFileInfo.Create();
 
             searchQuery = "foo bar baz";
             outputFilename = "testOutput";
@@ -35,6 +39,7 @@ namespace FileScanner.SearchSummary.Tests
             {
                 MatchingFile file;
                 file.fileInfo = emptyFileInfo;
+                file.fileReader = new StreamReader(new MemoryStream(0));
                 file.searchResults = new Dictionary<string, IEnumerable<int>>();
                 file.accuracy = (float)i;
                 matchingFiles.Add(file);
@@ -45,7 +50,8 @@ namespace FileScanner.SearchSummary.Tests
         [TestCleanup]
         public void Cleanup()
         {
-            emptyFileInfo.Delete();
+            if (!emptyFileExisted)
+                emptyFileInfo.Delete();
         }
 
         [TestMethod]
@@ -74,9 +80,16 @@ namespace FileScanner.SearchSummary.Tests
             generator.Generate(builder.MockObject, options, searchQuery, inputPaths, matchingFiles);
         }
 
+        /// <summary>
+        /// This test is not fully automatic - it requires pressing the "OK" button, so the
+        /// TestMethod annotation is commented out.
+        /// 
+        /// It is here to show how the SearchSummary module should be used by external modules.
+        /// </summary>
+        //[TestMethod]
         public void Manual_Generate()
         {
-            SummaryGenerator generator = new SummaryGenerator();
+            ISummaryGenerator generator = SummaryGeneratorFactory.Create();
             generator.Generate(searchQuery, inputPaths, matchingFiles);
         }
     }
