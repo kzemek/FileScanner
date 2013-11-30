@@ -9,7 +9,7 @@ namespace FileScanner.SearchSummary.Tests
     public class TxtDocumentBuilderTest
     {
 
-        TxtDocumentBuilder documentBuilder = new TxtDocumentBuilder();
+        TxtDocumentBuilder documentBuilder;
         
         [TestInitialize]
         public void Setup()
