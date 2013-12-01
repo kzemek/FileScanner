@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace FileScanner.SearchSummary
 {
+    public enum TextStyle {
+        Normal,
+        Bold
+    }
+
 	public interface IDocumentBuilder
 	{
         void AddReportHeader(DateTime? generationTime,
@@ -12,6 +17,8 @@ namespace FileScanner.SearchSummary
 
         void AddSectionHeader(string text);
         void AddSearchResult(SearchResult result);
+        void AddText(string text,
+                     TextStyle style = TextStyle.Normal);
 
         void Save(string filePath);
 	}
