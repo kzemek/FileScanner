@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,9 +35,18 @@ namespace FileScanner.PersistanceManager
         ///     Single Param Constructor for specifying the DB file.
         /// </summary>
         /// <param name="databaseFile">The File containing the DB</param>
+
         public SqLiteDatabase(String databaseFile)
         {
             _dbConnection = String.Format("Data Source={0}", databaseFile);
+            if (File.Exists(databaseFile))
+            {
+                SQLiteConnection.CreateFile(databaseFile);
+                StreamReader streamReader = new StreamReader("FileScanner.PersistanceManager/previousSearches.sql", Encoding.UTF8);
+                string databaseStructure = streamReader.ReadToEnd();
+                streamReader.Close();
+                this.ExecuteNonQuery(databaseStructure);
+            }
         }
         
         /// <summary>

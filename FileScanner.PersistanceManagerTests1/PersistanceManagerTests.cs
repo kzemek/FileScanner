@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using FileScanner.PersistanceManager.Interfaces;
 using Moq;
 using NUnit.Framework;
+using Match = FileScanner.PatternMatching.Match;
 
 namespace FileScanner.PersistanceManager.Tests
 {
@@ -15,7 +16,7 @@ namespace FileScanner.PersistanceManager.Tests
         {
             isqlDatabaseMock = new Mock<ISQLDatabase>();
 
-            Instace = new PersistanceManager(isqlDatabaseMock.Object);
+            Instace = new PersistanceManager();
         }
 
         private PersistanceManager Instace;
@@ -37,8 +38,8 @@ namespace FileScanner.PersistanceManager.Tests
         public void SaveDataTest()
         {
             var searchMock = new Mock<ISearch>();
-            var searchFile1Mock = new Mock<MatchingFile>();
-            var searchFile2Mock = new Mock<MatchingFile>();
+            var searchFile1Mock = new Mock<ChMatchingFile>();
+            var searchFile2Mock = new Mock<ChMatchingFile>();
             var matchMocksInFile1 = new List<Mock<PatternMatching.Match>> { new Mock<PatternMatching.Match>(), new Mock<PatternMatching.Match>() };
             var matchMocksInFile2 = new List<Mock<PatternMatching.Match>> { new Mock<PatternMatching.Match>(), new Mock<PatternMatching.Match>() };
 
@@ -55,10 +56,31 @@ namespace FileScanner.PersistanceManager.Tests
             searchFile2Mock.Setup(searchFile => searchFile.FullPath).Returns("path/file2.txt");
             searchFile2Mock.Setup(searchFile => searchFile.Matches).Returns(new List<PatternMatching.Match>() { matchMocksInFile2[0].Object, matchMocksInFile2[1].Object });
 
-            Instace.SaveSearch(searchMock.Object);
+            Instace.SaveSearch(searchMock.Object, "testOfPeristanceManager.s3db");
 
 
-            ICollection<ISearch> fullHistory = Instace.GetFullHistory();
+            //ICollection<ISearch> fullHistory = Instace.GetFullHistory();
+        }
+
+        public class ChMatchingFile : MatchingFile
+        {
+            public virtual new String FileName
+            {
+                get; set;
+            }
+
+            public virtual new String FullPath
+            {
+                get; set;
+            }
+
+            public virtual new List<PatternMatching.Match> Matches
+            {
+                get; set;
+            }
+            public ChMatchingFile() : base(null, null, 0, null)
+            {
+            }
         }
     }
 }
