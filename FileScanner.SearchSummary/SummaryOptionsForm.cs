@@ -25,6 +25,9 @@ namespace FileScanner.SearchSummary
         public bool resultHasLastModificationTime;
 
         public string outputFilePath;
+
+        public int contextSizeChars;
+        public int maxEntries;
     }
 
     public partial class SummaryOptionsForm : Form
@@ -46,6 +49,8 @@ namespace FileScanner.SearchSummary
                 options.resultHasLastModificationTime = ResultLastModificationTime.Checked;
 
                 options.outputFilePath = OutputFilePath.Text;
+                options.contextSizeChars = 10;
+                options.maxEntries = -1;
 
                 return options;
             }
