@@ -13,7 +13,7 @@ namespace FileScanner.Preprocessing.Tests
         [TestInitialize]
         public void Initialize()
         {
-            PreprocessorFactory factory = new PreprocessorFactory();
+            IPreprocessorFactory factory = new PreprocessorFactory();
             _preprocessor = (Preprocessor) factory.GetIPreprocessor();
         }
 
