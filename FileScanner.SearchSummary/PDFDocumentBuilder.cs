@@ -2,61 +2,147 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
+using System.Text;
+
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.RtfRendering;
+using MigraDoc.Rendering;
+
+
 
 namespace FileScanner.SearchSummary
 {
     public class PDFDocumentBuilder : IDocumentBuilder
     {
-        PdfDocument document = new PdfDocument();
-        XGraphics gfx;
-        PdfPage page;
-        XFont font = new XFont("Verdana", 20, XFontStyle.BoldItalic);
-            
+        Document document;
+        PdfDocumentRenderer pdfRenderer;
+        Section section;
+        
+        int counter = 0 ; 
+
+        public static void DefineStyles(Document document)
+        {
+            Style style = document.Styles["Normal"];
+            style.Font.Name = "Times New Roman";
+
+            style = document.Styles["Heading1"];
+            style.Font.Size = 18;
+            style.Font.Bold = true;
+            style.ParagraphFormat.PageBreakBefore = true;
+            style.ParagraphFormat.SpaceAfter = 6;
+            style.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+
+            style = document.Styles["Heading2"];
+            style.Font.Size = 12;
+            style.Font.Bold = true;
+            style.ParagraphFormat.PageBreakBefore = false;
+            style.ParagraphFormat.SpaceBefore = 6;
+            style.ParagraphFormat.SpaceAfter = 6;
+
+            style = document.Styles["Heading3"];
+            style.Font.Size = 10;
+            style.Font.Bold = true;
+            style.Font.Italic = true;
+            style.ParagraphFormat.SpaceBefore = 6;
+            style.ParagraphFormat.SpaceAfter = 3;
+
+            style = document.Styles[StyleNames.Header];
+            style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
+
+            style = document.Styles[StyleNames.Footer];
+            style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
+            style.Document.FootnoteLocation = FootnoteLocation.BottomOfPage;
+
+
+        }
+
         public PDFDocumentBuilder()
         {
-            page = document.AddPage();
-            gfx = XGraphics.FromPdfPage(page);
-            document.Info.Title = "FileScanner Raport";
+            document = new Document();
+            const bool unicode = true;
+            pdfRenderer = new PdfDocumentRenderer(unicode);
+            document.Info.Title = "Raport z wyszukiwania";
+            document.Info.Author = "Zajęcia projektowe z TO grupa 9:30 Wtorek";
+            DefineStyles(document);
+            pdfRenderer.Document = document;
+            section = document.AddSection();
         }
 
         public void AddReportHeader(DateTime? generationTime, string userQuery, IEnumerable<string> searchedLocations)
         {
-            gfx.DrawString("Raport z wyszukiwania", font, XBrushes.Black,
-                new XRect(0, 0, page.Width, page.Height/9),
-                XStringFormats.Center);
-            var font2 = new XFont("Verdana", 10, XFontStyle.BoldItalic);
-            String str = "Data generacji: " + generationTime.Value.ToShortDateString();
-            gfx.DrawString(str, font2, XBrushes.Black,
-                new XRect(410, 20, 0, 0),
-                XStringFormats.Default);
-            var str2 = "Wyszukiwane frazy: " + userQuery;
-            gfx.DrawString(str2, font2, XBrushes.Black,
-                new XRect(30, 100, 0 , 0),
-                XStringFormats.Default);
+            Paragraph paragraph = section.AddParagraph();
+            paragraph.Style = "Heading1";
+            FormattedText ft = paragraph.AddFormattedText("Raport z wyszukiwania",TextFormat.Bold);
+            
+            if (generationTime.HasValue)
+            {
+                paragraph = section.AddParagraph("\nRaport wygenerowano dnia: " + generationTime.Value.ToShortDateString());
+            }
+
+            if (userQuery != null)
+            {
+                paragraph = section.AddParagraph("\nWyszukiwane frazy:    " + userQuery);
+            }
+
+            if (searchedLocations != null)
+            {
+                paragraph = section.AddParagraph("\nPrzeszukiwane lokalizacje:");
+                foreach (String location in searchedLocations)
+                {
+                    paragraph = section.AddParagraph("\t" + location);
+                }
+            }
+            section.AddParagraph("\n\n\n");
+            paragraph.Style = "Normal";
+
         }
 
         public void AddReportFooter()
         {
-            throw new NotImplementedException();
+            Paragraph paragraph = section.Footers.Primary.AddParagraph();
+            paragraph.AddText("Technologie Obiektowe II\n" + "Grupa Wtorek 9:30\n" + "Akademia Gorniczo Hutnicza\n");
+            paragraph.Format.Font.Size = 9;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
         }
 
         public void AddSectionHeader(string text)
         {
-            throw new NotImplementedException();
+            counter++;
+            this.section.AddParagraph("Plik numer " + counter + "\n");
         }
 
         public void AddSearchResult(SearchResult result)
         {
-            throw new NotImplementedException();
+            AddSectionHeader("");
+            String content = "";
+            if (!result.Equals(null))
+            {
+                content += "\n";
+                content += Append("Nazwa:\t\t", result.fileName);
+                content += Append("Ścieżka:\t\t", result.fullFilePath);
+                content += Append("Rozmiar (bajty):\t", result.fileSizeBytes);
+                content += Append("Data utworzenia:\t", result.dateCreated);
+                content += Append("Ostatni dost.:\t", result.dateLastAccess);
+                content += Append("Ostatnia mod.:\t", result.dateLastModified);
+                content += "\n";
+            }
+            section.AddParagraph(content);
         }
+
+        private String Append(String prefix, Object field)
+        {
+            if (field != null)
+            {
+                return  prefix + field.ToString() + "\n";
+            }
+            return null;
+        }
+
 
         public void Save(string filePath)
         {
-            document.Save(filePath);
+            pdfRenderer.RenderDocument();
+            pdfRenderer.PdfDocument.Save(filePath);
             Process.Start(filePath);
         }
     }
