@@ -20,14 +20,14 @@ namespace FileScanner.PersistanceManager
         {
             StartTime = Convert.ToDateTime(row["startTime"]);
             EndTime = Convert.ToDateTime(row["endTime"]);
-            ProcessedFilesCount = int.Parse(row["processedFilesCount"].ToString());
+            ProcessedFilesCount = uint.Parse(row["processedFilesCount"].ToString());
             _id = int.Parse(row["search_id"].ToString());
             _database = database;
         }
 
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
-        public int ProcessedFilesCount { get; private set; }
+        public uint ProcessedFilesCount { get; private set; }
 
         public IEnumerable<string> Phrases
         {
