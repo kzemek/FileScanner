@@ -242,15 +242,15 @@ namespace FileScanner.SearchSummary
                     {
                         charsRead = reader.Read(textBuf, 0, (int)(pair.position - lastEnd));
                         lastEnd += charsRead;
-                        builder.AddText(new string(textBuf, 0, charsRead));
+                        builder.AddContextText(new string(textBuf, 0, charsRead));
                     }
                     charsRead = (int)reader.Read(textBuf, 0, pair.text.Length);
                     lastEnd += charsRead;
-                    builder.AddText(new string(textBuf, 0, charsRead), TextStyle.Bold);
+                    builder.AddContextText(new string(textBuf, 0, charsRead), TextStyle.Bold);
                 }
 
                 charsRead = reader.Read(textBuf, 0, (int)Math.Max(0, group.endPosition - lastEnd));
-                builder.AddText(new string(textBuf, 0, charsRead));
+                builder.AddContextText(new string(textBuf, 0, charsRead));
             }
         }
 

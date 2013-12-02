@@ -5,8 +5,8 @@ using System.IO;
 using System.Text;
 
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.RtfRendering;
 using MigraDoc.Rendering;
+using MigraDoc.RtfRendering;
 
 
 
@@ -17,7 +17,8 @@ namespace FileScanner.SearchSummary
         Document document;
         PdfDocumentRenderer pdfRenderer;
         Section section;
-        
+        Paragraph contextParagraph;
+
         int counter = 0 ; 
 
         private static void DefineStyles(Document document)
@@ -52,8 +53,6 @@ namespace FileScanner.SearchSummary
             style = document.Styles[StyleNames.Footer];
             style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
             style.Document.FootnoteLocation = FootnoteLocation.BottomOfPage;
-
-
         }
 
         public PDFDocumentBuilder()
@@ -146,7 +145,25 @@ namespace FileScanner.SearchSummary
 
         public void AddText(string text, TextStyle style = TextStyle.Normal)
         {
-            throw new NotImplementedException();
+            if(style==TextStyle.Bold)
+            {
+            }
+            contextParagraph.AddText(text);
+
+        }
+
+        public void BeginContextBlock()
+        {
+            contextParagraph = section.AddParagraph();
+        }
+        
+        public void EndContextBlock()
+        {
+            contextParagraph = null;
+        }
+
+        public void AddContextText(string text, TextStyle style = TextStyle.Normal)
+        {
         }
     }
 }
