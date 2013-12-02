@@ -17,8 +17,11 @@ namespace FileScanner.SearchSummary
 
         void AddSectionHeader(string text);
         void AddSearchResult(SearchResult result);
-        void AddText(string text,
-                     TextStyle style = TextStyle.Normal);
+
+        void BeginContextBlock();
+        void EndContextBlock();
+        void AddContextText(string text,
+                            TextStyle style = TextStyle.Normal);
 
         void Save(string filePath);
 	}
