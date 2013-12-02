@@ -145,5 +145,11 @@ namespace FileScanner.SearchSummary
             pdfRenderer.PdfDocument.Save(filePath);
             Process.Start(filePath);
         }
+
+
+        public void AddText(string text, TextStyle style = TextStyle.Normal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
