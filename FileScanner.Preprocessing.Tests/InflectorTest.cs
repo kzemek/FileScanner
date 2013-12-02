@@ -13,30 +13,28 @@ namespace FileScanner.Preprocessing.Tests
     public class InflectorTest
     {
         private static List<string> getVariationsInstance = new List<string> {
-            "łódź", "gżegżółka", "mąka", "ćma", "ręka", "koń", "śmieć", "źdźbło"
+            //"maka", "kon", "oko", "monitor", "pies", "mysz", "zeglarz", "drzewo", "czlowiek"
+          "sadza"
         };
-        private static List<string> getVariationsExpected = new List<List<string>> {
-            "lodz", "gzegzolka", "maka", "cma", "reka", "kon", "smiec", "zdzblo"
-        };
-        private static List<string> getVariationsInstance = new List<string> {
-            "maka", "kon", "oko", "monitor", "pies", "mysz", "zeglarz", "drzewo", "czlowiek"
-        };
-        private static List<string> getVariationsExpected = new List<HashSet<string>> {
-            {"maka", "maki", "mace"}, //bez wołacza, bez liczby mnogiej
-            {"kon", "konia", "koniowi", "koniem", "koniu"},
-            {"oko", "oka", "oku", "okiem"},
-            {"monitor", "monitora", "monitorowi", "monitorem", "monitorze"},
-            {"pies", "psa", "psu", "psem", "psie"},
-            {"mysz", "myszy", "mysza"},
-            {"zeglarz", "zeglarza", "zeglarzowi", "zeglarzem", "zeglarzu"},
-            {"drzewo", "drzewa", "drzewu", "drzewem", "drzewie"},
-            {"czlowiek", "czlowieka", "czlowiekowi", "czlowieka", "czlowiekiem", "czlowieku"},
-            {"kot", "kota", "kotu", "kota", "kotem", "kocie"},
-            {"ziemia", "ziemi", "ziemi", "ziemie", "ziemia", "ziemi"},
-            {"pogoda", "pogody", "pogodzie", "pogode", "pogoda", "pogodzie"}
-            {"droga", "drogi", "drodze", "droge", "droga", "drodze"}
-            {"stajnia", "stajni", "stajni", "stajnie", "stajni"}//r. żeński, grupa I
-            {"sadza", "sadzy", "sadzy", "sadze", "szadza", "sadzy"} //r. żeński, grupa II
+        private static List<HashSet<string>> getVariationsExpected = new List<HashSet<string>> {
+            //new HashSet<string>(){"maka", "maki", "mace"}, //bez wołacza, bez liczby mnogiej
+            //new HashSet<string>(){"kon", "konia", "koniowi", "koniem", "koniu"},
+            //new HashSet<string>(){"oko", "oka", "oku", "okiem"},
+            //new HashSet<string>(){"monitor", "monitora", "monitorowi", "monitorem", "monitorze"},
+            //new HashSet<string>(){"pies", "psa", "psu", "psem", "psie"},
+            //new HashSet<string>(){"mysz", "myszy", "mysza"},
+            //new HashSet<string>(){"zeglarz", "zeglarza", "zeglarzowi", "zeglarzem", "zeglarzu"},
+            //new HashSet<string>(){"drzewo", "drzewa", "drzewu", "drzewem", "drzewie"},
+            //new HashSet<string>(){"czlowiek", "czlowieka", "czlowiekowi", "czlowieka", "czlowiekiem", "czlowieku"},
+            //new HashSet<string>(){"kot", "kota", "kotu", "kota", "kotem", "kocie"},
+            //new HashSet<string>(){"ziemia", "ziemi", "ziemi", "ziemie", "ziemia", "ziemi"},
+            //new HashSet<string>(){"pogoda", "pogody", "pogodzie", "pogode", "pogoda", "pogodzie"},
+            //new HashSet<string>(){"droga", "drogi", "drodze", "droge", "droga", "drodze"},
+            //new HashSet<string>(){"stajnia", "stajni", "stajni", "stajnie", "stajni"},//r. żeński, grupa I
+            new HashSet<string>(){"sadza", "sadzy", "sadzy", "sadzę", "sadzą", "sadzy", "sadzo"}, //r. żeński, grupa II
+            //new HashSet<string>(){"kurz", "kurzu", "kurzowi", "kurz", "kurzem", "kurzu", "kurzu"}
+            //new HashSet<string>(){"krol","krola","krolowi","krola","krolem","krolu","krolu"}
+            //new HashSet<string>(){"grosz","grosza","groszowi","grosz","groszem","groszu","groszu"}
         };
 
         private Inflector inflector;
@@ -68,16 +66,17 @@ namespace FileScanner.Preprocessing.Tests
         [TestMethod]
         public void TestGetVariations()
         {
-            var inputWords = removePolishCharactersInstance;
-            var expectedWords = removePolishCharactersExpected;
+            var inputWords = getVariationsInstance;
+            var expectedWords = getVariationsExpected;
             var outputWords = new List<string>();
-            foreach (string inputWord in inputWords)
+            for (int i=0; i<inputWords.Count;++i)
             {
-                string preprocessedWord = _normalizer.RemovePolishCharacters(inputWord);
-                outputWords.Add(preprocessedWord);
+                var inputWord = inputWords[i];
+                HashSet<string> variations = (HashSet<string>) inflector.GetVariations(inputWord);
+                Console.Write(string.Join(" ",variations));
+                Assert.IsTrue(variations.SetEquals(getVariationsExpected[i]));
             }
 
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedWords, outputWords));
         }
     }
 }
