@@ -117,11 +117,9 @@ namespace FileScanner.PersistanceManager
         /// <param name="tableName">The table to update.</param>
         /// <param name="data">A dictionary containing Column names and their new values.</param>
         /// <param name="where">The where clause for the update statement.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool Update(String tableName, Dictionary<String, String> data, String where)
+        public void Update(String tableName, Dictionary<String, String> data, String where)
         {
             String vals = "";
-            Boolean returnCode = true;
             if (data.Count >= 1)
             {
                 foreach (KeyValuePair<String, String> val in data)
@@ -130,15 +128,7 @@ namespace FileScanner.PersistanceManager
                 }
                 vals = vals.Substring(0, vals.Length - 1);
             }
-            try
-            {
-                this.ExecuteNonQuery(String.Format("update {0} set {1} where {2};", tableName, vals, where));
-            }
-            catch
-            {
-                returnCode = false;
-            }
-            return returnCode;
+            this.ExecuteNonQuery(String.Format("update {0} set {1} where {2};", tableName, vals, where));
         }
 
         /// <summary>
@@ -146,19 +136,9 @@ namespace FileScanner.PersistanceManager
         /// </summary>
         /// <param name="tableName">The table from which to delete.</param>
         /// <param name="where">The where clause for the delete.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool Delete(String tableName, String where)
+        public void Delete(String tableName, String where)
         {
-            Boolean returnCode = true;
-            try
-            {
-                this.ExecuteNonQuery(String.Format("delete from {0} where {1};", tableName, where));
-            }
-            catch (Exception fail)
-            {
-                returnCode = false;
-            }
-            return returnCode;
+            ExecuteNonQuery(String.Format("delete from {0} where {1};", tableName, where));
         }
 
         /// <summary>
@@ -166,12 +146,10 @@ namespace FileScanner.PersistanceManager
         /// </summary>
         /// <param name="tableName">The table into which we insert the data.</param>
         /// <param name="data">A dictionary containing the column names and data for the insert.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool Insert(String tableName, Dictionary<String, String> data)
+        public void Insert(String tableName, Dictionary<String, String> data)
         {
             String columns = "";
             String values = "";
-            Boolean returnCode = true;
             foreach (KeyValuePair<String, String> val in data)
             {
                 columns += String.Format(" {0},", val.Key.ToString());
@@ -179,56 +157,28 @@ namespace FileScanner.PersistanceManager
             }
             columns = columns.Substring(0, columns.Length - 1);
             values = values.Substring(0, values.Length - 1);
-            try
-            {
-                this.ExecuteNonQuery(String.Format("insert into {0}({1}) values({2});", tableName, columns, values));
-            }
-            catch (Exception fail)
-            {
-                returnCode = false;
-            }
-            return returnCode;
+            ExecuteNonQuery(String.Format("insert into {0}({1}) values({2});", tableName, columns, values));
         }
 
         /// <summary>
         ///     Allows the programmer to easily delete all data from the DB.
         /// </summary>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool ClearDB()
+        public void ClearDB()
         {
-            DataTable tables;
-            try
-            {
-                tables = this.GetDataTable("select NAME from SQLITE_MASTER where type='table' order by NAME;");
+            DataTable tables = this.GetDataTable("select NAME from SQLITE_MASTER where type='table' order by NAME;");
                 foreach (DataRow table in tables.Rows)
                 {
                     this.ClearTable(table["NAME"].ToString());
                 }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         /// <summary>
         ///     Allows the user to easily clear all data from a specific table.
         /// </summary>
         /// <param name="table">The name of the table to clear.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool ClearTable(String table)
+        public void ClearTable(String table)
         {
-            try
-            {
-
-                this.ExecuteNonQuery(String.Format("delete from {0};", table));
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            ExecuteNonQuery(String.Format("delete from {0};", table));
         }
     }
 
