@@ -37,15 +37,28 @@ namespace FileScanner.SearchSummary
             style.Font.Size = 12;
             style.Font.Bold = true;
             style.ParagraphFormat.PageBreakBefore = false;
-            style.ParagraphFormat.SpaceBefore = 6;
-            style.ParagraphFormat.SpaceAfter = 6;
+            style.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+            style.ParagraphFormat.SpaceBefore = 3;
+            style.ParagraphFormat.SpaceAfter = 3;
 
             style = document.Styles["Heading3"];
             style.Font.Size = 10;
             style.Font.Bold = true;
+            style.ParagraphFormat.SpaceBefore = 2;
+            style.ParagraphFormat.SpaceAfter = 2;
+
+            style.Font.Bold = true;
+            document.Styles.AddStyle("Bold", "Normal");
+            style = document.Styles["Bold"];
+            style.Font.Bold = true;
             style.Font.Italic = true;
-            style.ParagraphFormat.SpaceBefore = 6;
-            style.ParagraphFormat.SpaceAfter = 3;
+            style.Font.Color = Colors.MediumVioletRed;
+
+            style = document.Styles.AddStyle("TextBox", "Normal");
+            style.ParagraphFormat.Borders.Width = 1.5;
+            style.ParagraphFormat.Borders.Distance = "3pt";
+            style.ParagraphFormat.Shading.Color = Colors.SkyBlue;
+            style.ParagraphFormat.KeepTogether = true;
 
             style = document.Styles[StyleNames.Header];
             style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
@@ -71,27 +84,34 @@ namespace FileScanner.SearchSummary
         {
             Paragraph paragraph = section.AddParagraph();
             paragraph.Style = "Heading1";
-            FormattedText ft = paragraph.AddFormattedText("Raport z wyszukiwania",TextFormat.Bold);
+            paragraph.AddText("Raport z wyszukiwania");
+
+            paragraph = section.AddParagraph();
+            paragraph.Style = "Heading2";
+            paragraph.AddText("\nGłówne informacje o wyszukiwaniu\n");
             
             if (generationTime.HasValue)
             {
-                paragraph = section.AddParagraph("\nRaport wygenerowano dnia: " + generationTime.Value.ToShortDateString());
+                paragraph = section.AddParagraph("Raport wygenerowano dnia: " + generationTime.Value.ToShortDateString());
+                paragraph.Style = "Heading3";
             }
 
             if (userQuery != null)
             {
-                paragraph = section.AddParagraph("\nWyszukiwane frazy:    " + userQuery);
+                paragraph = section.AddParagraph("Wyszukiwane frazy:    " + userQuery);
+                paragraph.Style = "Heading3";
             }
 
             if (searchedLocations != null)
             {
-                paragraph = section.AddParagraph("\nPrzeszukiwane lokalizacje:");
+                paragraph = section.AddParagraph("Przeszukiwane lokalizacje:");
+                paragraph.Style = "Heading3";
                 foreach (String location in searchedLocations)
                 {
                     paragraph = section.AddParagraph("\t" + location);
                 }
             }
-            section.AddParagraph("\n\n\n");
+            section.AddParagraph("\n\n");
             paragraph.Style = "Normal";
 
         }
@@ -107,17 +127,17 @@ namespace FileScanner.SearchSummary
         public void AddSectionHeader(string text)
         {
             counter++;
-            this.section.AddParagraph("Plik numer " + counter + "\n");
+            Paragraph paragraph = section.AddParagraph(text+"\n");
+            paragraph.Style = "Heading2";
         }
 
         public void AddSearchResult(SearchResult result)
         {
-            AddSectionHeader("");
+            AddSectionHeader(result.fileName);
             String content = "";
             if (!result.Equals(null))
             {
                 content += "\n";
-                content += Append("Nazwa:\t\t", result.fileName);
                 content += Append("Ścieżka:\t\t", result.fullFilePath);
                 content += Append("Rozmiar (bajty):\t", result.fileSizeBytes);
                 content += Append("Data utworzenia:\t", result.dateCreated);
@@ -143,27 +163,31 @@ namespace FileScanner.SearchSummary
             pdfRenderer.PdfDocument.Save(filePath);
         }
 
-        public void AddText(string text, TextStyle style = TextStyle.Normal)
+        public void AddContextText(string text, TextStyle style = TextStyle.Normal)
         {
-            if(style==TextStyle.Bold)
+             
+            if (style == TextStyle.Bold)
             {
+                contextParagraph.AddFormattedText(text, document.Styles["Bold"].Font);
             }
-            contextParagraph.AddText(text);
+            else
+            {
+                contextParagraph.AddText(text);
+            }
 
         }
 
         public void BeginContextBlock()
         {
+            section.AddParagraph("Kontekst:\n\n");
             contextParagraph = section.AddParagraph();
+            contextParagraph.Style = "TextBox";
         }
         
         public void EndContextBlock()
         {
+            section.AddParagraph("\n\n");
             contextParagraph = null;
-        }
-
-        public void AddContextText(string text, TextStyle style = TextStyle.Normal)
-        {
         }
     }
 }
