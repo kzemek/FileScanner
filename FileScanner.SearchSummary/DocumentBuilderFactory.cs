@@ -12,8 +12,8 @@ namespace FileScanner.SearchSummary
         private static IDictionary<string, Type> SUPPORTED_FORMATS =
                 new ReadOnlyDictionary<string, Type>(
                     new Dictionary<string, Type> {
-                        { "pdf", typeof(PDFDocumentBuilder) },
-                        { "txt", typeof(TxtDocumentBuilder) }
+                        { ".pdf", typeof(PDFDocumentBuilder) },
+                        { ".txt", typeof(TxtDocumentBuilder) }
                     });
 
         public static IEnumerable<string> GetSupportedFormats()
@@ -21,8 +21,15 @@ namespace FileScanner.SearchSummary
             return SUPPORTED_FORMATS.Select(keyVal => keyVal.Key);
         }
 
+        public static string GetDefaultFormat()
+        {
+            return SUPPORTED_FORMATS.First().Key;
+        }
+
         public static IDocumentBuilder Create(string type)
         {
+            type = type.ToLower();
+
             if (!SUPPORTED_FORMATS.ContainsKey(type))
                 throw new ArgumentException("Unsupported file format: " + type);
 

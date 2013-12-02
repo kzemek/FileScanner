@@ -17,6 +17,15 @@ namespace FileScanner.SearchSummary.Tests
         }
 
         [TestMethod]
+        public void Create_ValidFormat_InvalidCase()
+        {
+            IEnumerable<string> supportedFormats = DocumentBuilderFactory.GetSupportedFormats();
+
+            foreach (string format in supportedFormats)
+                Assert.IsNotNull(DocumentBuilderFactory.Create(format.ToUpper()));
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_InvalidFormat()
         {

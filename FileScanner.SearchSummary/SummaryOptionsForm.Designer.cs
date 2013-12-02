@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ResultFileNameCheckbox = new System.Windows.Forms.CheckBox();
             this.ResultCreationTimeCheckbox = new System.Windows.Forms.CheckBox();
             this.ResultAccessTimeCheckbox = new System.Windows.Forms.CheckBox();
             this.ResultFileSizeCheckbox = new System.Windows.Forms.CheckBox();
@@ -37,6 +36,11 @@
             this.HeaderGenerationDateCheckbox = new System.Windows.Forms.CheckBox();
             this.HeaderInpuPathsCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.MaxEntries = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ContextSizeCharacters = new System.Windows.Forms.NumericUpDown();
+            this.ResultContext = new System.Windows.Forms.CheckBox();
             this.ResultLastModificationTime = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.SelectFileButton = new System.Windows.Forms.Button();
@@ -44,33 +48,16 @@
             this.OKButton = new System.Windows.Forms.Button();
             this.CancelReportButton = new System.Windows.Forms.Button();
             this.OutputFilePathLabel = new System.Windows.Forms.Label();
-            this.ResultContext = new System.Windows.Forms.CheckBox();
-            this.ContextSizeCharacters = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.MaxEntries = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ContextSizeCharacters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxEntries)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ContextSizeCharacters)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ResultFileNameCheckbox
-            // 
-            this.ResultFileNameCheckbox.AutoSize = true;
-            this.ResultFileNameCheckbox.Checked = true;
-            this.ResultFileNameCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ResultFileNameCheckbox.Location = new System.Drawing.Point(6, 42);
-            this.ResultFileNameCheckbox.Name = "ResultFileNameCheckbox";
-            this.ResultFileNameCheckbox.Size = new System.Drawing.Size(71, 17);
-            this.ResultFileNameCheckbox.TabIndex = 0;
-            this.ResultFileNameCheckbox.Text = "File name";
-            this.ResultFileNameCheckbox.UseVisualStyleBackColor = true;
             // 
             // ResultCreationTimeCheckbox
             // 
             this.ResultCreationTimeCheckbox.AutoSize = true;
-            this.ResultCreationTimeCheckbox.Location = new System.Drawing.Point(6, 111);
+            this.ResultCreationTimeCheckbox.Location = new System.Drawing.Point(6, 88);
             this.ResultCreationTimeCheckbox.Name = "ResultCreationTimeCheckbox";
             this.ResultCreationTimeCheckbox.Size = new System.Drawing.Size(87, 17);
             this.ResultCreationTimeCheckbox.TabIndex = 1;
@@ -80,7 +67,7 @@
             // ResultAccessTimeCheckbox
             // 
             this.ResultAccessTimeCheckbox.AutoSize = true;
-            this.ResultAccessTimeCheckbox.Location = new System.Drawing.Point(6, 135);
+            this.ResultAccessTimeCheckbox.Location = new System.Drawing.Point(6, 112);
             this.ResultAccessTimeCheckbox.Name = "ResultAccessTimeCheckbox";
             this.ResultAccessTimeCheckbox.Size = new System.Drawing.Size(105, 17);
             this.ResultAccessTimeCheckbox.TabIndex = 2;
@@ -92,7 +79,7 @@
             this.ResultFileSizeCheckbox.AutoSize = true;
             this.ResultFileSizeCheckbox.Checked = true;
             this.ResultFileSizeCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ResultFileSizeCheckbox.Location = new System.Drawing.Point(6, 88);
+            this.ResultFileSizeCheckbox.Location = new System.Drawing.Point(6, 65);
             this.ResultFileSizeCheckbox.Name = "ResultFileSizeCheckbox";
             this.ResultFileSizeCheckbox.Size = new System.Drawing.Size(63, 17);
             this.ResultFileSizeCheckbox.TabIndex = 3;
@@ -104,7 +91,7 @@
             this.ResultFullFilePathCheckbox.AutoSize = true;
             this.ResultFullFilePathCheckbox.Checked = true;
             this.ResultFullFilePathCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ResultFullFilePathCheckbox.Location = new System.Drawing.Point(6, 65);
+            this.ResultFullFilePathCheckbox.Location = new System.Drawing.Point(6, 42);
             this.ResultFullFilePathCheckbox.Name = "ResultFullFilePathCheckbox";
             this.ResultFullFilePathCheckbox.Size = new System.Drawing.Size(82, 17);
             this.ResultFullFilePathCheckbox.TabIndex = 4;
@@ -155,22 +142,81 @@
             this.groupBox1.Controls.Add(this.ContextSizeCharacters);
             this.groupBox1.Controls.Add(this.ResultContext);
             this.groupBox1.Controls.Add(this.ResultLastModificationTime);
-            this.groupBox1.Controls.Add(this.ResultFileNameCheckbox);
             this.groupBox1.Controls.Add(this.ResultCreationTimeCheckbox);
             this.groupBox1.Controls.Add(this.ResultAccessTimeCheckbox);
             this.groupBox1.Controls.Add(this.ResultFileSizeCheckbox);
             this.groupBox1.Controls.Add(this.ResultFullFilePathCheckbox);
             this.groupBox1.Location = new System.Drawing.Point(220, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(252, 212);
+            this.groupBox1.Size = new System.Drawing.Size(252, 185);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Search results";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(151, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Max result entries (0 = no limit):";
+            // 
+            // MaxEntries
+            // 
+            this.MaxEntries.Location = new System.Drawing.Point(170, 19);
+            this.MaxEntries.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.MaxEntries.Name = "MaxEntries";
+            this.MaxEntries.Size = new System.Drawing.Size(74, 20);
+            this.MaxEntries.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(160, 159);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "characters";
+            // 
+            // ContextSizeCharacters
+            // 
+            this.ContextSizeCharacters.Location = new System.Drawing.Point(74, 157);
+            this.ContextSizeCharacters.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.ContextSizeCharacters.Name = "ContextSizeCharacters";
+            this.ContextSizeCharacters.Size = new System.Drawing.Size(80, 20);
+            this.ContextSizeCharacters.TabIndex = 7;
+            this.ContextSizeCharacters.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // ResultContext
+            // 
+            this.ResultContext.AutoSize = true;
+            this.ResultContext.Checked = true;
+            this.ResultContext.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ResultContext.Location = new System.Drawing.Point(6, 158);
+            this.ResultContext.Name = "ResultContext";
+            this.ResultContext.Size = new System.Drawing.Size(65, 17);
+            this.ResultContext.TabIndex = 6;
+            this.ResultContext.Text = "Context:";
+            this.ResultContext.UseVisualStyleBackColor = true;
+            this.ResultContext.CheckedChanged += new System.EventHandler(this.ResultContext_CheckedChanged);
+            // 
             // ResultLastModificationTime
             // 
             this.ResultLastModificationTime.AutoSize = true;
-            this.ResultLastModificationTime.Location = new System.Drawing.Point(6, 158);
+            this.ResultLastModificationTime.Location = new System.Drawing.Point(6, 135);
             this.ResultLastModificationTime.Name = "ResultLastModificationTime";
             this.ResultLastModificationTime.Size = new System.Drawing.Size(127, 17);
             this.ResultLastModificationTime.TabIndex = 5;
@@ -191,7 +237,7 @@
             // 
             // SelectFileButton
             // 
-            this.SelectFileButton.Location = new System.Drawing.Point(372, 228);
+            this.SelectFileButton.Location = new System.Drawing.Point(372, 211);
             this.SelectFileButton.Name = "SelectFileButton";
             this.SelectFileButton.Size = new System.Drawing.Size(100, 23);
             this.SelectFileButton.TabIndex = 9;
@@ -202,14 +248,14 @@
             // OutputFilePath
             // 
             this.OutputFilePath.Enabled = false;
-            this.OutputFilePath.Location = new System.Drawing.Point(12, 230);
+            this.OutputFilePath.Location = new System.Drawing.Point(12, 213);
             this.OutputFilePath.Name = "OutputFilePath";
             this.OutputFilePath.Size = new System.Drawing.Size(354, 20);
             this.OutputFilePath.TabIndex = 10;
             // 
             // OKButton
             // 
-            this.OKButton.Location = new System.Drawing.Point(226, 256);
+            this.OKButton.Location = new System.Drawing.Point(226, 239);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(120, 23);
             this.OKButton.TabIndex = 11;
@@ -219,7 +265,7 @@
             // 
             // CancelReportButton
             // 
-            this.CancelReportButton.Location = new System.Drawing.Point(352, 256);
+            this.CancelReportButton.Location = new System.Drawing.Point(352, 239);
             this.CancelReportButton.Name = "CancelReportButton";
             this.CancelReportButton.Size = new System.Drawing.Size(120, 23);
             this.CancelReportButton.TabIndex = 12;
@@ -230,77 +276,17 @@
             // OutputFilePathLabel
             // 
             this.OutputFilePathLabel.AutoSize = true;
-            this.OutputFilePathLabel.Location = new System.Drawing.Point(13, 211);
+            this.OutputFilePathLabel.Location = new System.Drawing.Point(13, 194);
             this.OutputFilePathLabel.Name = "OutputFilePathLabel";
             this.OutputFilePathLabel.Size = new System.Drawing.Size(82, 13);
             this.OutputFilePathLabel.TabIndex = 13;
             this.OutputFilePathLabel.Text = "Output file path:";
             // 
-            // ResultContext
-            // 
-            this.ResultContext.AutoSize = true;
-            this.ResultContext.Checked = true;
-            this.ResultContext.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ResultContext.Location = new System.Drawing.Point(6, 181);
-            this.ResultContext.Name = "ResultContext";
-            this.ResultContext.Size = new System.Drawing.Size(65, 17);
-            this.ResultContext.TabIndex = 6;
-            this.ResultContext.Text = "Context:";
-            this.ResultContext.UseVisualStyleBackColor = true;
-            this.ResultContext.CheckedChanged += new System.EventHandler(this.ResultContext_CheckedChanged);
-            // 
-            // ContextSizeCharacters
-            // 
-            this.ContextSizeCharacters.Location = new System.Drawing.Point(74, 180);
-            this.ContextSizeCharacters.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.ContextSizeCharacters.Name = "ContextSizeCharacters";
-            this.ContextSizeCharacters.Size = new System.Drawing.Size(80, 20);
-            this.ContextSizeCharacters.TabIndex = 7;
-            this.ContextSizeCharacters.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(160, 182);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "characters";
-            // 
-            // MaxEntries
-            // 
-            this.MaxEntries.Location = new System.Drawing.Point(163, 19);
-            this.MaxEntries.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.MaxEntries.Name = "MaxEntries";
-            this.MaxEntries.Size = new System.Drawing.Size(81, 20);
-            this.MaxEntries.TabIndex = 9;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(151, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Max result entries (0 = no limit):";
-            // 
             // SummaryOptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 291);
+            this.ClientSize = new System.Drawing.Size(484, 273);
             this.ControlBox = false;
             this.Controls.Add(this.OutputFilePathLabel);
             this.Controls.Add(this.CancelReportButton);
@@ -316,10 +302,10 @@
             this.Text = "SummaryOptionsForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxEntries)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ContextSizeCharacters)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ContextSizeCharacters)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MaxEntries)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -327,7 +313,6 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox ResultFileNameCheckbox;
         private System.Windows.Forms.CheckBox ResultCreationTimeCheckbox;
         private System.Windows.Forms.CheckBox ResultAccessTimeCheckbox;
         private System.Windows.Forms.CheckBox ResultFileSizeCheckbox;
