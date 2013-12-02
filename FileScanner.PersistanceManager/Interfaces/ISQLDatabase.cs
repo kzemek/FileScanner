@@ -7,7 +7,7 @@ namespace FileScanner.PersistanceManager.Interfaces
 
     /// <summary>
     /// Defines methods for interacting with an SQL database.
-    /// Based on: http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
+    /// Source: http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
     /// </summary>
 
     public interface ISQLDatabase

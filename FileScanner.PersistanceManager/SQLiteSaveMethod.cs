@@ -12,6 +12,11 @@ namespace FileScanner.PersistanceManager
     {
         private readonly ISQLDatabase _sqLiteDatabase;
 
+
+        public SqLiteSaveMethod()
+        {
+            _sqLiteDatabase = new SqLiteDatabase();
+        }
         public SqLiteSaveMethod(ISQLDatabase sqLiteDatabase)
         {
             _sqLiteDatabase = sqLiteDatabase;
