@@ -17,7 +17,6 @@ namespace FileScanner.SearchSummary
         public bool headerHasGenerationDate;
         public bool headerHasInputPaths;
 
-        public bool resultHasFileName;
         public bool resultHasFullFilePath;
         public bool resultHasFileSize;
         public bool resultHasCreationTime;
@@ -43,7 +42,6 @@ namespace FileScanner.SearchSummary
                 options.headerHasGenerationDate = HeaderGenerationDateCheckbox.Checked;
                 options.headerHasInputPaths = HeaderInpuPathsCheckbox.Checked;
 
-                options.resultHasFileName = ResultFileNameCheckbox.Checked;
                 options.resultHasFullFilePath = ResultFullFilePathCheckbox.Checked;
                 options.resultHasFileSize = ResultFileSizeCheckbox.Checked;
                 options.resultHasLastAccessTime = ResultAccessTimeCheckbox.Checked;
@@ -63,7 +61,8 @@ namespace FileScanner.SearchSummary
             Application.EnableVisualStyles();
             InitializeComponent();
 
-            OutputFilePath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "report.txt");
+            OutputFilePath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                                               "report" + DocumentBuilderFactory.GetDefaultFormat());
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -84,14 +83,16 @@ namespace FileScanner.SearchSummary
             dialog.CheckFileExists = false;
             dialog.CheckPathExists = true;
             dialog.CreatePrompt = false;
-            dialog.DefaultExt = "txt";
-            dialog.FileName = "report.txt";
             dialog.Title = "Save report as";
 
+            IEnumerable<string> supportedFormats = DocumentBuilderFactory.GetSupportedFormats();
+            dialog.InitialDirectory = Path.GetDirectoryName(OutputFilePath.Text);
+            dialog.FileName = Path.GetFileName(OutputFilePath.Text);
+            dialog.DefaultExt = Path.GetExtension(OutputFilePath.Text);
+            dialog.Filter = String.Join("|", supportedFormats.Select(format => String.Format("{0} file|*{1}", format.Substring(1).ToUpper(), format)));
+
             if (dialog.ShowDialog() == DialogResult.OK)
-            {
                 OutputFilePath.Text = dialog.FileName;
-            }
         }
 
         private void ResultContext_CheckedChanged(object sender, EventArgs e)

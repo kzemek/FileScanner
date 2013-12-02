@@ -277,7 +277,7 @@ namespace FileScanner.SearchSummary
             foreach (MatchingFile match in sortedResults)
             {
                 SearchResult result = new SearchResult();
-                result.fileName = options.resultHasFileName ? match.fileInfo.Name : null;
+                result.fileName = match.fileInfo.Name;
                 result.fullFilePath = options.resultHasFullFilePath ? match.fileInfo.ToString() : null;
                 result.fileSizeBytes = options.resultHasFileSize ? match.fileInfo.Length : (long?)null;
                 result.dateCreated = options.resultHasCreationTime ? match.fileInfo.CreationTime : (DateTime?)null;
@@ -305,7 +305,11 @@ namespace FileScanner.SearchSummary
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Generate(new TxtDocumentBuilder(), form.Options, searchQuery, inputPaths, searchResults);
+                ReportOptions options = form.Options;
+                string fileExtension = Path.GetExtension(options.outputFilePath);
+                IDocumentBuilder builder = DocumentBuilderFactory.Create(fileExtension);
+
+                Generate(builder, options, searchQuery, inputPaths, searchResults);
             }
         }
     }
