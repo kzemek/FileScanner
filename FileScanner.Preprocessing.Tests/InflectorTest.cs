@@ -35,6 +35,8 @@ namespace FileScanner.Preprocessing.Tests
             {"ziemia", "ziemi", "ziemi", "ziemie", "ziemia", "ziemi"},
             {"pogoda", "pogody", "pogodzie", "pogode", "pogoda", "pogodzie"}
             {"droga", "drogi", "drodze", "droge", "droga", "drodze"}
+            {"stajnia", "stajni", "stajni", "stajnie", "stajni"}//r. żeński, grupa I
+            {"sadza", "sadzy", "sadzy", "sadze", "szadza", "sadzy"} //r. żeński, grupa II
         };
 
         private Inflector inflector;
