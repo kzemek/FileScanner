@@ -11,6 +11,7 @@ namespace FileScanner.SearchSummary.Tests
     public class PDFDocumentBuilderTest
     {
         PDFDocumentBuilder documentBuilder;
+
         [TestInitialize]
         public void Setup()
         {
@@ -18,15 +19,8 @@ namespace FileScanner.SearchSummary.Tests
         }
 
         [TestMethod]
-        public void AddReportHeader()
+        public void SaveIfFileIsCreatedAndCouldBeOpened()
         {
-            documentBuilder.AddReportHeader(new DateTime(2012, 09, 07), "Asd", null);
-        }
-        [TestMethod]
-        public void save_if_file_is_created_and_could_be_oppen()
-
-        {
-
             documentBuilder.AddReportHeader(new DateTime(2012, 02, 02), "Butelka z piwa",
                new List<String>() { "C:/glowny_folder/troche/dalej", "C:/jakis/inny/folder" });
             documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
@@ -36,10 +30,21 @@ namespace FileScanner.SearchSummary.Tests
             documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
                "C:/glowny_folder/troche/dalej/JeszczeInneWykopaliska.txt", 30, new DateTime(2010, 01, 01), null, null));
             documentBuilder.AddReportFooter();
-            documentBuilder.Save("C:/Users/blost/Desktop/Downloads/SomePDF2.pdf");
-        
+
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "SomePDF2.pdf");
+            FileInfo info = new FileInfo(path);
+
+            if (info.Exists)
+            {
+                info.Delete();
+                info.Refresh();
+            }
+
+            Assert.IsFalse(info.Exists);
+            documentBuilder.Save(path);
+
+            info.Refresh();
+            Assert.IsTrue(info.Exists);
         }
-
-
     }
 }
