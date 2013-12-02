@@ -138,14 +138,11 @@ namespace FileScanner.SearchSummary
             return null;
         }
 
-
         public void Save(string filePath)
         {
             pdfRenderer.RenderDocument();
             pdfRenderer.PdfDocument.Save(filePath);
-            Process.Start(filePath);
         }
-
 
         public void AddText(string text, TextStyle style = TextStyle.Normal)
         {
