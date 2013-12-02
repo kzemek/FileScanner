@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SummaryGeneratorTest.cs" />
     <Compile Include="PDFDocumentBuilderTest.cs" />
+    <Compile Include="DocumentBuilderFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileScanner.SearchSummary\FileScanner.SearchSummary.csproj">
