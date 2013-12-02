@@ -283,6 +283,10 @@ namespace FileScanner.SearchSummary.Tests
                    Encoding.UTF8.GetBytes("ala12ma1234567890123alamala123kota1234567890")));
 
             Mock<IDocumentBuilder> builder = mockFactory.CreateMock<IDocumentBuilder>();
+            builder.Expects.One
+                           .Method(b => b.BeginContextBlock());
+            builder.Expects.One
+                           .Method(b => b.EndContextBlock());
             builder.Expects.AtMostOne
                            .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("", TextStyle.Normal);
@@ -335,7 +339,11 @@ namespace FileScanner.SearchSummary.Tests
             builder.Expects.One
                            .Method(b => b.Save(null))
                            .With(outputFilename);
-            builder.Expects.AtLeastOne
+            builder.Expects.Exactly(matchingFiles.Count)
+                           .Method(b => b.BeginContextBlock());
+            builder.Expects.Exactly(matchingFiles.Count)
+                           .Method(b => b.EndContextBlock());
+            builder.Expects.AtLeast(matchingFiles.Count)
                            .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .WithAnyArguments();
 

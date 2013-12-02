@@ -23,6 +23,7 @@ namespace FileScanner.SearchSummary
         public bool resultHasCreationTime;
         public bool resultHasLastAccessTime;
         public bool resultHasLastModificationTime;
+        public bool resultHasContext;
 
         public string outputFilePath;
 
@@ -47,10 +48,11 @@ namespace FileScanner.SearchSummary
                 options.resultHasFileSize = ResultFileSizeCheckbox.Checked;
                 options.resultHasLastAccessTime = ResultAccessTimeCheckbox.Checked;
                 options.resultHasLastModificationTime = ResultLastModificationTime.Checked;
+                options.resultHasContext = ResultContext.Checked;
 
                 options.outputFilePath = OutputFilePath.Text;
-                options.contextSizeChars = 10;
-                options.maxEntries = -1;
+                options.contextSizeChars = (int)ContextSizeCharacters.Value;
+                options.maxEntries = (int)MaxEntries.Value;
 
                 return options;
             }
@@ -90,6 +92,11 @@ namespace FileScanner.SearchSummary
             {
                 OutputFilePath.Text = dialog.FileName;
             }
+        }
+
+        private void ResultContext_CheckedChanged(object sender, EventArgs e)
+        {
+            ContextSizeCharacters.Enabled = ResultContext.Checked;
         }
     }
 }

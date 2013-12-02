@@ -226,6 +226,8 @@ namespace FileScanner.SearchSummary
                                              List<PositionTextPairGroup> groups,
                                              StreamReader _reader)
         {
+            builder.BeginContextBlock();
+
             PositionAwareStreamReader reader = new PositionAwareStreamReader(_reader.BaseStream);
 
             foreach (PositionTextPairGroup group in groups)
@@ -252,6 +254,8 @@ namespace FileScanner.SearchSummary
                 charsRead = reader.Read(textBuf, 0, (int)Math.Max(0, group.endPosition - lastEnd));
                 builder.AddContextText(new string(textBuf, 0, charsRead));
             }
+
+            builder.EndContextBlock();
         }
 
         internal void Generate(IDocumentBuilder builder,
@@ -282,8 +286,11 @@ namespace FileScanner.SearchSummary
 
                 builder.AddSearchResult(result);
 
-                List<PositionTextPairGroup> groups = GroupMatchPositions(match.searchResults, options.contextSizeChars);
-                GenerateContext(builder, groups, match.fileReader);
+                if (options.resultHasContext)
+                {
+                    List<PositionTextPairGroup> groups = GroupMatchPositions(match.searchResults, options.contextSizeChars);
+                    GenerateContext(builder, groups, match.fileReader);
+                }
             }
 
             builder.AddReportFooter();
