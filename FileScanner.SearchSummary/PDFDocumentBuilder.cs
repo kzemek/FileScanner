@@ -20,7 +20,7 @@ namespace FileScanner.SearchSummary
         
         int counter = 0 ; 
 
-        public static void DefineStyles(Document document)
+        private static void DefineStyles(Document document)
         {
             Style style = document.Styles["Normal"];
             style.Font.Name = "Times New Roman";
