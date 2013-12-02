@@ -25,6 +25,8 @@ namespace FileScanner.SearchSummary.Tests
                new List<String>() { "C:/glowny_folder/troche/dalej", "C:/jakis/inny/folder" });
             documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
                 "C:/glowny_folder/troche/dalej/FajneWykopaliska.txt", 10, new DateTime(2011, 02, 01), null, null));
+            documentBuilder.AddContextText("jakis przykladowy tekst który moze sie wypisac a moze i nie");
+            documentBuilder.AddContextText("a ten tekst powinien zostac wyswietlony boldem....", TextStyle.Bold);
             documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",
                 "C:/glowny_folder/troche/dalej/InneWykopaliska.txt", 20, new DateTime(2012, 01, 01), null, null));
             documentBuilder.AddSearchResult(new SearchResult("Wykopaliska",

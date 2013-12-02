@@ -112,5 +112,17 @@ namespace FileScanner.SearchSummary
             writer.Flush();
             writer.Close();
         }
+
+        void IDocumentBuilder.BeginContextBlock()
+        {
+        }
+
+        void IDocumentBuilder.EndContextBlock()
+        {
+        }
+
+        void IDocumentBuilder.AddContextText(string text, TextStyle style)
+        {
+        }
     }
 }

@@ -284,34 +284,34 @@ namespace FileScanner.SearchSummary.Tests
 
             Mock<IDocumentBuilder> builder = mockFactory.CreateMock<IDocumentBuilder>();
             builder.Expects.AtMostOne
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("", TextStyle.Normal);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("ala", TextStyle.Bold);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("12", TextStyle.Normal);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("ma", TextStyle.Bold);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("12345", TextStyle.Normal);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("90123", TextStyle.Normal);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("alamala", TextStyle.Bold);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("123", TextStyle.Normal);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("kota", TextStyle.Bold);
             builder.Expects.One
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("12345", TextStyle.Normal);
 
             SummaryGenerator.GenerateContext(builder.MockObject, groups, reader);
@@ -336,7 +336,7 @@ namespace FileScanner.SearchSummary.Tests
                            .Method(b => b.Save(null))
                            .With(outputFilename);
             builder.Expects.AtLeastOne
-                           .Method(b => b.AddText(null, TextStyle.Normal))
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .WithAnyArguments();
 
             SummaryGenerator generator = new SummaryGenerator();
