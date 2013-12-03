@@ -24,7 +24,12 @@ namespace FileScanner.SearchSummary.Tests
         [TestInitialize]
         public void Setup()
         {
-            byte[] testStringBytes = Encoding.UTF8.GetBytes("test string for testing strings");
+            byte[] testStringBytes = Encoding.UTF8.GetBytes(
+               "* Słoń afrykański (Loxodonta africana) – gatunek ssaka z rodziny słoniowatych, największy " +
+               "ze współcześnie żyjących gatunków ssaków lądowych. Wcześniej uznawany jako jeden gatunek " +
+               "wraz z afrykańskim słoniem leśnym (Loxodonta cyclotis). Zwierzę stadne, zamieszkuje " +
+               "afrykańską sawannę, lasy i stepy od południowych krańców Sahary po Namibię, północną " +
+               "Botswanę i północną część Afryki. W starożytności wykorzystywane jako zwierzęta bojowe.");
 
             mockFactory = new MockFactory();
             emptyFileInfo = new FileInfo("someTestFile.txt");
@@ -45,7 +50,7 @@ namespace FileScanner.SearchSummary.Tests
                 MatchingFile file;
                 file.fileInfo = emptyFileInfo;
                 file.fileReader = new StreamReader(new MemoryStream(testStringBytes));
-                file.searchResults = new Dictionary<string, IEnumerable<int>> { { "string", new List<int> { 5, 24 } } };
+                file.searchResults = new Dictionary<string, IEnumerable<int>> { { "slon", new List<int> { 2, 65, 198 } } };
                 file.accuracy = (float)i;
                 matchingFiles.Add(file);
             }
@@ -354,7 +359,7 @@ namespace FileScanner.SearchSummary.Tests
             builder.Expects.Exactly(matchingFiles.Count)
                            .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("... ", TextStyle.Normal);
-            builder.Expects.Exactly(matchingFiles.Count)
+            builder.Expects.Exactly(matchingFiles.Count * 2)
                            .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With(" ... ", TextStyle.Normal);
             builder.Expects.Exactly(matchingFiles.Count)
