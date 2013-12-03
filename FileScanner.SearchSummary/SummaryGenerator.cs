@@ -226,9 +226,13 @@ namespace FileScanner.SearchSummary
                                              List<PositionTextPairGroup> groups,
                                              StreamReader _reader)
         {
+            if (groups.Count == 0)
+                return;
+
             builder.BeginContextBlock();
 
             PositionAwareStreamReader reader = new PositionAwareStreamReader(_reader.BaseStream);
+            PositionTextPairGroup prevGroup = null;
 
             foreach (PositionTextPairGroup group in groups)
             {
@@ -237,6 +241,15 @@ namespace FileScanner.SearchSummary
                 int charsRead;
 
                 reader.Seek(group.startPosition);
+
+                if (prevGroup == null)
+                {
+                    if (groups.First().startPosition > 0)
+                        builder.AddContextText("... ");
+                }
+                else if (group.startPosition != prevGroup.endPosition)
+                    builder.AddContextText(" ... ");
+
 
                 foreach (PositionTextPair pair in group.pairs.OrderBy(p => p.position))
                 {
@@ -253,7 +266,12 @@ namespace FileScanner.SearchSummary
 
                 charsRead = reader.Read(textBuf, 0, (int)Math.Max(0, group.endPosition - lastEnd));
                 builder.AddContextText(new string(textBuf, 0, charsRead));
+
+                prevGroup = group;
             }
+
+            if (!reader.EndOfStream)
+                builder.AddContextText(" ...");
 
             builder.EndContextBlock();
         }

@@ -24,7 +24,7 @@ namespace FileScanner.SearchSummary.Tests
         [TestInitialize]
         public void Setup()
         {
-            byte[] testStringBytes = Encoding.UTF8.GetBytes("test string for testing");
+            byte[] testStringBytes = Encoding.UTF8.GetBytes("test string for testing strings");
 
             mockFactory = new MockFactory();
             emptyFileInfo = new FileInfo("someTestFile.txt");
@@ -45,11 +45,10 @@ namespace FileScanner.SearchSummary.Tests
                 MatchingFile file;
                 file.fileInfo = emptyFileInfo;
                 file.fileReader = new StreamReader(new MemoryStream(testStringBytes));
-                file.searchResults = new Dictionary<string, IEnumerable<int>> { { "string", new List<int> { 5 } } };
+                file.searchResults = new Dictionary<string, IEnumerable<int>> { { "string", new List<int> { 5, 24 } } };
                 file.accuracy = (float)i;
                 matchingFiles.Add(file);
             }
-
         }
 
         [TestCleanup]
@@ -317,6 +316,12 @@ namespace FileScanner.SearchSummary.Tests
             builder.Expects.One
                            .Method(b => b.AddContextText(null, TextStyle.Normal))
                            .With("12345", TextStyle.Normal);
+            builder.Expects.One
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
+                           .With(" ... ", TextStyle.Normal);
+            builder.Expects.One
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
+                           .With(" ...", TextStyle.Normal);
 
             SummaryGenerator.GenerateContext(builder.MockObject, groups, reader);
         }
@@ -343,13 +348,23 @@ namespace FileScanner.SearchSummary.Tests
                            .Method(b => b.BeginContextBlock());
             builder.Expects.Exactly(matchingFiles.Count)
                            .Method(b => b.EndContextBlock());
-            builder.Expects.AtLeast(matchingFiles.Count)
+            builder.Expects.Exactly(matchingFiles.Count)
                            .Method(b => b.AddContextText(null, TextStyle.Normal))
-                           .WithAnyArguments();
+                           .With("string", TextStyle.Bold);
+            builder.Expects.Exactly(matchingFiles.Count)
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
+                           .With("... ", TextStyle.Normal);
+            builder.Expects.Exactly(matchingFiles.Count)
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
+                           .With(" ... ", TextStyle.Normal);
+            builder.Expects.Exactly(matchingFiles.Count)
+                           .Method(b => b.AddContextText(null, TextStyle.Normal))
+                           .With(" ...", TextStyle.Normal);
 
             SummaryGenerator generator = new SummaryGenerator();
             ReportOptions options = new ReportOptions();
             options.outputFilePath = outputFilename;
+            options.contextSizeChars = 0;
 
             generator.Generate(builder.MockObject, options, searchQuery, inputPaths, matchingFiles);
         }
