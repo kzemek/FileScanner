@@ -72,6 +72,7 @@
             this.searchFileTextBox.TabIndex = 5;
             this.searchFileTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchFileTextbox_MouseClick);
             this.searchFileTextBox.TextChanged += new System.EventHandler(this.searchFileTextbox_TextChanged);
+            this.searchFileTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchFileTextBox_KeyDown);
             // 
             // searchFilePickerButton
             // 
@@ -90,6 +91,7 @@
             this.searchPhraseTextBox.Size = new System.Drawing.Size(488, 20);
             this.searchPhraseTextBox.TabIndex = 5;
             this.searchPhraseTextBox.TextChanged += new System.EventHandler(this.searchPhraseTextBox_TextChanged);
+            this.searchPhraseTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchPhraseTextBox_KeyDown);
             // 
             // searchPhraseLabel
             // 
@@ -171,6 +173,7 @@
             this.searchBox.PerformLayout();
             this.searchReportBox.ResumeLayout(false);
             this.searchReportBox.PerformLayout();
+            this.ActiveControl = searchPhraseTextBox;
             this.ResumeLayout(false);
 
         }

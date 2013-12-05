@@ -80,8 +80,8 @@ namespace FileScanner
         {
             var streamReader = FileParser.ParseFile(searchFileTextBox.Text,ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
             var preprocessor = new PreprocessorFactory().GetIPreprocessor();
-            var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
-            var matcher = new Matcher(phrases);
+            var phrases = preprocessor.GetVariations(preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text));
+            var matcher = new Matcher(phrases.ToList());
             var matches = matcher.Matches(streamReader);
 
             resultsTextBox.Text = matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
@@ -106,6 +106,22 @@ namespace FileScanner
         private void loadResultsButton_Click(object sender, EventArgs e)
         {
             // TODO: Load search results
+        }
+
+        private void searchPhraseTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                if (IsSearchDataProvided()) this.searchButton.PerformClick();
+                else
+                    this.ActiveControl = searchFileTextBox;
+        }
+
+        private void searchFileTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) 
+                if (IsSearchDataProvided()) this.searchButton.PerformClick();
+                else
+                    this.ActiveControl = searchPhraseTextBox;
         }
 
         #endregion
