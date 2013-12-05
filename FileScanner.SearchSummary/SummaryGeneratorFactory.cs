@@ -9,7 +9,7 @@ namespace FileScanner.SearchSummary
     /// <summary>
     /// Used for creating ISummaryGenerator implemetations.
     /// </summary>
-    class SummaryGeneratorFactory
+    public class SummaryGeneratorFactory
     {
         /// <summary>
         /// Creates a new object that implements ISummaryGenerator interface.

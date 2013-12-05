@@ -11,12 +11,17 @@ using FileScanner.FileParsing;
 using FileScanner.Preprocessing;
 using FileScanner.PatternMatching;
 using System.IO;
+using FileScanner.SearchSummary;
 
 namespace FileScanner
 {
     public partial class MainWindow : Form
     {
         private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
+
+        private string CurrentSearchQuery;
+        private string CurrentFilePath;
+        private IEnumerable<Match> CurrentMatches;
 
         public MainWindow()
         {
@@ -78,13 +83,19 @@ namespace FileScanner
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            var streamReader = FileParser.ParseFile(searchFileTextBox.Text,ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
-            var preprocessor = new PreprocessorFactory().GetIPreprocessor();
-            var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
-            var matcher = new Matcher(phrases);
-            var matches = matcher.Matches(streamReader);
+            CurrentFilePath = searchFileTextBox.Text;
+            CurrentSearchQuery = searchPhraseTextBox.Text;
 
-            resultsTextBox.Text = matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
+            var streamReader = FileParser.ParseFile(CurrentFilePath, ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
+            var preprocessor = new PreprocessorFactory().GetIPreprocessor();
+            var phrases = preprocessor.GetNormalizedPhrase(CurrentSearchQuery);
+
+            var matcher = new Matcher(phrases);
+            CurrentMatches = matcher.Matches(streamReader);
+
+            resultsTextBox.Text = CurrentMatches.Any() ? BuildResults(CurrentMatches) : NoMatchesFoundMessage;
+
+            exportResultsButton.Enabled = CurrentMatches.Any();
         }
 
 
@@ -106,6 +117,31 @@ namespace FileScanner
         private void loadResultsButton_Click(object sender, EventArgs e)
         {
             // TODO: Load search results
+        }
+
+        private void exportResultsButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentFilePath == null || CurrentSearchQuery == null || CurrentMatches == null || !CurrentMatches.Any())
+            {
+                MessageBox.Show("No results to export!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> inputPaths = new List<string> { CurrentFilePath };
+            List<MatchingFile> searchResults = new List<MatchingFile>();
+            MatchingFile file;
+
+            file.fileInfo = new FileInfo(CurrentFilePath);
+            file.fileReader = FileParser.ParseFile(CurrentFilePath);
+            file.accuracy = searchResults.Count;
+            file.searchResults = CurrentMatches.GroupBy(match => match.Value)
+                                               .ToDictionary(grouping => grouping.Key,
+                                                             grouping => grouping.Select(match => match.Index));
+
+            searchResults.Add(file);
+
+            ISummaryGenerator generator = SummaryGeneratorFactory.Create();
+            generator.Generate(CurrentSearchQuery, inputPaths, searchResults);
         }
 
         #endregion
