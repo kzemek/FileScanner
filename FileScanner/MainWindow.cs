@@ -86,9 +86,9 @@ namespace FileScanner
             CurrentFilePath = searchFileTextBox.Text;
             CurrentSearchQuery = searchPhraseTextBox.Text;
 
-            var streamReader = FileParser.ParseFile(searchFileTextBox.Text,ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
+            var streamReader = FileParser.ParseFile(CurrentFilePath, ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
             var preprocessor = new PreprocessorFactory().GetIPreprocessor();
-            var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
+            var phrases = preprocessor.GetNormalizedPhrase(CurrentSearchQuery);
 
             var matcher = new Matcher(phrases);
             CurrentMatches = matcher.Matches(streamReader);
