@@ -39,6 +39,7 @@
             this.resultsTextBox = new System.Windows.Forms.TextBox();
             this.loadResultsButton = new System.Windows.Forms.Button();
             this.saveResultsButton = new System.Windows.Forms.Button();
+            this.exportResultsButton = new System.Windows.Forms.Button();
             this.searchBox.SuspendLayout();
             this.searchReportBox.SuspendLayout();
             this.SuspendLayout();
@@ -117,6 +118,7 @@
             // 
             // searchReportBox
             // 
+            this.searchReportBox.Controls.Add(this.exportResultsButton);
             this.searchReportBox.Controls.Add(this.resultsTextBox);
             this.searchReportBox.Controls.Add(this.loadResultsButton);
             this.searchReportBox.Controls.Add(this.saveResultsButton);
@@ -156,7 +158,18 @@
             this.saveResultsButton.UseVisualStyleBackColor = true;
             this.saveResultsButton.Click += new System.EventHandler(this.saveResultsButton_Click);
             // 
-            // FileScanner
+            // exportResultsButton
+            // 
+            this.exportResultsButton.Enabled = false;
+            this.exportResultsButton.Location = new System.Drawing.Point(9, 299);
+            this.exportResultsButton.Name = "exportResultsButton";
+            this.exportResultsButton.Size = new System.Drawing.Size(73, 23);
+            this.exportResultsButton.TabIndex = 3;
+            this.exportResultsButton.Text = "Export";
+            this.exportResultsButton.UseVisualStyleBackColor = true;
+            this.exportResultsButton.Click += new System.EventHandler(this.exportResultsButton_Click);
+            // 
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -165,7 +178,7 @@
             this.Controls.Add(this.searchBox);
             this.MaximumSize = new System.Drawing.Size(623, 501);
             this.MinimumSize = new System.Drawing.Size(623, 501);
-            this.Name = "FileScanner";
+            this.Name = "MainWindow";
             this.Text = "File Scanner";
             this.searchBox.ResumeLayout(false);
             this.searchBox.PerformLayout();
@@ -188,6 +201,7 @@
         private System.Windows.Forms.Button saveResultsButton;
         private System.Windows.Forms.TextBox resultsTextBox;
         private System.Windows.Forms.Button loadResultsButton;
+        private System.Windows.Forms.Button exportResultsButton;
     }
 }
 
