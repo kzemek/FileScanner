@@ -58,10 +58,15 @@ namespace FileScanner.SearchSummary
                "----------------------------------------\r\n");
         }
 
-        public void AddText(string text)
+        public void AddText(string text, TextStyle style = TextStyle.Normal)
         {
-            content.Append(text + "\r\n");
-   
+            if (style == TextStyle.Bold)
+                content.Append("***");
+
+            content.Append(text);
+
+            if (style == TextStyle.Bold)
+                content.Append("***");
         }
 
         public void AddSearchResult(SearchResult result)
@@ -108,5 +113,16 @@ namespace FileScanner.SearchSummary
             writer.Close();
         }
 
+        void IDocumentBuilder.BeginContextBlock()
+        {
+        }
+
+        void IDocumentBuilder.EndContextBlock()
+        {
+        }
+
+        void IDocumentBuilder.AddContextText(string text, TextStyle style)
+        {
+        }
     }
 }

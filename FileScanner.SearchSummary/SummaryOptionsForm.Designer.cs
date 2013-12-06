@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ResultFileNameCheckbox = new System.Windows.Forms.CheckBox();
             this.ResultCreationTimeCheckbox = new System.Windows.Forms.CheckBox();
             this.ResultAccessTimeCheckbox = new System.Windows.Forms.CheckBox();
             this.ResultFileSizeCheckbox = new System.Windows.Forms.CheckBox();
@@ -37,6 +36,11 @@
             this.HeaderGenerationDateCheckbox = new System.Windows.Forms.CheckBox();
             this.HeaderInpuPathsCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.MaxEntries = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ContextSizeCharacters = new System.Windows.Forms.NumericUpDown();
+            this.ResultContext = new System.Windows.Forms.CheckBox();
             this.ResultLastModificationTime = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.SelectFileButton = new System.Windows.Forms.Button();
@@ -45,20 +49,10 @@
             this.CancelReportButton = new System.Windows.Forms.Button();
             this.OutputFilePathLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxEntries)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ContextSizeCharacters)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ResultFileNameCheckbox
-            // 
-            this.ResultFileNameCheckbox.AutoSize = true;
-            this.ResultFileNameCheckbox.Checked = true;
-            this.ResultFileNameCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ResultFileNameCheckbox.Location = new System.Drawing.Point(6, 19);
-            this.ResultFileNameCheckbox.Name = "ResultFileNameCheckbox";
-            this.ResultFileNameCheckbox.Size = new System.Drawing.Size(71, 17);
-            this.ResultFileNameCheckbox.TabIndex = 0;
-            this.ResultFileNameCheckbox.Text = "File name";
-            this.ResultFileNameCheckbox.UseVisualStyleBackColor = true;
             // 
             // ResultCreationTimeCheckbox
             // 
@@ -142,18 +136,82 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.MaxEntries);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.ContextSizeCharacters);
+            this.groupBox1.Controls.Add(this.ResultContext);
             this.groupBox1.Controls.Add(this.ResultLastModificationTime);
-            this.groupBox1.Controls.Add(this.ResultFileNameCheckbox);
             this.groupBox1.Controls.Add(this.ResultCreationTimeCheckbox);
             this.groupBox1.Controls.Add(this.ResultAccessTimeCheckbox);
             this.groupBox1.Controls.Add(this.ResultFileSizeCheckbox);
             this.groupBox1.Controls.Add(this.ResultFullFilePathCheckbox);
             this.groupBox1.Location = new System.Drawing.Point(220, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(202, 160);
+            this.groupBox1.Size = new System.Drawing.Size(252, 185);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Search results";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(151, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Max result entries (0 = no limit):";
+            // 
+            // MaxEntries
+            // 
+            this.MaxEntries.Location = new System.Drawing.Point(170, 19);
+            this.MaxEntries.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.MaxEntries.Name = "MaxEntries";
+            this.MaxEntries.Size = new System.Drawing.Size(74, 20);
+            this.MaxEntries.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(160, 159);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "characters";
+            // 
+            // ContextSizeCharacters
+            // 
+            this.ContextSizeCharacters.Location = new System.Drawing.Point(74, 157);
+            this.ContextSizeCharacters.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.ContextSizeCharacters.Name = "ContextSizeCharacters";
+            this.ContextSizeCharacters.Size = new System.Drawing.Size(80, 20);
+            this.ContextSizeCharacters.TabIndex = 7;
+            this.ContextSizeCharacters.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // ResultContext
+            // 
+            this.ResultContext.AutoSize = true;
+            this.ResultContext.Checked = true;
+            this.ResultContext.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ResultContext.Location = new System.Drawing.Point(6, 158);
+            this.ResultContext.Name = "ResultContext";
+            this.ResultContext.Size = new System.Drawing.Size(65, 17);
+            this.ResultContext.TabIndex = 6;
+            this.ResultContext.Text = "Context:";
+            this.ResultContext.UseVisualStyleBackColor = true;
+            this.ResultContext.CheckedChanged += new System.EventHandler(this.ResultContext_CheckedChanged);
             // 
             // ResultLastModificationTime
             // 
@@ -172,14 +230,14 @@
             this.groupBox2.Controls.Add(this.HeaderInpuPathsCheckbox);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(202, 160);
+            this.groupBox2.Size = new System.Drawing.Size(202, 90);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Report header";
             // 
             // SelectFileButton
             // 
-            this.SelectFileButton.Location = new System.Drawing.Point(322, 197);
+            this.SelectFileButton.Location = new System.Drawing.Point(372, 211);
             this.SelectFileButton.Name = "SelectFileButton";
             this.SelectFileButton.Size = new System.Drawing.Size(100, 23);
             this.SelectFileButton.TabIndex = 9;
@@ -190,14 +248,14 @@
             // OutputFilePath
             // 
             this.OutputFilePath.Enabled = false;
-            this.OutputFilePath.Location = new System.Drawing.Point(12, 199);
+            this.OutputFilePath.Location = new System.Drawing.Point(12, 213);
             this.OutputFilePath.Name = "OutputFilePath";
-            this.OutputFilePath.Size = new System.Drawing.Size(304, 20);
+            this.OutputFilePath.Size = new System.Drawing.Size(354, 20);
             this.OutputFilePath.TabIndex = 10;
             // 
             // OKButton
             // 
-            this.OKButton.Location = new System.Drawing.Point(176, 236);
+            this.OKButton.Location = new System.Drawing.Point(226, 239);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(120, 23);
             this.OKButton.TabIndex = 11;
@@ -207,7 +265,7 @@
             // 
             // CancelReportButton
             // 
-            this.CancelReportButton.Location = new System.Drawing.Point(302, 236);
+            this.CancelReportButton.Location = new System.Drawing.Point(352, 239);
             this.CancelReportButton.Name = "CancelReportButton";
             this.CancelReportButton.Size = new System.Drawing.Size(120, 23);
             this.CancelReportButton.TabIndex = 12;
@@ -218,7 +276,7 @@
             // OutputFilePathLabel
             // 
             this.OutputFilePathLabel.AutoSize = true;
-            this.OutputFilePathLabel.Location = new System.Drawing.Point(13, 180);
+            this.OutputFilePathLabel.Location = new System.Drawing.Point(13, 194);
             this.OutputFilePathLabel.Name = "OutputFilePathLabel";
             this.OutputFilePathLabel.Size = new System.Drawing.Size(82, 13);
             this.OutputFilePathLabel.TabIndex = 13;
@@ -228,7 +286,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 271);
+            this.ClientSize = new System.Drawing.Size(484, 273);
             this.ControlBox = false;
             this.Controls.Add(this.OutputFilePathLabel);
             this.Controls.Add(this.CancelReportButton);
@@ -244,6 +302,8 @@
             this.Text = "SummaryOptionsForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MaxEntries)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ContextSizeCharacters)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -253,7 +313,6 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckBox ResultFileNameCheckbox;
         private System.Windows.Forms.CheckBox ResultCreationTimeCheckbox;
         private System.Windows.Forms.CheckBox ResultAccessTimeCheckbox;
         private System.Windows.Forms.CheckBox ResultFileSizeCheckbox;
@@ -269,5 +328,10 @@
         private System.Windows.Forms.Button CancelReportButton;
         private System.Windows.Forms.CheckBox ResultLastModificationTime;
         private System.Windows.Forms.Label OutputFilePathLabel;
+        private System.Windows.Forms.CheckBox ResultContext;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown MaxEntries;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown ContextSizeCharacters;
     }
 }

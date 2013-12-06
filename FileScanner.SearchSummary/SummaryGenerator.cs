@@ -34,11 +34,95 @@ namespace FileScanner.SearchSummary
             this.dateLastAccess = dateLastAccess;
             this.dateLastModified = dateLastModified;
         }
-
     }
 
-    public class SummaryGenerator: ISummaryGenerator
+    class SummaryGenerator: ISummaryGenerator
     {
+        internal static List<PositionTextPairGroup> GroupMatchPositions(
+                IDictionary<string, IEnumerable<int>> matchPositions,
+                int contextSizeChars)
+        {
+            IEnumerable<PositionTextPair> positionToText =
+                    matchPositions.Select(pair => new List<PositionTextPair>(pair.Value.Select(pos => new PositionTextPair(pos, pair.Key))))
+                                  .Aggregate(new List<PositionTextPair>(), (list, all) => new List<PositionTextPair>(all.Concat(list)))
+                                  .OrderBy(pair => pair.position);
+
+            List<PositionTextPairGroup> groups = new List<PositionTextPairGroup>();
+            foreach (PositionTextPair pair in positionToText)
+            {
+                bool hasMatchingGroup = false;
+
+                foreach (PositionTextPairGroup group in groups)
+                {
+                    if (group.IsWithinRange(pair, contextSizeChars))
+                    {
+                        group.Extend(pair, contextSizeChars);
+                        hasMatchingGroup = true;
+                        break;
+                    }
+                }
+
+                if (!hasMatchingGroup)
+                    groups.Add(new PositionTextPairGroup(pair, contextSizeChars));
+            }
+
+            return groups;
+        }
+
+        internal static void GenerateContext(IDocumentBuilder builder,
+                                             List<PositionTextPairGroup> groups,
+                                             StreamReader _reader)
+        {
+            if (groups.Count == 0)
+                return;
+
+            builder.BeginContextBlock();
+
+            PositionAwareStreamReader reader = new PositionAwareStreamReader(_reader.BaseStream);
+            PositionTextPairGroup prevGroup = null;
+
+            foreach (PositionTextPairGroup group in groups)
+            {
+                char[] textBuf = new char[group.MaxChunkSize];
+                long lastEnd = group.startPosition;
+                int charsRead;
+
+                reader.Seek(group.startPosition);
+
+                if (prevGroup == null)
+                {
+                    if (groups.First().startPosition > 0)
+                        builder.AddContextText("... ");
+                }
+                else if (group.startPosition != prevGroup.endPosition)
+                    builder.AddContextText(" ... ");
+
+
+                foreach (PositionTextPair pair in group.pairs.OrderBy(p => p.position))
+                {
+                    if (pair.position > lastEnd)
+                    {
+                        charsRead = reader.Read(textBuf, 0, (int)(pair.position - lastEnd));
+                        lastEnd += charsRead;
+                        builder.AddContextText(new string(textBuf, 0, charsRead));
+                    }
+                    charsRead = (int)reader.Read(textBuf, 0, pair.text.Length);
+                    lastEnd += charsRead;
+                    builder.AddContextText(new string(textBuf, 0, charsRead), TextStyle.Bold);
+                }
+
+                charsRead = reader.Read(textBuf, 0, (int)Math.Max(0, group.endPosition - lastEnd));
+                builder.AddContextText(new string(textBuf, 0, charsRead));
+
+                prevGroup = group;
+            }
+
+            if (!reader.EndOfStream)
+                builder.AddContextText(" ...");
+
+            builder.EndContextBlock();
+        }
+
         internal void Generate(IDocumentBuilder builder,
                                ReportOptions options,
                                string searchQuery,
@@ -50,10 +134,15 @@ namespace FileScanner.SearchSummary
                                     options.headerHasInputPaths ? inputPaths : null);
 
             builder.AddSectionHeader("Search results");
-            foreach (MatchingFile match in searchResults.OrderByDescending(info => info.accuracy))
+
+            IEnumerable<MatchingFile> sortedResults = searchResults.OrderByDescending(info => info.accuracy);
+            if (options.maxEntries > 0)
+                sortedResults = sortedResults.Take(options.maxEntries);
+
+            foreach (MatchingFile match in sortedResults)
             {
                 SearchResult result = new SearchResult();
-                result.fileName = options.resultHasFileName ? match.fileInfo.Name : null;
+                result.fileName = match.fileInfo.Name;
                 result.fullFilePath = options.resultHasFullFilePath ? match.fileInfo.ToString() : null;
                 result.fileSizeBytes = options.resultHasFileSize ? match.fileInfo.Length : (long?)null;
                 result.dateCreated = options.resultHasCreationTime ? match.fileInfo.CreationTime : (DateTime?)null;
@@ -61,6 +150,12 @@ namespace FileScanner.SearchSummary
                 result.dateLastModified = options.resultHasLastModificationTime ? match.fileInfo.LastWriteTime : (DateTime?)null;
 
                 builder.AddSearchResult(result);
+
+                if (options.resultHasContext)
+                {
+                    List<PositionTextPairGroup> groups = GroupMatchPositions(match.searchResults, options.contextSizeChars);
+                    GenerateContext(builder, groups, match.fileReader);
+                }
             }
 
             builder.AddReportFooter();
@@ -75,7 +170,11 @@ namespace FileScanner.SearchSummary
 
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Generate(new TxtDocumentBuilder(), form.Options, searchQuery, inputPaths, searchResults);
+                ReportOptions options = form.Options;
+                string fileExtension = Path.GetExtension(options.outputFilePath);
+                IDocumentBuilder builder = DocumentBuilderFactory.Create(fileExtension);
+
+                Generate(builder, options, searchQuery, inputPaths, searchResults);
             }
         }
     }

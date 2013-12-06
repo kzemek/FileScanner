@@ -9,7 +9,7 @@ namespace FileScanner.SearchSummary.Tests
     public class TxtDocumentBuilderTest
     {
 
-        TxtDocumentBuilder documentBuilder = new TxtDocumentBuilder();
+        TxtDocumentBuilder documentBuilder;
         
         [TestInitialize]
         public void Setup()
@@ -79,7 +79,7 @@ namespace FileScanner.SearchSummary.Tests
             documentBuilder.AddText("Some Text");
             documentBuilder.Save(filePath);
             var text = File.ReadAllText(filePath);
-            Assert.AreEqual("Some Text\r\n", text);
+            Assert.AreEqual("Some Text", text);
             File.Delete(filePath);   
         }
 

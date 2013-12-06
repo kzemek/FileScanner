@@ -18,9 +18,14 @@ namespace FileScanner.SearchSummary
         public FileInfo fileInfo;
 
         /// <summary>
+        /// A reader that allows reading processed file contents.
+        /// To achieve best results, it should not remove Polish letters nor change captalization.
+        /// </summary>
+        public StreamReader fileReader;
+
+        /// <summary>
         /// Dictionary: phrase => occurrence positions inside the file.
-        /// Positions should be given as absolute positions inside the original (not preprocessed) file.
-        /// Note: occurrence positions will NOT be used in the first iteration.
+        /// Positions should be given as absolute positions inside the preprocessed file.
         /// </summary>
         public IDictionary<string, IEnumerable<int>> searchResults;
 

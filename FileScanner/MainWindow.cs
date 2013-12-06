@@ -11,12 +11,17 @@ using FileScanner.FileParsing;
 using FileScanner.Preprocessing;
 using FileScanner.PatternMatching;
 using System.IO;
+using FileScanner.SearchSummary;
 
 namespace FileScanner
 {
     public partial class MainWindow : Form
     {
         private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
+
+        private string CurrentSearchQuery;
+        private string CurrentFilePath;
+        private IEnumerable<Match> CurrentMatches;
 
         public MainWindow()
         {
@@ -84,7 +89,9 @@ namespace FileScanner
             var matcher = new Matcher(phrases.ToList());
             var matches = matcher.Matches(streamReader);
 
-            resultsTextBox.Text = matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
+            resultsTextBox.Text = matches.Any() ? BuildResults(CurrentMatches) : NoMatchesFoundMessage;
+
+            exportResultsButton.Enabled = matches.Any();
         }
 
 
@@ -106,6 +113,31 @@ namespace FileScanner
         private void loadResultsButton_Click(object sender, EventArgs e)
         {
             // TODO: Load search results
+        }
+
+        private void exportResultsButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentFilePath == null || CurrentSearchQuery == null || CurrentMatches == null || !CurrentMatches.Any())
+            {
+                MessageBox.Show("No results to export!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> inputPaths = new List<string> { CurrentFilePath };
+            List<MatchingFile> searchResults = new List<MatchingFile>();
+            MatchingFile file;
+
+            file.fileInfo = new FileInfo(CurrentFilePath);
+            file.fileReader = FileParser.ParseFile(CurrentFilePath);
+            file.accuracy = searchResults.Count;
+            file.searchResults = CurrentMatches.GroupBy(match => match.Value)
+                                               .ToDictionary(grouping => grouping.Key,
+                                                             grouping => grouping.Select(match => match.Index));
+
+            searchResults.Add(file);
+
+            ISummaryGenerator generator = SummaryGeneratorFactory.Create();
+            generator.Generate(CurrentSearchQuery, inputPaths, searchResults);
         }
 
         private void searchPhraseTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
