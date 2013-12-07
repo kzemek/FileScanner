@@ -13,7 +13,7 @@ namespace FileScanner.SearchSummary
                 new ReadOnlyDictionary<string, Type>(
                     new Dictionary<string, Type> {
                         { ".pdf", typeof(PDFDocumentBuilder) },
-                        //{ ".txt", typeof(TxtDocumentBuilder) },
+                        { ".txt", typeof(TxtDocumentBuilder) },
                     });
 
         public static IEnumerable<string> GetSupportedFormats()

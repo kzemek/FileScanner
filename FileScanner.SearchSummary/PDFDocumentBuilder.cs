@@ -73,7 +73,7 @@ namespace FileScanner.SearchSummary
             document = new Document();
             const bool unicode = true;
             pdfRenderer = new PdfDocumentRenderer(unicode);
-            document.Info.Title = "Raport z wyszukiwania";
+            document.Info.Title = "Search results";
             document.Info.Author = "Zajęcia projektowe z TO grupa 9:30 Wtorek";
             DefineStyles(document);
             pdfRenderer.Document = document;
@@ -84,27 +84,27 @@ namespace FileScanner.SearchSummary
         {
             Paragraph paragraph = section.AddParagraph();
             paragraph.Style = "Heading1";
-            paragraph.AddText("Raport z wyszukiwania");
+            paragraph.AddText("Search Report");
 
             paragraph = section.AddParagraph();
             paragraph.Style = "Heading2";
-            paragraph.AddText("\nGłówne informacje o wyszukiwaniu\n");
+            paragraph.AddText("\nKey information\n");
             
             if (generationTime.HasValue)
             {
-                paragraph = section.AddParagraph("Raport wygenerowano dnia: " + generationTime.Value.ToShortDateString());
+                paragraph = section.AddParagraph("Generation date: " + generationTime.Value.ToShortDateString());
                 paragraph.Style = "Heading3";
             }
 
             if (userQuery != null)
             {
-                paragraph = section.AddParagraph("Wyszukiwane frazy:    " + userQuery);
+                paragraph = section.AddParagraph("Searched phrases:    " + userQuery);
                 paragraph.Style = "Heading3";
             }
 
             if (searchedLocations != null)
             {
-                paragraph = section.AddParagraph("Przeszukiwane lokalizacje:");
+                paragraph = section.AddParagraph("Searched locations:");
                 paragraph.Style = "Heading3";
                 foreach (String location in searchedLocations)
                 {
@@ -119,7 +119,7 @@ namespace FileScanner.SearchSummary
         public void AddReportFooter()
         {
             Paragraph paragraph = section.Footers.Primary.AddParagraph();
-            paragraph.AddText("Technologie Obiektowe II\n" + "Grupa Wtorek 9:30\n" + "Akademia Gorniczo Hutnicza\n");
+            paragraph.AddText("Object-oriented technology II\n" + "Tuesday 9:30\n" + "AGH University of Science and Technology\n");
             paragraph.Format.Font.Size = 9;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
         }
@@ -138,11 +138,11 @@ namespace FileScanner.SearchSummary
             if (!result.Equals(null))
             {
                 content += "\n";
-                content += Append("Ścieżka:\t\t", result.fullFilePath);
-                content += Append("Rozmiar (bajty):\t", result.fileSizeBytes);
-                content += Append("Data utworzenia:\t", result.dateCreated);
-                content += Append("Ostatni dost.:\t", result.dateLastAccess);
-                content += Append("Ostatnia mod.:\t", result.dateLastModified);
+                content += Append("File path:   \t", result.fullFilePath);
+                content += Append("Size (bytes):\t", result.fileSizeBytes);
+                content += Append("Creation date:\t", result.dateCreated);
+                content += Append("Last access:\t", result.dateLastAccess);
+                content += Append("Last mod.:\t", result.dateLastModified);
                 content += "\n";
             }
             section.AddParagraph(content);
@@ -179,7 +179,7 @@ namespace FileScanner.SearchSummary
 
         public void BeginContextBlock()
         {
-            section.AddParagraph("Kontekst:\n\n");
+            section.AddParagraph("Context:\n\n");
             contextParagraph = section.AddParagraph();
             contextParagraph.Style = "TextBox";
         }
