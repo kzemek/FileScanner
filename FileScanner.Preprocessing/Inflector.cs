@@ -15,6 +15,7 @@ namespace FileScanner.Preprocessing
             "a", "i", "e", "e", "a" //e, ę, ą
         };*/
 
+        //class uses polish letters only internally
         private static Dictionary<string, string[]> sufixes = new Dictionary<String, String[]>() 
         {
             {"m1", new string[]{"","a","owi","","em","u","u"}},
@@ -25,10 +26,12 @@ namespace FileScanner.Preprocessing
             {"z4", new string[]{"a","y","e","ę","ą","e","o"}}
         };
 
+        //order of words in dictionary is important
         private static Dictionary<string, string[]> grupyDeklinacyjneM = new Dictionary<String, String[]>() 
         {
-            {"m1", new string[]{"ć","dź","ń","ś","ź","p","b","m","w","l","j"}},
-            {"m2", new string[]{"c","cz","dz","dż","rz","sz","ż"}}
+            {"m3", new string[]{"k","g","ch"}},
+            {"m2", new string[]{"c","cz","dz","dż","rz","sz","ż"}},
+            {"m1", new string[]{"ć","dź","ń","ś","ź","p","b","m","w","l","j"}}
         };
         private static Dictionary<string, string[]> grupyDeklinacyjneZ = new Dictionary<String, String[]> () 
         {
