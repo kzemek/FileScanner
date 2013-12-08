@@ -101,57 +101,57 @@ namespace FileScanner.SearchSummary.Tests
             String filePath = "./result.txt";
             documentBuilder.Save(filePath);
             var text = File.ReadAllText(filePath);
-            Assert.AreEqual(@"
-Search Report
-
-Generation date: 2012-02-02
-Searched phrases:
-    Butelka z piwa
-Searched locations:
-    C:/glowny_folder/troche/dalej
-    C:/jakis/inny/folder
-
--.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,
- )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (
- (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )
-  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'
-
-
-  Plik numer 1
-----------------------------------------
-   * File name:     	Wykopaliska
-   * File path:        	C:/glowny_folder/troche/dalej/FajneWykopaliska.txt
-   * Size (bytes):	10
-   * Creation date:	2011-02-01 00:00:00
-
-  Plik numer 2
-----------------------------------------
-   * File name:     	Wykopaliska
-   * File path:        	C:/glowny_folder/troche/dalej/InneWykopaliska.txt
-   * Size (bytes):	20
-   * Creation date:	2012-01-01 00:00:00
-
-  Plik numer 3
-----------------------------------------
-   * File name:     	Wykopaliska
-   * File path:        	C:/glowny_folder/troche/dalej/JeszczeInneWykopaliska.txt
-   * Size (bytes):	30
-   * Creation date:	2010-01-01 00:00:00
-
-
-
-
-      /'^'\                                  /'^'\
-     ( o o )                                ( o o )
--oOOO--(_)--OOOo------------------------oOOO--(_)--OOOo----
-             	Object-oriented technology II
-                   Tuesday 9:30
-  .oooO         AGH University of Science  oooO
-  (   )   Oooo.       and Technology       (   )   Oooo
----\ (----(  )------------------------------\ (----(  )-----
-    \_)    ) /                               \_)    ) /
-          (_/                                      (_/
-", text);
+            Assert.AreEqual("\r\n" +
+                "Search Report\r\n" +
+                "\r\n" +
+                "Generation date: 2012-02-02\r\n" +
+                "Searched phrases:\r\n" +
+                "    Butelka z piwa\r\n" +
+                "Searched locations:\r\n" +
+                "    C:/glowny_folder/troche/dalej\r\n" +
+                "    C:/jakis/inny/folder\r\n" +
+                "\r\n" +
+                "-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,-.   ,\r\n" +
+                " )  (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (\r\n" +
+                " (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   ) (   )\r\n" +
+                "  `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'   `-'\r\n" +
+                "\r\n" +
+                "\r\n" +
+                "  Plik numer 1\r\n" +
+                "----------------------------------------\r\n" +
+                "   * File name:     \tWykopaliska\r\n" +
+                "   * File path:        \tC:/glowny_folder/troche/dalej/FajneWykopaliska.txt\r\n" +
+                "   * Size (bytes):\t10\r\n" +
+                "   * Creation date:\t2011-02-01 00:00:00\r\n" +
+                "\r\n" +
+                "  Plik numer 2\r\n" +
+                "----------------------------------------\r\n" +
+                "   * File name:     \tWykopaliska\r\n" +
+                "   * File path:        \tC:/glowny_folder/troche/dalej/InneWykopaliska.txt\r\n" +
+                "   * Size (bytes):\t20\r\n" +
+                "   * Creation date:\t2012-01-01 00:00:00\r\n" +
+                "\r\n" +
+                "  Plik numer 3\r\n" +
+                "----------------------------------------\r\n" +
+                "   * File name:     \tWykopaliska\r\n" +
+                "   * File path:        \tC:/glowny_folder/troche/dalej/JeszczeInneWykopaliska.txt\r\n" +
+                "   * Size (bytes):\t30\r\n" +
+                "   * Creation date:\t2010-01-01 00:00:00\r\n" +
+                "\r\n" +
+                "\r\n" +
+                "\r\n" +
+                "\r\n" +
+                @"      /'^'\                                  /'^'\" + "\r\n" +
+                @"     ( o o )                                ( o o )" + "\r\n" +
+                @"-oOOO--(_)--OOOo------------------------oOOO--(_)--OOOo----" + "\r\n" +
+                @"             	Object-oriented technology II" + "\r\n" +
+                @"                   Tuesday 9:30" + "\r\n" +
+                @"  .oooO         AGH University of Science  oooO" + "\r\n" +
+                @"  (   )   Oooo.       and Technology       (   )   Oooo" + "\r\n" +
+                @"---\ (----(  )------------------------------\ (----(  )-----" + "\r\n" +
+                @"    \_)    ) /                               \_)    ) /" + "\r\n" +
+                @"          (_/                                      (_/" + "\r\n",
+                text);
             Console.Write(documentBuilder.content);
             File.Delete(filePath);
         }        
