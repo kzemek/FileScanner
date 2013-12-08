@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FileScanner.PatternMatching
+﻿namespace FileScanner.PatternMatching
 {
     /// <summary>
     /// The Match object represents a single match of a pattern given, in text
