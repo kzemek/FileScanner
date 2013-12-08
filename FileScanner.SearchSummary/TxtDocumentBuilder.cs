@@ -113,16 +113,29 @@ namespace FileScanner.SearchSummary
             writer.Close();
         }
 
-        void IDocumentBuilder.BeginContextBlock()
+
+        public void AddContextText(string text, TextStyle style = TextStyle.Normal)
         {
+
+            if (style == TextStyle.Bold)
+            {
+                content.Append("#" + text + "#");
+            }
+            else
+            {
+                content.Append(text);
+            }
+
         }
 
-        void IDocumentBuilder.EndContextBlock()
+        public void BeginContextBlock()
         {
+            content.Append("\nContext:\n\n");
         }
 
-        void IDocumentBuilder.AddContextText(string text, TextStyle style)
+        public void EndContextBlock()
         {
+            content.Append("\n");
         }
     }
 }
