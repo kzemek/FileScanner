@@ -29,12 +29,12 @@ namespace FileScanner.Preprocessing.Tests
             //new HashSet<string>(){"kot", "kota", "kotu", "kota", "kotem", "kocie"},
             //new HashSet<string>(){"ziemia", "ziemi", "ziemi", "ziemie", "ziemia", "ziemi"},
             //new HashSet<string>(){"pogoda", "pogody", "pogodzie", "pogode", "pogoda", "pogodzie"},
-            //new HashSet<string>(){"droga", "drogi", "drodze", "droge", "droga", "drodze"},
-            //new HashSet<string>(){"stajnia", "stajni", "stajni", "stajnie", "stajni"},//r. żeński, grupa I
+            new HashSet<string>(){"droga", "drogi", "drodze", "droge", "droga", "drodze"},
+            new HashSet<string>(){"stajnia", "stajni", "stajni", "stajnie", "stajni"},//r. żeński, grupa I
             new HashSet<string>(){"sadza", "sadzy", "sadzy", "sadzę", "sadzą", "sadzy", "sadzo"}, //r. żeński, grupa II
-            //new HashSet<string>(){"kurz", "kurzu", "kurzowi", "kurz", "kurzem", "kurzu", "kurzu"}
-            //new HashSet<string>(){"krol","krola","krolowi","krola","krolem","krolu","krolu"}
-            //new HashSet<string>(){"grosz","grosza","groszowi","grosz","groszem","groszu","groszu"}
+            new HashSet<string>(){"kurz", "kurzu", "kurzowi", "kurz", "kurzem", "kurzu", "kurzu"},
+            new HashSet<string>(){"krol","krola","krolowi","krola","krolem","krolu","krolu"}
+            new HashSet<string>(){"grosz","grosza","groszowi","grosz","groszem","groszu","groszu"}
         };
 
         private Inflector inflector;
@@ -63,7 +63,7 @@ namespace FileScanner.Preprocessing.Tests
             }
         }
 
-        [TestMethod]
+        [TestCategory("Preprocessing"), TestMethod]
         public void TestGetVariations()
         {
             var inputWords = getVariationsInstance;
