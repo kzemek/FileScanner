@@ -20,23 +20,23 @@ namespace FileScanner.SearchSummary
                                     String userQuery,
                                     IEnumerable<String> searchedLocations)
         {
-            content.Append("\r\nRaport z wyszukiwania\r\n\r\n");
+            content.Append("\r\nSearch Report\r\n\r\n");
 
             if (generationTime.HasValue)
             {
-                content.Append("Raport został wygenerowany dnia: ")
+                content.Append("Generation date: ")
                        .Append(generationTime.Value.ToShortDateString())
                        .Append("\r\n");
             }
 
             if (userQuery != null)
             {
-                content.Append("Wyszukiwane frazy:\r\n    " + userQuery);
+                content.Append("Searched phrases:\r\n    " + userQuery);
             }
 
             if (searchedLocations != null)
             {
-                content.Append("\r\nPrzeszukiwane lokalizacje:\r\n");
+                content.Append("\r\nSearched locations:\r\n");
                
                 foreach (String location in searchedLocations)
                 {
@@ -73,12 +73,12 @@ namespace FileScanner.SearchSummary
         {
             if (!result.Equals(null))
             {
-                Append("Nazwa:          \t", result.fileName);
-                Append("Ścieżka:        \t", result.fullFilePath);
-                Append("Rozmiar (bajty):\t", result.fileSizeBytes);
-                Append("Data utworzenia:\t", result.dateCreated);
-                Append("Ostatni dost.:  \t", result.dateLastAccess);
-                Append("Ostatnia mod.:  \t", result.dateLastModified);
+                Append("File name:     \t", result.fileName);
+                Append("File path:        \t", result.fullFilePath);
+                Append("Size (bytes):\t", result.fileSizeBytes);
+                Append("Creation date:\t", result.dateCreated);
+                Append("Last access:  \t", result.dateLastAccess);
+                Append("Last mod.:  \t", result.dateLastModified);
                 content.Append("\r\n");
             }
         }
@@ -96,13 +96,13 @@ namespace FileScanner.SearchSummary
 "      /'^'\\                                  /'^'\\" + "\r\n" +
 "     ( o o )                                ( o o )" + "\r\n" +
 "-oOOO--(_)--OOOo------------------------oOOO--(_)--OOOo----" + "\r\n" +
-"             	Technologie Obiektowe II" + "\r\n" +
-"                   Grupa Wtorek 9:30" + "\r\n" +
-"  .oooO       Akademia Gorniczo Hutnicza    oooO" + "\r\n" +
-"  (   )   Oooo.                             (   )   Oooo" + "\r\n" +
+"             	Object-oriented technology II" + "\r\n" +
+"                   Tuesday 9:30" + "\r\n" +
+"  .oooO         AGH University of Science  oooO" + "\r\n" +
+"  (   )   Oooo.       and Technology       (   )   Oooo" + "\r\n" +
 "---\\ (----(  )------------------------------\\ (----(  )-----" + "\r\n" +
-"    \\_)    ) /                               \\_)   ) /" + "\r\n" +
-"          (_/                                     (_/" + "\r\n");
+"    \\_)    ) /                               \\_)    ) /" + "\r\n" +
+"          (_/                                      (_/" + "\r\n");
         }
 
         public void Save(string filePath)

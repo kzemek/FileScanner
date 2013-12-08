@@ -40,6 +40,7 @@
             this.resultsTextBox = new System.Windows.Forms.TextBox();
             this.loadResultsButton = new System.Windows.Forms.Button();
             this.saveResultsButton = new System.Windows.Forms.Button();
+            this.exportResultsButton = new System.Windows.Forms.Button();
             this.searchBox.SuspendLayout();
             this.searchReportBox.SuspendLayout();
             this.SuspendLayout();
