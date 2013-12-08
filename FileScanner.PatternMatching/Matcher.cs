@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace FileScanner.PatternMatching
 {
@@ -17,6 +18,8 @@ namespace FileScanner.PatternMatching
     /// </summary>
     public class Matcher : IMatcher
     {
+        private System.Text.RegularExpressions.Regex _regex;
+
         private List<string> _patterns;
 
         /// <summary>
@@ -30,6 +33,11 @@ namespace FileScanner.PatternMatching
                 throw new ArgumentException("No patterns were given.");
 
             _patterns = patterns;
+
+            // Regex implementation details
+            _patterns.ForEach(p => System.Text.RegularExpressions.Regex.Escape(p));
+            var pattern = "(" + String.Join("|", _patterns) + ")";
+            _regex = new System.Text.RegularExpressions.Regex(pattern);
         }
 
         /// <summary>
@@ -52,8 +60,12 @@ namespace FileScanner.PatternMatching
         /// </returns>
         public bool IsMatch(TextReader reader)
         {
-            var text = reader.ReadToEnd();
-            return _patterns.Any(p => text.Contains(p));
+            string line;
+            while ((line = reader.ReadLine()) != null)
+                if (_regex.IsMatch(line))
+                    return true;
+
+            return false;
         }
 
         /// <summary>
@@ -68,19 +80,18 @@ namespace FileScanner.PatternMatching
         /// </returns>
         public Match Match(TextReader reader)
         {
-            var text = reader.ReadToEnd();
-
-            Match m = null;
-
-            foreach (var p in _patterns)
+            string line;
+            int position = 0;
+            while ((line = reader.ReadLine()) != null)
             {
-                int index = text.IndexOf(p);
-                if (index != -1)
-                    if (m == null || index < m.Index)
-                        m = new Match(index, p);
-            }
+                var match = _regex.Match(line);
+                if (match.Value != string.Empty)
+                    return new Match(match.Index + position, match.Value);
 
-            return m;
+                position += line.Length + Environment.NewLine.Length;
+            }
+            
+            return null;
         }
 
         /// <summary>
@@ -96,21 +107,19 @@ namespace FileScanner.PatternMatching
         /// </returns>
         public IEnumerable<Match> Matches(TextReader reader)
         {
-            var text = reader.ReadToEnd();
+            var matches = new List<Match>();
 
-            var matches = new SortedList<int, string>();
-            foreach (var p in _patterns)
+            string line;
+            int position = 0;
+            while ((line = reader.ReadLine()) != null)
             {
-                for (int index = 0; (index = text.IndexOf(p, index)) != -1; index += p.Count())
-                    if (!matches.ContainsKey(index))
-                        matches.Add(index, p);
+                foreach (System.Text.RegularExpressions.Match match in _regex.Matches(line))
+                    matches.Add(new Match(match.Index + position, match.Value));
+
+                position += line.Length + Environment.NewLine.Length;
             }
 
-            var r = new List<Match>();
-            foreach (var match in matches)
-                r.Add(new Match(match.Key, match.Value));
-
-            return r;
+            return matches;
         }
     }
 }
