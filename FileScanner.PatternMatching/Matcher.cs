@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileScanner.PatternMatching
 {
@@ -17,7 +15,7 @@ namespace FileScanner.PatternMatching
     /// an object implementing IEnumerable containing all of the matches found
     /// in text.
     /// </summary>
-    public class Matcher
+    public class Matcher : IMatcher
     {
         private List<string> _patterns;
 
