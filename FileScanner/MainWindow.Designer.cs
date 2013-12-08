@@ -36,7 +36,6 @@
             this.searchPhraseLabel = new System.Windows.Forms.Label();
             this.searchBox = new System.Windows.Forms.GroupBox();
             this.searchReportBox = new System.Windows.Forms.GroupBox();
-            this.exportResultsButton = new System.Windows.Forms.Button();
             this.resultsTextBox = new System.Windows.Forms.TextBox();
             this.loadResultsButton = new System.Windows.Forms.Button();
             this.saveResultsButton = new System.Windows.Forms.Button();
