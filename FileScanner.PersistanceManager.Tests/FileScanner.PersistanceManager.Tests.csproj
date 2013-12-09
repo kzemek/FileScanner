@@ -56,7 +56,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="HistorySearchTests.cs" />
     <Compile Include="MatchingFileTests.cs" />
     <Compile Include="PersistanceManagerTests.cs" />
     <Compile Include="SearchTests.cs" />
