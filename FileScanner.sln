@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary", "FileScanner.SearchSummary\FileScanner.SearchSummary.csproj", "{79E8173B-4CB0-4D58-96B4-D43270BAA8A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PersistanceManager.Tests", "FileScanner.PersistanceManagerTests1\FileScanner.PersistanceManager.Tests.csproj", "{B6EF7651-0775-41CA-B86C-55446EDC36A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PersistanceManager.Tests", "FileScanner.PersistanceManager.Tests\FileScanner.PersistanceManager.Tests.csproj", "{B6EF7651-0775-41CA-B86C-55446EDC36A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.SearchSummary.Tests", "FileScanner.SearchSummary.Tests\FileScanner.SearchSummary.Tests.csproj", "{086265AB-095D-409C-A2F8-418C08D659D3}"
 EndProject
@@ -27,6 +27,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.PatternMatching
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Preprocessing.Tests", "FileScanner.Preprocessing.Tests\FileScanner.Preprocessing.Tests.csproj", "{7CC2A681-7C33-4766-A338-387356ECE08C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{95895C2B-331C-48C7-9C37-30BA06DDA93D}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

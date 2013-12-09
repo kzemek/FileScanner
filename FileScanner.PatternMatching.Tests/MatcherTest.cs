@@ -87,8 +87,8 @@ namespace FileScanner.PatternMatching.Tests
             // Multiple matches test cases:
             new object[] { new Matcher("p1"),                   "0p1345p18p292" , 
                            new List<Match>(new Match[] { new Match(1, "p1"),  new Match(6, "p1") }) },
-            new object[] { new Matcher("p3", "33"),             "p30p3345p48p291", 
-                           new List<Match>(new Match[] { new Match(0, "p3"),  new Match(3, "p3"),  new Match(4, "33") }) },
+            new object[] { new Matcher("p3", "33"),             "p30p33345p48p291", 
+                           new List<Match>(new Match[] { new Match(0, "p3"),  new Match(3, "p3"),  new Match(5, "33") }) },
             new object[] { new Matcher("p1", "p2", "p3", "p4"), "0p3345p48p290",  
                            new List<Match>(new Match[] { new Match(1, "p3"), new Match(6, "p4"),  new Match(9, "p2") }) }
         };
