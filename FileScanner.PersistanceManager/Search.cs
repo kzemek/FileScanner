@@ -18,10 +18,6 @@ namespace FileScanner.PersistanceManager
 
         public Search(DateTime startTime, DateTime endTime, uint processedFilesCount, IEnumerable<String> phrases, IEnumerable<MatchingFile> matchingFiles)
         {
-            if (phrases == null || matchingFiles == null)
-            {
-                throw new ArgumentNullException(PhrasesOrMatchingFilesNullExceptionMessage);
-            }
             if (startTime.CompareTo(endTime) > 0)
             {
                 throw new ArgumentException(EndTimeEarlierThanStartTimeExceptionMessage);
