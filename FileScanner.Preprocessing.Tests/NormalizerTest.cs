@@ -19,10 +19,12 @@ namespace FileScanner.Preprocessing.Tests
             "lodz", "gzegzolka", "maka", "cma", "reka", "kon", "smiec", "zdzblo"
         };
         private static List<string> getBasicFormInstance = new List<string> {
-            "statkami", "piotrkowi", "programisci", "kacu", "piotrkiem", "marii", "strzalem", "rykiem"
+            "statkami", "piotrkowi", "programisci", "kacu", "piotrkiem", "marii", "strzalem", "rykiem",
+            "markiem i programistami"
         };
         private static List<string> getBasicFormExpected = new List<string> {
-            "statek", "piotrek", "programista", "kac", "piotrek", "maria", "strzal", "ryk"
+            "statek", "piotrek", "programista", "kac", "piotrek", "maria", "strzal", "ryk",
+            "marek i programist"
         };
 
         private Normalizer _normalizer;

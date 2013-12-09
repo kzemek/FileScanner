@@ -67,6 +67,20 @@ namespace FileScanner.Preprocessing
         /// <returns>basic form of the given word</returns>
         public String GetBasicForm(String phrase)
         {
+            String trimmedPhrase = phrase.Trim();
+            if (isSingleWord(trimmedPhrase))
+                return GetBasicFormOfSingleWord(trimmedPhrase);
+            else
+                return GetBasicFormOfPhrase(trimmedPhrase);
+        }
+
+        private bool isSingleWord(String phrase)
+        {
+            return !phrase.Contains(" ") && !phrase.Contains("\n") && !phrase.Contains("\t");
+        }
+        
+        private String GetBasicFormOfSingleWord(String phrase)
+        {
             StringBuilder mutablePhrase = new StringBuilder(phrase);
             bool changed = false;
             foreach (var suffixMapping in suffixWithPalatilizingMappings)
@@ -120,6 +134,21 @@ namespace FileScanner.Preprocessing
                 ReplaceSuffix(mutablePhrase, "rk", "rek");
             else if (mutablePhrase.ToString().EndsWith("tk"))
                 ReplaceSuffix(mutablePhrase, "tk", "tek");
+        }
+
+        private String GetBasicFormOfPhrase(String phrase)
+        {
+            var words = phrase.Split(' ', '\t', '\n');
+            var normalizedWords = words.Select(GetBasicFormOfSingleWord);
+            var accumulatedPhrase = normalizedWords.Aggregate(new StringBuilder(), appendWordToStringBuilder);
+            return accumulatedPhrase.ToString().TrimEnd();
+        }
+
+        private StringBuilder appendWordToStringBuilder(StringBuilder builder, String word)
+        {
+            builder.Append(word);
+            builder.Append(" ");
+            return builder;
         }
     }
 }
