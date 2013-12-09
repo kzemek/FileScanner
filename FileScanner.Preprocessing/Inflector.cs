@@ -13,7 +13,8 @@ namespace FileScanner.Preprocessing
         {
             {"m1", new string[]{"","a","owi","","em","u","u"}},
             {"m2", new string[]{"","a","owi","a","em","u","u"}},
-            {"m3", new string[]{"","a", "a", "owi", "u", "em", "u"}}, //iem
+            {"m3", new string[]{"","a", "owi", "", "em", "u","u"}}, //iem
+            {"m4", new string[]{"","a", "owi", "", "em", "e", "e"}}, //iem
             {"z1", new string[]{"a","i","i","ę","ą","i","o"}},
             {"z2", new string[]{"a","y","ę","o","ą"}},
             {"z3", new string[]{"a","i","e","ę","ą","e","o"}},
