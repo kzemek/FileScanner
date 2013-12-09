@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+
 
 namespace FileScanner
 {
@@ -48,7 +50,7 @@ namespace FileScanner
             MatchingFile file;
 
             file.fileInfo = new FileInfo(searchFile);
-            file.fileReader = FileParser.ParseFile(searchFile);
+            file.fileReader = new StreamReader(searchFile, Encoding.Default);
             file.accuracy = searchResults.Count;
             file.searchResults = matches.GroupBy(match => match.Value)
                                                .ToDictionary(grouping => grouping.Key,
