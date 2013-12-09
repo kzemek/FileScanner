@@ -39,6 +39,11 @@ namespace FileScanner.Preprocessing
         };
         #endregion
 
+        /// <summary>
+        /// Returns a string with Polish characters converted to English ones and all letters converted to lower-case.
+        /// </summary>
+        /// <param name="phrase">input word</param>
+        /// <returns>converted word</returns>
         public String RemovePolishCharacters(String phrase)
         {
             string lowerCasePhrase = phrase.ToLower();
@@ -55,6 +60,11 @@ namespace FileScanner.Preprocessing
                 return c;
         }
 
+        /// <summary>
+        /// Finds the basic form for the given word. For example, returns a singular nominative form if a noun is given.
+        /// </summary>
+        /// <param name="phrase">input word</param>
+        /// <returns>basic form of the given word</returns>
         public String GetBasicForm(String phrase)
         {
             StringBuilder mutablePhrase = new StringBuilder(phrase);
@@ -65,8 +75,8 @@ namespace FileScanner.Preprocessing
                 if (mutablePhrase.ToString().EndsWith(suffix))
                 {
                     string newSuffix = suffixMapping.Value;
-                    replaceSuffix(mutablePhrase, suffix, newSuffix);
-                    removePalatization(mutablePhrase);
+                    ReplaceSuffix(mutablePhrase, suffix, newSuffix);
+                    RemovePalatization(mutablePhrase);
                     changed = true;
                     break;
                 }
@@ -79,23 +89,23 @@ namespace FileScanner.Preprocessing
                     if (mutablePhrase.ToString().EndsWith(suffix))
                     {
                         string newSuffix = suffixMapping.Value;
-                        replaceSuffix(mutablePhrase, suffix, newSuffix);
+                        ReplaceSuffix(mutablePhrase, suffix, newSuffix);
                         break;
                     }
                 }
             }
-            addMissingE(mutablePhrase);
+            AddMissingE(mutablePhrase);
             return mutablePhrase.ToString();
         }
 
-        private void replaceSuffix(StringBuilder mutablePhrase, string suffix, string newSuffix)
+        private void ReplaceSuffix(StringBuilder mutablePhrase, string suffix, string newSuffix)
         {
             int suffixStart = mutablePhrase.ToString().LastIndexOf(suffix);
             mutablePhrase.Remove(suffixStart, suffix.Length);
             mutablePhrase.Append(newSuffix);
         }
 
-        private void removePalatization(StringBuilder mutablePhrase)
+        private void RemovePalatization(StringBuilder mutablePhrase)
         {
             int lastIndex = mutablePhrase.Length - 1;
             if (mutablePhrase[lastIndex] == 'c')
@@ -104,12 +114,12 @@ namespace FileScanner.Preprocessing
                 mutablePhrase.Remove(lastIndex, 1);
         }
 
-        private void addMissingE(StringBuilder mutablePhrase)
+        private void AddMissingE(StringBuilder mutablePhrase)
         {
             if (mutablePhrase.ToString().EndsWith("rk"))
-                replaceSuffix(mutablePhrase, "rk", "rek");
+                ReplaceSuffix(mutablePhrase, "rk", "rek");
             else if (mutablePhrase.ToString().EndsWith("tk"))
-                replaceSuffix(mutablePhrase, "tk", "tek");
+                ReplaceSuffix(mutablePhrase, "tk", "tek");
         }
     }
 }
