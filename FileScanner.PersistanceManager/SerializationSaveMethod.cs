@@ -10,7 +10,7 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    class SerializationSaveMethod: ISaveMethod
+    internal class SerializationSaveMethod : ISaveMethod
     {
         private readonly String _fileName;
 
