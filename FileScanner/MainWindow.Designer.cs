@@ -39,6 +39,7 @@
             this.resultsTextBox = new System.Windows.Forms.TextBox();
             this.loadResultsButton = new System.Windows.Forms.Button();
             this.saveResultsButton = new System.Windows.Forms.Button();
+            this.exportResultsButton = new System.Windows.Forms.Button();
             this.searchBox.SuspendLayout();
             this.searchReportBox.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +73,7 @@
             this.searchFileTextBox.TabIndex = 5;
             this.searchFileTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.searchFileTextbox_MouseClick);
             this.searchFileTextBox.TextChanged += new System.EventHandler(this.searchFileTextbox_TextChanged);
+            this.searchFileTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchFileTextBox_KeyDown);
             // 
             // searchFilePickerButton
             // 
@@ -90,6 +92,7 @@
             this.searchPhraseTextBox.Size = new System.Drawing.Size(488, 20);
             this.searchPhraseTextBox.TabIndex = 5;
             this.searchPhraseTextBox.TextChanged += new System.EventHandler(this.searchPhraseTextBox_TextChanged);
+            this.searchPhraseTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchPhraseTextBox_KeyDown);
             // 
             // searchPhraseLabel
             // 
@@ -117,6 +120,7 @@
             // 
             // searchReportBox
             // 
+            this.searchReportBox.Controls.Add(this.exportResultsButton);
             this.searchReportBox.Controls.Add(this.resultsTextBox);
             this.searchReportBox.Controls.Add(this.loadResultsButton);
             this.searchReportBox.Controls.Add(this.saveResultsButton);
@@ -126,6 +130,17 @@
             this.searchReportBox.TabIndex = 7;
             this.searchReportBox.TabStop = false;
             this.searchReportBox.Text = "Results";
+            // 
+            // exportResultsButton
+            // 
+            this.exportResultsButton.Enabled = false;
+            this.exportResultsButton.Location = new System.Drawing.Point(9, 299);
+            this.exportResultsButton.Name = "exportResultsButton";
+            this.exportResultsButton.Size = new System.Drawing.Size(73, 23);
+            this.exportResultsButton.TabIndex = 3;
+            this.exportResultsButton.Text = "Export";
+            this.exportResultsButton.UseVisualStyleBackColor = true;
+            this.exportResultsButton.Click += new System.EventHandler(this.exportResultsButton_Click);
             // 
             // resultsTextBox
             // 
@@ -156,7 +171,7 @@
             this.saveResultsButton.UseVisualStyleBackColor = true;
             this.saveResultsButton.Click += new System.EventHandler(this.saveResultsButton_Click);
             // 
-            // FileScanner
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -165,12 +180,13 @@
             this.Controls.Add(this.searchBox);
             this.MaximumSize = new System.Drawing.Size(623, 501);
             this.MinimumSize = new System.Drawing.Size(623, 501);
-            this.Name = "FileScanner";
+            this.Name = "MainWindow";
             this.Text = "File Scanner";
             this.searchBox.ResumeLayout(false);
             this.searchBox.PerformLayout();
             this.searchReportBox.ResumeLayout(false);
             this.searchReportBox.PerformLayout();
+            this.ActiveControl = searchPhraseTextBox;
             this.ResumeLayout(false);
 
         }
@@ -188,6 +204,7 @@
         private System.Windows.Forms.Button saveResultsButton;
         private System.Windows.Forms.TextBox resultsTextBox;
         private System.Windows.Forms.Button loadResultsButton;
+        private System.Windows.Forms.Button exportResultsButton;
     }
 }
 

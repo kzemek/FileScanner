@@ -7,17 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FileScanner.FileParsing;
-using FileScanner.Preprocessing;
-using FileScanner.PatternMatching;
-using System.IO;
 
 namespace FileScanner
 {
     public partial class MainWindow : Form
     {
-        private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
-
+        private Search search;
         public MainWindow()
         {
             InitializeComponent();
@@ -41,25 +36,7 @@ namespace FileScanner
             return !string.IsNullOrEmpty(searchPhraseTextBox.Text) && !string.IsNullOrEmpty(searchFileTextBox.Text);
         }
 
-        /// <summary>
-        /// Generates human-readable format of matches.
-        /// </summary>
-        /// <param name="matches"></param>
-        /// <returns>String of matches in format "Match.Index Match.Value", one match per line</returns>
-        private string BuildResults(IEnumerable<Match> matches)
-        {
-            var sb = new StringBuilder();
-
-            foreach (var m in matches)
-            {
-                sb.Append(m.Index).Append(' ').Append(m.Value).AppendLine();
-            }
-
-            return sb.ToString();
-        }
-
         #endregion
-
 
         #region Events
 
@@ -78,17 +55,13 @@ namespace FileScanner
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            var streamReader = FileParser.ParseFile(searchFileTextBox.Text);
-            var preprocessor = new Preprocessor();
-            var phrases = preprocessor.GetNormalizedPhrase(searchPhraseTextBox.Text);
+            search = new Search(searchFileTextBox.Text, searchPhraseTextBox.Text);
+            resultsTextBox.Text = search.SearchResult();
 
-            var matcher = new Matcher(phrases);
-            var matches = matcher.Matches(streamReader);
-
-            resultsTextBox.Text = matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
+            exportResultsButton.Enabled = search.IsMatch();
         }
 
-
+        // TODO: czy tych dwóch funkcji nie możnaby złączyć w jedną? np. searchTextBoxes_TextChanged(...)
         private void searchPhraseTextBox_TextChanged(object sender, EventArgs e)
         {
             searchButton.Enabled = IsSearchDataProvided();
@@ -107,6 +80,27 @@ namespace FileScanner
         private void loadResultsButton_Click(object sender, EventArgs e)
         {
             // TODO: Load search results
+        }
+
+        private void exportResultsButton_Click(object sender, EventArgs e)
+        {
+            search.ExportResults();
+        }
+
+        private void searchPhraseTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                if (IsSearchDataProvided()) this.searchButton.PerformClick();
+                else
+                    this.ActiveControl = searchFileTextBox;
+        }
+
+        private void searchFileTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) 
+                if (IsSearchDataProvided()) this.searchButton.PerformClick();
+                else
+                    this.ActiveControl = searchPhraseTextBox;
         }
 
         #endregion
