@@ -63,6 +63,8 @@
     <Compile Include="SummaryGeneratorTest.cs" />
     <Compile Include="PDFDocumentBuilderTest.cs" />
     <Compile Include="DocumentBuilderFactoryTest.cs" />
+    <Compile Include="PositionTextPairGroupTest.cs" />
+    <Compile Include="PositionTextPairTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileScanner.SearchSummary\FileScanner.SearchSummary.csproj">
