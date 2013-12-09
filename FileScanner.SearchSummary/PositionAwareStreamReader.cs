@@ -11,8 +11,8 @@ namespace FileScanner.SearchSummary
     {
         public long Position { get; private set; }
 
-        public PositionAwareStreamReader(Stream stream):
-            base(stream)
+        public PositionAwareStreamReader(Stream stream, Encoding encoding):
+            base(stream, encoding)
         {
             Position = 0;
         }
@@ -22,6 +22,16 @@ namespace FileScanner.SearchSummary
             int bytesRead = base.Read(buffer, offset, count);
             Position += bytesRead;
             return bytesRead;
+        }
+
+        public override int Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ReadToEnd()
+        {
+            throw new NotImplementedException();
         }
 
         public void Seek(long position)

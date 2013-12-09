@@ -78,7 +78,7 @@ namespace FileScanner.SearchSummary
 
             builder.BeginContextBlock();
 
-            PositionAwareStreamReader reader = new PositionAwareStreamReader(_reader.BaseStream);
+            PositionAwareStreamReader reader = new PositionAwareStreamReader(_reader.BaseStream, _reader.CurrentEncoding);
             PositionTextPairGroup prevGroup = null;
 
             foreach (PositionTextPairGroup group in groups)
