@@ -4,71 +4,59 @@ using System.Data;
 
 namespace FileScanner.PersistanceManager.Interfaces
 {
-
     /// <summary>
     /// Defines methods for interacting with an SQL database.
     /// Based on: http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
     /// </summary>
-
     public interface ISQLDatabase
     {
         /// <summary>
-        ///     Allows the programmer to run a query against the Database.
+        /// Allows the programmer to run a query against the database.
         /// </summary>
-        /// <param name="sql">The SQL to run</param>
-        /// <returns>A DataTable containing the result set.</returns>
-        DataTable GetDataTable(string sql);
+        /// <param name="sqlQuery">The query to run</param>
+        /// <returns>The result set.</returns>
+        DataTable GetDataTable(string sqlQuery);
 
         /// <summary>
-        ///     Allows the programmer to interact with the database for purposes other than a query.
+        /// Allows the programmer to interact with the database for purposes other than a query.
         /// </summary>
-        /// <param name="sql">The SQL to be run.</param>
-        /// <returns>An Integer containing the number of rows updated.</returns>
-        int ExecuteNonQuery(string sql);
+        /// <param name="sqlQuery">The query to run.</param>
+        /// <returns>Number of rows updated.</returns>
+        int ExecuteNonQuery(string sqlQuery);
 
         /// <summary>
-        ///     Allows the programmer to retrieve single items from the DB.
+        /// Allows the programmer to retrieve single items from the database.
         /// </summary>
-        /// <param name="sql">The query to run.</param>
-        /// <returns>A string.</returns>
-        string ExecuteScalar(string sql);
+        /// <param name="sqlQuery">The query to run.</param>
+        /// <returns>The result.</returns>
+        string ExecuteScalar(string sqlQuery);
 
         /// <summary>
-        ///     Allows the programmer to easily update rows in the DB.
+        /// Allows the programmer to insert into the database.
+        /// </summary>
+        /// <param name="tableName">The table to insert the data into.</param>
+        /// <param name="dataSet">A dictionary containing the column names and data for the insert.</param>
+        void Insert(String tableName, Dictionary<String, String> dataSet);
+
+        /// <summary>
+        /// Allows the programmer to update rows in the database.
         /// </summary>
         /// <param name="tableName">The table to update.</param>
-        /// <param name="data">A dictionary containing Column names and their new values.</param>
+        /// <param name="dataSet">A dictionary containing column names and their new values.</param>
         /// <param name="where">The where clause for the update statement.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        void Update(String tableName, Dictionary<String, String> data, String where);
+        void Update(String tableName, Dictionary<String, String> dataSet, String where);
 
         /// <summary>
-        ///     Allows the programmer to easily delete rows from the DB.
+        /// Allows the programmer to delete rows from the database.
         /// </summary>
-        /// <param name="tableName">The table from which to delete.</param>
+        /// <param name="tableName">The table to delete from.</param>
         /// <param name="where">The where clause for the delete.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
         void Delete(String tableName, String where);
 
         /// <summary>
-        ///     Allows the programmer to easily insert into the DB
-        /// </summary>
-        /// <param name="tableName">The table into which we insert the data.</param>
-        /// <param name="data">A dictionary containing the column names and data for the insert.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        void Insert(String tableName, Dictionary<String, String> data);
-
-        /// <summary>
-        ///     Allows the programmer to easily delete all data from the DB.
-        /// </summary>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        void ClearDB();
-
-        /// <summary>
-        ///     Allows the user to easily clear all data from a specific table.
+        /// Allows the programmer to clear all data from a table.
         /// </summary>
         /// <param name="table">The name of the table to clear.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
         void ClearTable(String table);
     }
 }
