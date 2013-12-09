@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
-    public class ParseMode
+    public static class ParseMode
     {
         /// <summary>
         /// Factory method which allows reading files without making any changes. 

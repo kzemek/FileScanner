@@ -22,7 +22,12 @@ namespace FileScanner.FileParsing.Tests
                 sw.WriteLine(s);
             sw.Close();
 
-            StreamReader sr = FileParser.ParseFile(filePath, Encoding.UTF8);
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
+            {
+                Encoding = Encoding.UTF8
+            };
+            IFileParser fileParser= fileParserBuilder.Create();
+            StreamReader sr = fileParser.ParseFile();
 
             int i = 0;
             while(!sr.EndOfStream)
@@ -42,7 +47,13 @@ namespace FileScanner.FileParsing.Tests
                 sw.WriteLine(s);
             sw.Close();
 
-            StreamReader sr = FileParser.ParseFile(filePath, ParseMode.ReplaceNonASCII(), Encoding.UTF8);
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
+            {
+                Encoding = Encoding.UTF8,
+                ParseMode = ParseMode.ReplaceNonASCII()
+            };
+            IFileParser fileParser = fileParserBuilder.Create();
+            StreamReader sr = fileParser.ParseFile();
 
             int i = 0;
             while (!sr.EndOfStream)
@@ -62,7 +73,13 @@ namespace FileScanner.FileParsing.Tests
                 sw.WriteLine(s);
             sw.Close();
 
-            StreamReader sr = FileParser.ParseFile(filePath, ParseMode.ReplaceCapitalLetters(), Encoding.UTF8);
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
+            {
+                Encoding = Encoding.UTF8,
+                ParseMode = ParseMode.ReplaceCapitalLetters()
+            };
+            IFileParser fileParser = fileParserBuilder.Create();
+            StreamReader sr = fileParser.ParseFile();
 
             int i = 0;
             while (!sr.EndOfStream)

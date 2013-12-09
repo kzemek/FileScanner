@@ -27,7 +27,13 @@ namespace FileScanner
 
         public string SearchResult()
         {
-            var streamReader = FileParser.ParseFile(searchFile, ParseMode.ReplaceCapitalLetters().ReplaceNonASCII());
+            FileParserBuilder fileParserFactory = new FileParserBuilder(searchFile)
+            {
+                ParseMode = ParseMode.ReplaceCapitalLetters().ReplaceNonASCII()
+            };
+            IFileParser fileParser = fileParserFactory.Create();
+
+            var streamReader = fileParser.ParseFile();
             var preprocessor = new PreprocessorFactory().GetIPreprocessor();
             var phrases = preprocessor.GetVariations(preprocessor.GetNormalizedPhrase(searchPhrase));
             var matcher = new Matcher(phrases.ToList());
@@ -47,8 +53,11 @@ namespace FileScanner
             List<MatchingFile> searchResults = new List<MatchingFile>();
             MatchingFile file;
 
+            FileParserBuilder fileParserFactory = new FileParserBuilder(searchFile);
+            IFileParser fileParser = fileParserFactory.Create();
+
             file.fileInfo = new FileInfo(searchFile);
-            file.fileReader = FileParser.ParseFile(searchFile);
+            file.fileReader = fileParser.ParseFile();
             file.accuracy = searchResults.Count;
             file.searchResults = matches.GroupBy(match => match.Value)
                                                .ToDictionary(grouping => grouping.Key,
