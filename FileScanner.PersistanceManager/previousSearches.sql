@@ -29,8 +29,8 @@ CREATE TABLE matches (
 );
 
 
--- Table: phrases 
-CREATE TABLE [phrases ] ( 
+-- Table: phrases
+CREATE TABLE phrases ( 
     search_id INTEGER         REFERENCES searches ( search_id ),
     phrase_id INTEGER         PRIMARY KEY,
     phrase    VARCHAR( 256 ) 

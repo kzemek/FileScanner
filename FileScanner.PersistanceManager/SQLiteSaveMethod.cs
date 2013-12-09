@@ -26,8 +26,8 @@ namespace FileScanner.PersistanceManager
         {
             var searchData = new Dictionary<string, string>
             {
-                {"startTime", search.StartTime.ToString(CultureInfo.InvariantCulture)},
-                {"endTime", search.EndTime.ToString(CultureInfo.InvariantCulture)},
+                {"startTime", search.StartTime.Ticks.ToString()},
+                {"endTime", search.EndTime.Ticks.ToString()},
                 {"processedFilesCount", search.ProcessedFilesCount.ToString(CultureInfo.InvariantCulture)}
             };
             _sqLiteDatabase.Insert("[searches]", searchData);
@@ -60,7 +60,7 @@ namespace FileScanner.PersistanceManager
                     var matchData = new Dictionary<string, string>
                     {
                         {"file_id", fileID.ToString(CultureInfo.InvariantCulture)},
-                        {"index", match.Index.ToString(CultureInfo.InvariantCulture)},
+                        {"[index]", match.Index.ToString(CultureInfo.InvariantCulture)},
                         {"value", match.Value},
                     };
                     _sqLiteDatabase.Insert("[matches]", matchData);

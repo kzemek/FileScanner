@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Runtime.Serialization;
 using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
 
@@ -18,8 +17,8 @@ namespace FileScanner.PersistanceManager
 
         public HistorySearch(DataRow row, ISQLDatabase database)
         {
-            StartTime = Convert.ToDateTime(row["startTime"]);
-            EndTime = Convert.ToDateTime(row["endTime"]);
+            StartTime = new DateTime(long.Parse(row["startTime"].ToString()));
+            EndTime = new DateTime(long.Parse(row["endTime"].ToString()));
             ProcessedFilesCount = uint.Parse(row["processedFilesCount"].ToString());
             _id = int.Parse(row["search_id"].ToString());
             _database = database;
