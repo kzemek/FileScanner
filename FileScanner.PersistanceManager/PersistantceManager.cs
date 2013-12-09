@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
 using System.Linq;
-using FileScanner.PatternMatching;
 using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
