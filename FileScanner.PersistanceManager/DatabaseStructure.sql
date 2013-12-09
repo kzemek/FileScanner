@@ -28,6 +28,6 @@ CREATE TABLE matches (
 -- Table: phrases
 CREATE TABLE phrases ( 
     search_id INTEGER         REFERENCES searches ( search_id ),
-    phrase_id INTEGER         PRIMARY KEY,
+    phrase_id INTEGER         PRIMARY KEY AUTOINCREMENT,
     phrase    VARCHAR( 256 ) 
 );

@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractSearch.cs" />
     <Compile Include="HistorySearch.cs" />
     <Compile Include="Interfaces\ISaveMethod.cs" />
     <Compile Include="Interfaces\ISQLDatabase.cs" />
