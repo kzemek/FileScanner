@@ -31,7 +31,7 @@ namespace FileScanner.PersistanceManager
                 {"processedFilesCount", search.ProcessedFilesCount.ToString(CultureInfo.InvariantCulture)}
             };
             _sqLiteDatabase.Insert("[searches]", searchData);
-            int searchID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT last_insert_rowid()"));
+            int searchID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT seq FROM sqlite_sequence where name=\"searches\""));
 
             foreach (string phrase in search.Phrases)
             {
@@ -53,7 +53,7 @@ namespace FileScanner.PersistanceManager
                     {"sizeInBytes", file.SizeInBytes.ToString(CultureInfo.InvariantCulture)}
                 };
                 _sqLiteDatabase.Insert("[files]", fileData);
-                int fileID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT last_insert_rowid()"));
+                int fileID = int.Parse(_sqLiteDatabase.ExecuteScalar("SELECT seq FROM sqlite_sequence where name=\"files\""));
 
                 foreach (Match match in file.Matches)
                 {
