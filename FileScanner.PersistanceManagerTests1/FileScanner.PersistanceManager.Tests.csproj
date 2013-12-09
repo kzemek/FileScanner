@@ -6,8 +6,8 @@
     <ProjectGuid>{B6EF7651-0775-41CA-B86C-55446EDC36A3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileScanner.PersistanceManagerTests1</RootNamespace>
-    <AssemblyName>FileScanner.PersistanceManagerTests1</AssemblyName>
+    <RootNamespace>FileScanner.PersistanceManager.Tests</RootNamespace>
+    <AssemblyName>FileScanner.PersistanceManager.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.1.1311.0615\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -52,7 +53,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="HistorySearchTests.cs" />
+    <Compile Include="MatchingFileTests.cs" />
     <Compile Include="PersistanceManagerTests.cs" />
+    <Compile Include="SearchTests.cs" />
+    <Compile Include="SqLiteDatabaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
