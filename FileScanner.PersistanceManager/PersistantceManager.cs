@@ -8,7 +8,7 @@ namespace FileScanner.PersistanceManager
     public class PersistanceManager : IPersistanceManager
     {
 
-        private ISaveMethod GetSaveMethod (String fileName)
+        private ISaveMethod GetSaveMethod(String fileName)
         {
             if (fileName.EndsWith(".s3db"))
             {

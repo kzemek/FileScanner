@@ -19,7 +19,7 @@ namespace FileScanner.PersistanceManager
 
         public SqLiteSaveMethod(String fileName)
         {
-            _sqLiteDatabase = new SqLiteDatabase(fileName);
+            _sqLiteDatabase = new SqLiteDatabase(fileName, "DatabaseStructure.sql");
         }
 
         public void Save(ISearch search)

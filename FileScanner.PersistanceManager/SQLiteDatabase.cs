@@ -88,29 +88,5 @@ namespace FileScanner.PersistanceManager
             values = values.Substring(0, values.Length - 1);
             ExecuteNonQuery(String.Format("insert into {0}({1}) values({2});", tableName, columns, values));
         }
-
-        public void Update(String tableName, Dictionary<String, String> dataSet, String where)
-        {
-            String dataSetString = "";
-            if (dataSet.Count >= 1)
-            {
-                foreach (var item in dataSet)
-                {
-                    dataSetString += String.Format(" {0} = '{1}',", item.Key, item.Value);
-                }
-                dataSetString = dataSetString.Substring(0, dataSetString.Length - 1);
-            }
-            ExecuteNonQuery(String.Format("update {0} set {1} where {2};", tableName, dataSetString, where));
-        }
-
-        public void Delete(String tableName, String where)
-        {
-            ExecuteNonQuery(String.Format("delete from {0} where {1};", tableName, where));
-        }
-
-        public void ClearTable(String table)
-        {
-            ExecuteNonQuery(String.Format("delete from {0};", table));
-        }
     }
 }
