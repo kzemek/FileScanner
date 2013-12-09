@@ -29,11 +29,11 @@ namespace FileScanner
 
         public string SearchResult()
         {
-            FileParserBuilder fileParserFactory = new FileParserBuilder(searchFile)
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(searchFile)
             {
                 ParseMode = ParseMode.ReplaceCapitalLetters().ReplaceNonASCII()
             };
-            IFileParser fileParser = fileParserFactory.Create();
+            IFileParser fileParser = fileParserBuilder.Create();
 
             var streamReader = fileParser.ParseFile();
             var preprocessor = new PreprocessorFactory().GetIPreprocessor();
@@ -55,8 +55,8 @@ namespace FileScanner
             List<MatchingFile> searchResults = new List<MatchingFile>();
             MatchingFile file;
 
-            FileParserBuilder fileParserFactory = new FileParserBuilder(searchFile);
-            IFileParser fileParser = fileParserFactory.Create();
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(searchFile);
+            IFileParser fileParser = fileParserBuilder.Create();
 
             file.fileInfo = new FileInfo(searchFile);
             file.fileReader = fileParser.ParseFile();
