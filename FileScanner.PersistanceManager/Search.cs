@@ -7,7 +7,6 @@ namespace FileScanner.PersistanceManager
 {
     internal class Search : ISearch
     {
-        public const string PhrasesOrMatchingFilesNullExceptionMessage = "Given phrases list or matching files list had the value 'null' where an object reference was required.";
         public const string EndTimeEarlierThanStartTimeExceptionMessage = "Given end time was earlier than start time.";
 
         public DateTime StartTime { get; private set; }

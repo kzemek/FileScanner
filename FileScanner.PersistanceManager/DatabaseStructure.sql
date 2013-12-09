@@ -1,12 +1,10 @@
-
 -- Table: searches
 CREATE TABLE searches ( 
     search_id           INTEGER  PRIMARY KEY AUTOINCREMENT,
-    startTime           DATETIME,
-    endTime             DATETIME,
+    startTime           BIGINT,
+    endTime             BIGINT,
     processedFilesCount INTEGER 
 );
-
 
 -- Table: files
 CREATE TABLE files ( 
@@ -19,7 +17,6 @@ CREATE TABLE files (
                                                                   ON UPDATE CASCADE 
 );
 
-
 -- Table: matches
 CREATE TABLE matches ( 
     file_id  INTEGER         REFERENCES files ( file_id ),
@@ -28,11 +25,9 @@ CREATE TABLE matches (
     match_id INTEGER         PRIMARY KEY AUTOINCREMENT 
 );
 
-
 -- Table: phrases
 CREATE TABLE phrases ( 
     search_id INTEGER         REFERENCES searches ( search_id ),
     phrase_id INTEGER         PRIMARY KEY,
     phrase    VARCHAR( 256 ) 
 );
-

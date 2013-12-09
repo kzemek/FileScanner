@@ -7,8 +7,6 @@ namespace FileScanner.PersistanceManager.Interfaces
     {
         void SaveSearch(ISearch search, String fileName);
         ICollection<ISearch> GetFullHistory(String fileName);
-
         ISearch GetLastSearch(String fileName);
-
     }
 }

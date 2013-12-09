@@ -4,10 +4,10 @@ using NUnit.Framework;
 
 namespace FileScanner.PersistanceManager.Tests
 {
-    [TestFixture]
+    [TestFixture()]
     public class SearchTests
     {
-        [Test]
+        [Test()]
         [ExpectedException(typeof(ArgumentException),
             ExpectedMessage = Search.EndTimeEarlierThanStartTimeExceptionMessage)]
         public void Constructor_GivenEndTimeEarlierThanStartTime_ThrowsArgumentException()
