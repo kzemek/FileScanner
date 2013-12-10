@@ -89,13 +89,5 @@ namespace FileScanner.PersistanceManager
         {
             return GetFullHistory().Last();
         }
-
-        private class InvalidExtensionException : Exception
-        {
-            public InvalidExtensionException(string message)
-                : base(message)
-            {
-            }
-        }
     }
 }
