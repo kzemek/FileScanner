@@ -107,7 +107,7 @@ namespace FileScanner
             {
                 accuracy = 0,
                 fileInfo = new FileInfo(_searchFile),
-                fileReader = GetParsedFileStream(ParseMode.Default()),
+                fileReader = new StreamReader(_searchFile,Encoding.Default),
                 searchResults = _matches.GroupBy(m => m.Value).ToDictionary(g => g.Key, g => g.Select(m => m.Index))
             };
 
