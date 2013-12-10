@@ -5,7 +5,7 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    internal class Search : AbstractSearch
+    public class Search : AbstractSearch
     {
         public const string EndTimeEarlierThanStartTimeExceptionMessage = "Given end time was earlier than start time.";
 
