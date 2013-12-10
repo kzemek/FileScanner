@@ -60,9 +60,8 @@
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="Interfaces\ISearch.cs" />
     <Compile Include="Interfaces\IPersistanceManager.cs" />
-    <Compile Include="PersistantceManager.cs" />
+    <Compile Include="SqLitePersistantceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQLiteSaveMethod.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileScanner.PatternMatching\FileScanner.PatternMatching.csproj">

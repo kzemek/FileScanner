@@ -10,12 +10,14 @@ namespace FileScanner.PersistanceManager.Tests
     [TestFixture]
     public class PersistanceManagerTests
     {
-        private readonly PersistanceManager _persistenceManager = new PersistanceManager();
+        private const string TestDatabaseFileName = "TestDatabase.s3db";
+        private readonly SqLitePersistanceManager _persistenceManager = new SqLitePersistanceManager(TestDatabaseFileName);
 
         [Test]
         public void SaveSearch_SavesSearchInDatabase_GetLastSearch_GetsItBack()
         {
-            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + "TestDatabase.s3db";
+            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + TestDatabaseFileName;
+            _persistenceManager.FileName = testDatabaseFileName;
 
             string[] phrases = {"Ala", "ma", "kota"};
             Match[] file1Matches = {new Match(10, "Ala"), new Match(20, "kota"), new Match(30, "kota")};
@@ -23,8 +25,8 @@ namespace FileScanner.PersistanceManager.Tests
             MatchingFile[] matchingFiles = {new MatchingFile("plik1.txt", "C:/plik1.txt", 123, file1Matches), new MatchingFile("plik2.txt", "C:/plik2.txt", 123, file2Matches)};
             var savedSearch = new Search(DateTime.Now, DateTime.Now.AddMinutes(1.0), 123, phrases, matchingFiles);
 
-            _persistenceManager.SaveSearch(savedSearch, testDatabaseFileName);
-            var loadedSearch = _persistenceManager.GetLastSearch(testDatabaseFileName);
+            _persistenceManager.SaveSearch(savedSearch);
+            var loadedSearch = _persistenceManager.GetLastSearch();
 
             Assert.AreEqual(savedSearch, loadedSearch);
         }
@@ -32,7 +34,7 @@ namespace FileScanner.PersistanceManager.Tests
         [Test]
         public void SaveSearch_SavesSearchesInNewDatabaseFile_GetFullHistory_GetsSearchesBack()
         {
-            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + "TestDatabase.s3db";
+            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + TestDatabaseFileName;
 
             if (File.Exists(testDatabaseFileName))
             {
@@ -69,12 +71,12 @@ namespace FileScanner.PersistanceManager.Tests
                 savedSearches.AddLast(savedSearch);
             }
 
+            _persistenceManager.FileName = testDatabaseFileName;
             foreach (var search in savedSearches)
             {
-                _persistenceManager.SaveSearch(search, testDatabaseFileName);
+                _persistenceManager.SaveSearch(search);
             }
-
-            var sth = _persistenceManager.GetFullHistory(testDatabaseFileName);
+            var sth = _persistenceManager.GetFullHistory();
 
             Assert.That(savedSearches.SequenceEqual(sth));
         }

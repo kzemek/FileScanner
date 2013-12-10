@@ -8,21 +8,30 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    internal class SqLiteSaveMethod : ISaveMethod
+    public class SqLitePersistanceManager : IPersistanceManager
     {
-        private readonly ISQLDatabase _sqLiteDatabase;
+        private string _fileName;
+        private ISQLDatabase _sqLiteDatabase;
 
-        public SqLiteSaveMethod(ISQLDatabase sqLiteDatabase)
+        public string FileName
         {
-            _sqLiteDatabase = sqLiteDatabase;
+            get
+            {
+                return _fileName;
+            }
+            set
+            {
+                _fileName = value;
+                _sqLiteDatabase = new SqLiteDatabase(_fileName, "DatabaseStructure.sql");
+            }
         }
 
-        public SqLiteSaveMethod(String fileName)
+        public SqLitePersistanceManager(string fileName)
         {
-            _sqLiteDatabase = new SqLiteDatabase(fileName, "DatabaseStructure.sql");
+            this.FileName = fileName;
         }
 
-        public void Save(ISearch search)
+        public void SaveSearch(ISearch search)
         {
             var searchData = new Dictionary<string, string>
             {
@@ -74,6 +83,19 @@ namespace FileScanner.PersistanceManager
             return
                 (from DataRow row in dataTable.Rows select new HistorySearch(row, _sqLiteDatabase)).Cast<ISearch>()
                     .ToList();
+        }
+
+        public ISearch GetLastSearch()
+        {
+            return GetFullHistory().Last();
+        }
+
+        private class InvalidExtensionException : Exception
+        {
+            public InvalidExtensionException(string message)
+                : base(message)
+            {
+            }
         }
     }
 }
