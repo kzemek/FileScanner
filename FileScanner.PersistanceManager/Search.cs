@@ -5,7 +5,7 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    internal class Search : ISearch
+    public class Search : ISearch
     {
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }

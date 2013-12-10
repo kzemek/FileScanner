@@ -16,60 +16,112 @@ namespace FileScanner
     public class Search
     {
         private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
+        private readonly IParseMode DefaultParseMode = ParseMode.ReplaceCapitalLetters().ReplaceNonASCII();
 
-        private string searchFile;
-        private string searchPhrase;
-        private IEnumerable<Match> matches;
+        private string _searchFile;
+        private string _searchPhrase;
+        private IEnumerable<Match> _matches;
 
         public Search(string searchFile, string searchPhrase)
         {
-            this.searchFile = searchFile;
-            this.searchPhrase = searchPhrase;
+            this._searchFile = searchFile;
+            this._searchPhrase = searchPhrase;
         }
+
 
         public string SearchResult()
         {
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(searchFile)
-            {
-                ParseMode = ParseMode.ReplaceCapitalLetters().ReplaceNonASCII()
-            };
-            IFileParser fileParser = fileParserBuilder.Create();
+            var searchStartDate = DateTime.Now;
 
-            var streamReader = fileParser.ParseFile();
-            var preprocessor = new PreprocessorFactory().GetIPreprocessor();
-            var phrases = preprocessor.GetVariations(preprocessor.GetNormalizedPhrase(searchPhrase));
-            var matcher = new Matcher(phrases.ToList());
-            matches = matcher.Matches(streamReader);
+            var streamReader = GetParsedFileStream(DefaultParseMode);
+            var phrases = GetPhrases();
 
-            return matches.Any() ? BuildResults(matches) : NoMatchesFoundMessage;
+            FindMatches(streamReader, phrases);
+            PersistResults(searchStartDate, phrases);
+
+            return _matches.Any() ? BuildResults(_matches) : NoMatchesFoundMessage;
         }
+
+
+        private StreamReader GetParsedFileStream(IParseMode parseMode)
+        {
+            var fileParserBuilder = new FileParserBuilder(_searchFile);
+            fileParserBuilder.ParseMode = parseMode;
+
+            var fileParser = fileParserBuilder.Create();
+            var streamReader = fileParser.ParseFile();
+
+            return streamReader;
+        }
+
+
+        private IEnumerable<string> GetPhrases()
+        {
+            var preprocessor = new PreprocessorFactory().GetIPreprocessor();
+            var phrases = preprocessor.GetVariations(preprocessor.GetNormalizedPhrase(_searchPhrase));
+
+            return phrases;
+        }
+
+
+        private void FindMatches(StreamReader streamReader, IEnumerable<string> phrases)
+        {
+            var matcher = new Matcher(phrases.ToList());
+            _matches = matcher.Matches(streamReader);
+        }
+
+
+        private void PersistResults(DateTime startDate, IEnumerable<string> phrases)
+        {
+            var matchingFile = new PersistanceManager.MatchingFile(_searchFile, _searchPhrase, 0, _matches);
+            var matchingFiles = new List<PersistanceManager.MatchingFile>() { matchingFile };
+            var processedFilesCount = 1;
+
+            var storedSearch = new PersistanceManager.Search(startDate, DateTime.Now, processedFilesCount, phrases, matchingFiles);
+            var persistanceManager = new PersistanceManager.PersistanceManager();
+
+            persistanceManager.SaveSearch(storedSearch);
+        }
+
 
         public bool IsMatch()
         {
-            return matches.Any();
+            return _matches.Any();
         }
+
 
         public void ExportResults()
         {
-            List<string> inputPaths = new List<string> { searchFile };
-            List<MatchingFile> searchResults = new List<MatchingFile>();
-            MatchingFile file;
+            var searchResults = BuildSearchSummary();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(searchFile);
-            IFileParser fileParser = fileParserBuilder.Create();
-
-            file.fileInfo = new FileInfo(searchFile);
-            file.fileReader = fileParser.ParseFile();
-            file.accuracy = searchResults.Count;
-            file.searchResults = matches.GroupBy(match => match.Value)
-                                               .ToDictionary(grouping => grouping.Key,
-                                                             grouping => grouping.Select(match => match.Index));
-
-            searchResults.Add(file);
-
-            ISummaryGenerator generator = SummaryGeneratorFactory.Create();
-            generator.Generate(searchPhrase, inputPaths, searchResults);
+            GenerateSearchSummary(searchResults);
         }
+
+
+        private List<MatchingFile> BuildSearchSummary()
+        {
+            // TODO: Deal with accuracy
+
+            MatchingFile file = new MatchingFile()
+            {
+                accuracy = 0,
+                fileInfo = new FileInfo(_searchFile),
+                fileReader = GetParsedFileStream(ParseMode.Default()),
+                searchResults = _matches.GroupBy(m => m.Value).ToDictionary(g => g.Key, g => g.Select(m => m.Index))
+            };
+
+            return new List<MatchingFile> { file };
+        }
+
+
+        private void GenerateSearchSummary(List<MatchingFile> searchResults)
+        {
+            var inputPaths = new List<string> { _searchFile };
+            var summaryGenerator = SummaryGeneratorFactory.Create();
+
+            summaryGenerator.Generate(_searchPhrase, inputPaths, searchResults);
+        }
+
 
         /// <summary>
         /// Generates human-readable format of matches.
