@@ -1,225 +1,92 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Data.SQLite;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Data.SQLite;
-
     /// <summary>
     /// Contains methods for interacting with an SQLite database.
-    /// Source: http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
+    /// Based on: http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
     /// </summary>
-
     internal class SqLiteDatabase : ISQLDatabase
     {
-        private const string DefaultDatabaseFile = "Data Source=PreviousSearches.s3db";
-        readonly String _dbConnection;
+        private readonly String _connectionString;
 
         /// <summary>
-        ///     Default Constructor for SQLiteDatabase Class.
+        /// Creates a new SqLiteDatabase object and associates it with database file of given name.
+        /// If the database file doesn't exist, creates an empty database under the given file name according to the database structure contained in the second file.
         /// </summary>
-        public SqLiteDatabase()
+        /// <param name="databaseFileName">Name of the file containing the database.</param>
+        /// <param name="databaseStructureFileName">Name of the file containing the database structure (CREATE statements).</param>
+        public SqLiteDatabase(string databaseFileName, string databaseStructureFileName)
         {
-            _dbConnection = DefaultDatabaseFile;
-        }
-
-        /// <summary>
-        ///     Single Param Constructor for specifying the DB file.
-        /// </summary>
-        /// <param name="databaseFile">The File containing the DB</param>
-        public SqLiteDatabase(String databaseFile)
-        {
-            _dbConnection = String.Format("Data Source={0}", databaseFile);
-        }
-        
-        /// <summary>
-        ///     Allows the programmer to run a query against the Database.
-        /// </summary>
-        /// <param name="sql">The SQL to run</param>
-        /// <returns>A DataTable containing the result set.</returns>
-        public DataTable GetDataTable(string sql)
-        {
-            DataTable dt = new DataTable();
-            try
+            _connectionString = String.Format("Data Source={0}; Version=3;", databaseFileName);
+            if (!File.Exists(databaseFileName))
             {
-                SQLiteConnection cnn = new SQLiteConnection(_dbConnection);
-                cnn.Open();
-                SQLiteCommand mycommand = new SQLiteCommand(cnn);
-                mycommand.CommandText = sql;
-                SQLiteDataReader reader = mycommand.ExecuteReader();
-                dt.Load(reader);
-                reader.Close();
-                cnn.Close();
+                SQLiteConnection.CreateFile(databaseFileName);
+                var streamReader = new StreamReader(databaseStructureFileName, Encoding.UTF8);
+                var databaseStructure = streamReader.ReadToEnd();
+                streamReader.Close();
+                ExecuteNonQuery(databaseStructure);
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return dt;
         }
 
-        /// <summary>
-        ///     Allows the programmer to interact with the database for purposes other than a query.
-        /// </summary>
-        /// <param name="sql">The SQL to be run.</param>
-        /// <returns>An Integer containing the number of rows updated.</returns>
-        public int ExecuteNonQuery(string sql)
+        public DataTable GetDataTable(string sqlQuery)
         {
-            SQLiteConnection cnn = new SQLiteConnection(_dbConnection);
-            cnn.Open();
-            SQLiteCommand mycommand = new SQLiteCommand(cnn);
-            mycommand.CommandText = sql;
-            int rowsUpdated = mycommand.ExecuteNonQuery();
-            cnn.Close();
+            var dataTable = new DataTable();
+            var connection = new SQLiteConnection(_connectionString);
+            connection.Open();
+            var command = new SQLiteCommand(connection);
+            command.CommandText = sqlQuery;
+            SQLiteDataReader reader = command.ExecuteReader();
+            dataTable.Load(reader);
+            reader.Close();
+            connection.Close();
+            return dataTable;
+        }
+
+        public int ExecuteNonQuery(string sqlQuery)
+        {
+            var connection = new SQLiteConnection(_connectionString);
+            connection.Open();
+            var command = new SQLiteCommand(connection);
+            command.CommandText = sqlQuery;
+            int rowsUpdated = command.ExecuteNonQuery();
+            connection.Close();
             return rowsUpdated;
         }
 
-        /// <summary>
-        ///     Allows the programmer to retrieve single items from the DB.
-        /// </summary>
-        /// <param name="sql">The query to run.</param>
-        /// <returns>A string.</returns>
-        public string ExecuteScalar(string sql)
+        public string ExecuteScalar(string sqlQuery)
         {
-            SQLiteConnection cnn = new SQLiteConnection(_dbConnection);
-            cnn.Open();
-            SQLiteCommand mycommand = new SQLiteCommand(cnn);
-            mycommand.CommandText = sql;
-            object value = mycommand.ExecuteScalar();
-            cnn.Close();
-            if (value != null)
+            var connection = new SQLiteConnection(_connectionString);
+            connection.Open();
+            var command = new SQLiteCommand(connection);
+            command.CommandText = sqlQuery;
+            object result = command.ExecuteScalar();
+            connection.Close();
+            if (result != null)
             {
-                return value.ToString();
+                return result.ToString();
             }
             return "";
         }
 
-        /// <summary>
-        ///     Allows the programmer to easily update rows in the DB.
-        /// </summary>
-        /// <param name="tableName">The table to update.</param>
-        /// <param name="data">A dictionary containing Column names and their new values.</param>
-        /// <param name="where">The where clause for the update statement.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool Update(String tableName, Dictionary<String, String> data, String where)
-        {
-            String vals = "";
-            Boolean returnCode = true;
-            if (data.Count >= 1)
-            {
-                foreach (KeyValuePair<String, String> val in data)
-                {
-                    vals += String.Format(" {0} = '{1}',", val.Key.ToString(), val.Value.ToString());
-                }
-                vals = vals.Substring(0, vals.Length - 1);
-            }
-            try
-            {
-                this.ExecuteNonQuery(String.Format("update {0} set {1} where {2};", tableName, vals, where));
-            }
-            catch
-            {
-                returnCode = false;
-            }
-            return returnCode;
-        }
-
-        /// <summary>
-        ///     Allows the programmer to easily delete rows from the DB.
-        /// </summary>
-        /// <param name="tableName">The table from which to delete.</param>
-        /// <param name="where">The where clause for the delete.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool Delete(String tableName, String where)
-        {
-            Boolean returnCode = true;
-            try
-            {
-                this.ExecuteNonQuery(String.Format("delete from {0} where {1};", tableName, where));
-            }
-            catch (Exception fail)
-            {
-                returnCode = false;
-            }
-            return returnCode;
-        }
-
-        /// <summary>
-        ///     Allows the programmer to easily insert into the DB
-        /// </summary>
-        /// <param name="tableName">The table into which we insert the data.</param>
-        /// <param name="data">A dictionary containing the column names and data for the insert.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool Insert(String tableName, Dictionary<String, String> data)
+        public void Insert(String tableName, Dictionary<String, String> dataSet)
         {
             String columns = "";
             String values = "";
-            Boolean returnCode = true;
-            foreach (KeyValuePair<String, String> val in data)
+            foreach (var item in dataSet)
             {
-                columns += String.Format(" {0},", val.Key.ToString());
-                values += String.Format(" '{0}',", val.Value);
+                columns += String.Format(" {0},", item.Key);
+                values += String.Format(" '{0}',", item.Value);
             }
             columns = columns.Substring(0, columns.Length - 1);
             values = values.Substring(0, values.Length - 1);
-            try
-            {
-                this.ExecuteNonQuery(String.Format("insert into {0}({1}) values({2});", tableName, columns, values));
-            }
-            catch (Exception fail)
-            {
-                returnCode = false;
-            }
-            return returnCode;
-        }
-
-        /// <summary>
-        ///     Allows the programmer to easily delete all data from the DB.
-        /// </summary>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool ClearDB()
-        {
-            DataTable tables;
-            try
-            {
-                tables = this.GetDataTable("select NAME from SQLITE_MASTER where type='table' order by NAME;");
-                foreach (DataRow table in tables.Rows)
-                {
-                    this.ClearTable(table["NAME"].ToString());
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        ///     Allows the user to easily clear all data from a specific table.
-        /// </summary>
-        /// <param name="table">The name of the table to clear.</param>
-        /// <returns>A boolean true or false to signify success or failure.</returns>
-        public bool ClearTable(String table)
-        {
-            try
-            {
-
-                this.ExecuteNonQuery(String.Format("delete from {0};", table));
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            ExecuteNonQuery(String.Format("insert into {0}({1}) values({2});", tableName, columns, values));
         }
     }
-
 }

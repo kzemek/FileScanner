@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using FileScanner.PersistanceManager.Interfaces;
-using Moq;
+using System.IO;
+using System.Linq;
+using FileScanner.PatternMatching;
 using NUnit.Framework;
 
 namespace FileScanner.PersistanceManager.Tests
@@ -10,55 +10,73 @@ namespace FileScanner.PersistanceManager.Tests
     [TestFixture]
     public class PersistanceManagerTests
     {
-        [SetUp]
-        public void Before()
-        {
-            isqlDatabaseMock = new Mock<ISQLDatabase>();
-
-            Instace = new PersistanceManager(isqlDatabaseMock.Object);
-        }
-
-        private PersistanceManager Instace;
-        private Mock<ISQLDatabase> isqlDatabaseMock;
+        private readonly PersistanceManager _persistenceManager = new PersistanceManager();
 
         [Test]
-        public void GetFullHistoryTest()
+        public void SaveSearch_SavesSearchInDatabase_GetLastSearch_GetsItBack()
         {
-            Assert.Fail();
-        }
+            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + "TestDatabase.s3db";
 
-        [Test]
-        public void GetSearchTest()
-        {
-            Assert.Fail();
+            string[] phrases = {"Ala", "ma", "kota"};
+            Match[] file1Matches = {new Match(10, "Ala"), new Match(20, "kota"), new Match(30, "kota")};
+            Match[] file2Matches = {new Match(8, "ma"), new Match(11, "ma"), new Match(999, "kota")};
+            MatchingFile[] matchingFiles = {new MatchingFile("plik1.txt", "C:/plik1.txt", 123, file1Matches), new MatchingFile("plik2.txt", "C:/plik2.txt", 123, file2Matches)};
+            var savedSearch = new Search(DateTime.Now, DateTime.Now.AddMinutes(1.0), 123, phrases, matchingFiles);
+
+            _persistenceManager.SaveSearch(savedSearch, testDatabaseFileName);
+            var loadedSearch = _persistenceManager.GetLastSearch(testDatabaseFileName);
+
+            Assert.AreEqual(savedSearch, loadedSearch);
         }
 
         [Test]
-        public void SaveDataTest()
+        public void SaveSearch_SavesSearchesInNewDatabaseFile_GetFullHistory_GetsSearchesBack()
         {
-            var searchMock = new Mock<ISearch>();
-            var searchFile1Mock = new Mock<MatchingFile>();
-            var searchFile2Mock = new Mock<MatchingFile>();
-            var matchMocksInFile1 = new List<Mock<PatternMatching.Match>> { new Mock<PatternMatching.Match>(), new Mock<PatternMatching.Match>() };
-            var matchMocksInFile2 = new List<Mock<PatternMatching.Match>> { new Mock<PatternMatching.Match>(), new Mock<PatternMatching.Match>() };
+            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + "TestDatabase.s3db";
 
-            searchMock.Setup(search => search.EndTime).Returns(new DateTime(2013, 1, 2, 12, 18, 31));
-            searchMock.Setup(search => search.StartTime).Returns(new DateTime(2013, 1, 2, 12, 18, 31));
-            searchMock.Setup(search => search.ProcessedFilesCount).Returns(12);
-            searchMock.Setup(search => search.GetEnumerator()).Returns(new Collection<MatchingFile>() { searchFile1Mock.Object, searchFile2Mock.Object }.GetEnumerator);
+            if (File.Exists(testDatabaseFileName))
+            {
+                File.Delete(testDatabaseFileName);
+            }
+            string[][] phrases =
+            {
+                new string[] {"Ala", "ma", "kota"},
+                new string[] {"Janek", "posiada", "psa"},
+                new string[] {"Mike", "has", "parrots"}
+            };
+            Match[][] file1Matches =
+            {
+                new Match[] { new Match(10, "Ala"), new Match(20, "kota"), new Match(30, "kota") },
+                new Match[] { new Match(10, "Janek"), new Match(20, "psa"), new Match(30, "posiada") },
+                new Match[] { new Match(10, "has"), new Match(20, "parrots"), new Match(30, "has") },
+            };
+            Match[][] file2Matches =
+            {
+                new Match[] { new Match(8, "Ala"), new Match(3214, "kota"), new Match(999, "kota") },
+                new Match[] { new Match(143, "Janek"), new Match(67, "psa"), new Match(3, "posiada") },
+                new Match[] { new Match(1234, "has"), new Match(18, "parrots"), new Match(9, "has") },
+            };
+            MatchingFile[][] matchingFiles =
+            {
+                new MatchingFile[] { new MatchingFile("plik1.txt", "C:/plik1.txt", 123, file1Matches[0]), new MatchingFile("plik2.txt", "C:/plik2.txt", 123, file2Matches[0]) },
+                new MatchingFile[] { new MatchingFile("jsadlkjf.txt", "C:/jsadlkjf.txt", 432, file1Matches[1]), new MatchingFile("sdgfdhgfjhg.txt", "C:/sdgfdhgfjhg.txt", 1342523, file2Matches[1]) }, 
+                new MatchingFile[] { new MatchingFile("kąęźóćłłłłą.txt", "C:/kąęźóćłłłłą.txt", 1500, file1Matches[2]), new MatchingFile("sag3.txt", "C:/sag3.txt", 77, file2Matches[2]) }
+            };
+            var savedSearches = new LinkedList<Search>();
+            for (int i = 0; i < phrases.Length; i++)
+            {
+                var savedSearch = new Search(DateTime.Now, DateTime.Now.AddMinutes(1.0), 995, phrases[i], matchingFiles[i]);
+                savedSearches.AddLast(savedSearch);
+            }
 
-            searchFile1Mock.Setup(searchFile => searchFile.FileName).Returns("file1.txt");
-            searchFile1Mock.Setup(searchFile => searchFile.FullPath).Returns("path/file1.txt");
-            searchFile1Mock.Setup(searchFile => searchFile.Matches).Returns(new List<PatternMatching.Match>() { matchMocksInFile1[0].Object, matchMocksInFile1[1].Object });
+            foreach (var search in savedSearches)
+            {
+                _persistenceManager.SaveSearch(search, testDatabaseFileName);
+            }
 
-            searchFile2Mock.Setup(searchFile => searchFile.FileName).Returns("file2.txt");
-            searchFile2Mock.Setup(searchFile => searchFile.FullPath).Returns("path/file2.txt");
-            searchFile2Mock.Setup(searchFile => searchFile.Matches).Returns(new List<PatternMatching.Match>() { matchMocksInFile2[0].Object, matchMocksInFile2[1].Object });
+            var sth = _persistenceManager.GetFullHistory(testDatabaseFileName);
 
-            Instace.SaveSearch(searchMock.Object);
-
-
-            ICollection<ISearch> fullHistory = Instace.GetFullHistory();
+            Assert.That(savedSearches.SequenceEqual(sth));
         }
     }
 }

@@ -5,31 +5,29 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    public class Search : ISearch
+    public class Search : AbstractSearch
     {
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
-        public int ProcessedFilesCount { get; private set; }
-        public IEnumerable<string> Phrases { get; private set; }
-        public IEnumerable<MatchingFile> MatchingFiles { get; private set; }
+        public const string EndTimeEarlierThanStartTimeExceptionMessage = "Given end time was earlier than start time.";
 
-        public Search(DateTime startTime, DateTime endTime, int processedFilesCount, IEnumerable<String> phrases, IEnumerable<MatchingFile> matchingFiles)
+        public override sealed IEnumerable<string> Phrases { get; protected set; }
+        private readonly IEnumerable<MatchingFile> _matchingFiles;
+
+        public Search(DateTime startTime, DateTime endTime, uint processedFilesCount, IEnumerable<String> phrases, IEnumerable<MatchingFile> matchingFiles)
         {
+            if (startTime.CompareTo(endTime) > 0)
+            {
+                throw new ArgumentException(EndTimeEarlierThanStartTimeExceptionMessage);
+            }
             StartTime = startTime;
             EndTime = endTime;
             ProcessedFilesCount = processedFilesCount;
             Phrases = phrases;
-            MatchingFiles = matchingFiles;
+            _matchingFiles = matchingFiles;
         }
 
-        public IEnumerator<MatchingFile> GetEnumerator()
+        public override IEnumerator<MatchingFile> GetEnumerator()
         {
-            return MatchingFiles.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return _matchingFiles.GetEnumerator();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace FileScanner.PersistanceManager.Interfaces
     {
         DateTime StartTime { get; }
         DateTime EndTime { get; }
-        int ProcessedFilesCount { get; }
+        uint ProcessedFilesCount { get; }
         IEnumerable<String> Phrases { get; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -8,7 +7,7 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    internal class HistorySearch : ISearch
+    internal class HistorySearch : AbstractSearch
     {
         private readonly ISQLDatabase _database;
         private readonly int _id;
@@ -17,18 +16,14 @@ namespace FileScanner.PersistanceManager
 
         public HistorySearch(DataRow row, ISQLDatabase database)
         {
-            StartTime = Convert.ToDateTime(row["startTime"]);
-            EndTime = Convert.ToDateTime(row["endTime"]);
-            ProcessedFilesCount = int.Parse(row["processedFilesCount"].ToString());
+            StartTime = new DateTime(long.Parse(row["startTime"].ToString()));
+            EndTime = new DateTime(long.Parse(row["endTime"].ToString()));
+            ProcessedFilesCount = uint.Parse(row["processedFilesCount"].ToString());
             _id = int.Parse(row["search_id"].ToString());
             _database = database;
         }
 
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
-        public int ProcessedFilesCount { get; private set; }
-
-        public IEnumerable<string> Phrases
+        public override IEnumerable<string> Phrases
         {
             get
             {
@@ -38,17 +33,18 @@ namespace FileScanner.PersistanceManager
                 }
                 return (from DataRow row in _phraseTable.Rows select row["phrase"].ToString());
             }
+            protected set { throw new InvalidOperationException(); }
         }
 
-        public IEnumerator<MatchingFile> GetEnumerator()
+        public override IEnumerator<MatchingFile> GetEnumerator()
         {
             if (_searchTable == null)
             {
                 _searchTable = _database.GetDataTable("SELECT * " +
                                                       "    FROM [files]" +
                                                       "    INNER JOIN [matches] USING ([file_id])" +
-                                                      "    WHERE search_id=" + _id +
-                                                      "    ORDER BY file_id");
+                                                      "    WHERE search_id=\"" + _id +
+                                                      "\"  ORDER BY file_id");
             }
 
             int previousFileId = -1;
@@ -76,11 +72,6 @@ namespace FileScanner.PersistanceManager
             {
                 yield return new MatchingFile(previousRow, matches);
             }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
