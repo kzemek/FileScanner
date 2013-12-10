@@ -7,7 +7,6 @@ namespace FileScanner.PersistanceManager
 {
     public class PersistanceManager : IPersistanceManager
     {
-
         private ISaveMethod GetSaveMethod(String fileName)
         {
             if (fileName.EndsWith(".s3db"))
@@ -18,9 +17,8 @@ namespace FileScanner.PersistanceManager
             {
                 return new SerializationSaveMethod(fileName);
             }
-            throw new InvalidExtensionException(string.Format("File {0} have invalid extension (.s3db is supported)", fileName));
+            throw new InvalidExtensionException(string.Format("File '{0}' has an unsupported extension.", fileName));
         }
-
 
         public void SaveSearch(ISearch search, string fileName)
         {
@@ -47,5 +45,4 @@ namespace FileScanner.PersistanceManager
             }
         }
     }
-
 }
