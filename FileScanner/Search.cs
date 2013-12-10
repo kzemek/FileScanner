@@ -78,10 +78,11 @@ namespace FileScanner
             var processedFilesCount = 1u;
 
             var storedSearch = new PersistanceManager.Search(startDate, endDate, processedFilesCount, phrases, matchingFiles);
-            var persistanceManager = new PersistanceManager.SqLitePersistanceManager();
-
+            
             // TODO: Remove magic db name string
-            persistanceManager.SaveSearch(storedSearch, "db.s3db");
+            var persistanceManager = new PersistanceManager.SqLitePersistanceManager("db.s3db");
+            
+            persistanceManager.SaveSearch(storedSearch);
         }
 
 
