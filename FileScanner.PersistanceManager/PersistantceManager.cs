@@ -7,6 +7,8 @@ namespace FileScanner.PersistanceManager
 {
     public class PersistanceManager : IPersistanceManager
     {
+        public const string UnsupportedExtensionExceptionMessage = "File '{0}' has an unsupported extension.";
+
         private ISaveMethod GetSaveMethod(String fileName)
         {
             if (fileName.EndsWith(".s3db"))
@@ -17,7 +19,7 @@ namespace FileScanner.PersistanceManager
             {
                 return new SerializationSaveMethod(fileName);
             }
-            throw new InvalidExtensionException(string.Format("File '{0}' has an unsupported extension.", fileName));
+            throw new UnsupportedExtensionException(string.Format(UnsupportedExtensionExceptionMessage, fileName));
         }
 
         public void SaveSearch(ISearch search, string fileName)
@@ -37,9 +39,9 @@ namespace FileScanner.PersistanceManager
             return this.GetFullHistory(fileName).Last();
         }
 
-        private class InvalidExtensionException : Exception
+        public class UnsupportedExtensionException : Exception
         {
-            public InvalidExtensionException(string message)
+            public UnsupportedExtensionException(string message)
                 : base(message)
             {
             }

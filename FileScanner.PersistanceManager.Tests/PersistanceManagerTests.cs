@@ -13,6 +13,21 @@ namespace FileScanner.PersistanceManager.Tests
         private readonly PersistanceManager _persistenceManager = new PersistanceManager();
 
         [Test]
+        [ExpectedException(typeof(PersistanceManager.UnsupportedExtensionException))]
+        public void SaveSearch_GivenUnsupportedFileExtension_ThrowsUnsupportedExtensionException()
+        {
+            string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + "TestDatabase.abcdef";
+
+            string[] phrases = { "Ala", "ma", "kota" };
+            Match[] file1Matches = { new Match(10, "Ala"), new Match(20, "kota"), new Match(30, "kota") };
+            Match[] file2Matches = { new Match(8, "ma"), new Match(11, "ma"), new Match(999, "kota") };
+            MatchingFile[] matchingFiles = { new MatchingFile("plik1.txt", "C:/plik1.txt", 123, file1Matches), new MatchingFile("plik2.txt", "C:/plik2.txt", 123, file2Matches) };
+            var savedSearch = new Search(DateTime.Now, DateTime.Now.AddMinutes(1.0), 123, phrases, matchingFiles);
+
+            _persistenceManager.SaveSearch(savedSearch, testDatabaseFileName);
+        }
+
+        [Test]
         public void SaveSearch_SavesSearchInDatabase_GetLastSearch_GetsItBack()
         {
             string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + "TestDatabase.s3db";
