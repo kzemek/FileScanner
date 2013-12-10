@@ -8,7 +8,7 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    internal abstract class AbstractSearch : ISearch
+    public abstract class AbstractSearch : ISearch
     {
         public DateTime StartTime { get; protected set; }
         public DateTime EndTime { get; protected set; }

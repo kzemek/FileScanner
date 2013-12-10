@@ -37,7 +37,7 @@ namespace FileScanner
             var phrases = GetPhrases();
 
             FindMatches(streamReader, phrases);
-            PersistResults(searchStartDate, phrases);
+            PersistResults(searchStartDate, DateTime.Now, phrases);
 
             return _matches.Any() ? BuildResults(_matches) : NoMatchesFoundMessage;
         }
@@ -71,16 +71,17 @@ namespace FileScanner
         }
 
 
-        private void PersistResults(DateTime startDate, IEnumerable<string> phrases)
+        private void PersistResults(DateTime startDate, DateTime endDate, IEnumerable<string> phrases)
         {
             var matchingFile = new PersistanceManager.MatchingFile(_searchFile, _searchPhrase, 0, _matches);
             var matchingFiles = new List<PersistanceManager.MatchingFile>() { matchingFile };
-            var processedFilesCount = 1;
+            var processedFilesCount = 1u;
 
-            var storedSearch = new PersistanceManager.Search(startDate, DateTime.Now, processedFilesCount, phrases, matchingFiles);
+            var storedSearch = new PersistanceManager.Search(startDate, endDate, processedFilesCount, phrases, matchingFiles);
             var persistanceManager = new PersistanceManager.PersistanceManager();
 
-            persistanceManager.SaveSearch(storedSearch);
+            // TODO: Remove magic db name string
+            persistanceManager.SaveSearch(storedSearch, "db.s3db");
         }
 
 
