@@ -7,6 +7,11 @@ using System.Text.RegularExpressions;
 
 namespace FileScanner.FileParsing
 {
+    /// <summary>
+    /// A simple implementation of a html file parser which achieves removing tags from html files 
+    /// and returning only what is contatined between <body> </body>. Also deletes all scripts from
+    /// the html file.
+    /// </summary>
     class HtmlFileParser : BaseFileParser
     {
         public HtmlFileParser(string filePath, Encoding encoding, IParseStrategy parseStrategy) 

@@ -13,8 +13,34 @@ namespace FileScanner.FileParsing.Tests
         private string[] defaultResultStrings = { "ĘÓĄŚŁŻŹĆŃ", "ęóąśłżźćń", "żÓłĆ" };
         private string[] lowercaseResultStrings = { "ęóąśłżźćń", "ęóąśłżźćń", "żółć" };
         private string[] asciiResultStrings = { "EOASLZZCN", "eoaslzzcn", "zOlC" };
+        private string htmlTest =
+@"<HTML>
+<HEAD>
+<TITLE>Your Title Here</TITLE>
+</HEAD>
+<BODY>
+<script>asdasdasd</script>
+<H1>This is a Header</H1>
+<H2>This is a Medium Header</H2>
+<P>This is a new paragraph!
+<P><B>This is a new paragraph!</B>
+<BR><B><I>This is a new sentence without a paragraph break, in bold italics.</I></B>
+<HR>
+</BODY>
+</HTML>";
+
+        private string htmlTestResult =
+@"
+
+This is a Header
+This is a Medium Header
+This is a new paragraph!
+This is a new paragraph!
+This is a new sentence without a paragraph break, in bold italics.
+
+";
         [TestMethod]
-        public void ParseFile_GivenFilePath_UTF8Encoding_AndDefaultParseMode()
+        public void ParseFile_GivenFilePath_UTF8Encoding_AndLeaveUnchangedParseMode()
         {
             string filePath = "test.txt";
             StreamWriter sw = new StreamWriter(File.Create(filePath));
@@ -22,11 +48,8 @@ namespace FileScanner.FileParsing.Tests
                 sw.WriteLine(s);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
-            {
-                Encoding = Encoding.UTF8
-            };
-            IFileParser fileParser= fileParserBuilder.Create();
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8);
+            IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
             int i = 0;
@@ -47,11 +70,7 @@ namespace FileScanner.FileParsing.Tests
                 sw.WriteLine(s);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
-            {
-                Encoding = Encoding.UTF8,
-                ParseStrategy = ParseStrategy.ReplaceNonASCII()
-            };
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8, ParseStrategy.ReplaceNonASCII());
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
@@ -73,11 +92,7 @@ namespace FileScanner.FileParsing.Tests
                 sw.WriteLine(s);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
-            {
-                Encoding = Encoding.UTF8,
-                ParseStrategy = ParseStrategy.ReplaceCapitalLetters()
-            };
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8, ParseStrategy.ReplaceCapitalLetters());
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
@@ -87,6 +102,38 @@ namespace FileScanner.FileParsing.Tests
                 Assert.IsTrue(sr.ReadLine() == lowercaseResultStrings[i]);
                 i++;
             }
+
+            sr.Close();
+        }
+        [TestMethod]
+        public void ParseFile_GivenHtmlFilePath_UTF8Encoding_AndLeaveUnchangedParseStrategy()
+        {
+            string filePath = "test.html";
+            StreamWriter sw = new StreamWriter(File.Create(filePath));
+            sw.Write(htmlTest);
+            sw.Close();
+
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8);
+            IFileParser fileParser = fileParserBuilder.Create();
+            StreamReader sr = fileParser.ParseFile();
+
+            Assert.IsTrue(sr.ReadToEnd() == htmlTestResult);
+
+            sr.Close();
+        }
+        [TestMethod]
+        public void ParseFile_GivenHtmFilePath_UTF8Encoding_AndLeaveUnchangedParseStrategy()
+        {
+            string filePath = "test.htm";
+            StreamWriter sw = new StreamWriter(File.Create(filePath));
+            sw.Write(htmlTest);
+            sw.Close();
+
+            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8);
+            IFileParser fileParser = fileParserBuilder.Create();
+            StreamReader sr = fileParser.ParseFile();
+
+            Assert.IsTrue(sr.ReadToEnd() == htmlTestResult);
 
             sr.Close();
         }

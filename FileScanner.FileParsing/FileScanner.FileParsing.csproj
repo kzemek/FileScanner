@@ -43,15 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileParser\BaseFileParser.cs" />
-    <Compile Include="ParseMode\BaseParseStrategy.cs" />
+    <Compile Include="ParseStrategy\BaseParseStrategy.cs" />
     <Compile Include="FileParser\FileParserBuilder.cs" />
     <Compile Include="FileParser\HtmlFileParser.cs" />
     <Compile Include="FileParser\IFileParser.cs" />
-    <Compile Include="ParseMode\IParseStrategy.cs" />
-    <Compile Include="ParseMode\ParseStrategy.cs" />
+    <Compile Include="ParseStrategy\IParseStrategy.cs" />
+    <Compile Include="ParseStrategy\ParseStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ParseMode\RemoveCapitalLettersStrategy.cs" />
-    <Compile Include="ParseMode\ReplaceNonASCIIStrategy.cs" />
+    <Compile Include="ParseStrategy\RemoveCapitalLettersStrategy.cs" />
+    <Compile Include="ParseStrategy\ReplaceNonASCIIStrategy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

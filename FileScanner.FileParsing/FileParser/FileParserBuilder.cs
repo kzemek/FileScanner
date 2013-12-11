@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
-
+    /// <summary>
+    /// A builder pattern, factory pattern crosover which allows us to get the appropriate file parser
+    /// as well as specify the file path, encoding, and parse strategy.
+    /// </summary>
     public class FileParserBuilder
     {
         public string FilePath { get; set; }
@@ -36,6 +39,7 @@ namespace FileScanner.FileParsing
             this.Encoding = encoding;
         }
         #endregion
+
         public IFileParser Create()
         {
             if (!File.Exists(FilePath))
@@ -46,6 +50,7 @@ namespace FileScanner.FileParsing
                 ParseStrategy = FileParsing.ParseStrategy.LeaveUnchanged();
 
             string extension = Path.GetExtension(FilePath);
+
             if (extension == ".html" || extension == ".htm")
                 return new HtmlFileParser(FilePath, Encoding, ParseStrategy);
 

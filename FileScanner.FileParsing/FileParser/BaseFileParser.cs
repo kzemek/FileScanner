@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
+    /// <summary>
+    /// A basic implementation of the IFileParser interface which utilize parse strategies
+    /// to parse any file. Specific file parsers are meant to derive from this class.
+    /// </summary>
     class BaseFileParser : IFileParser
     {
         protected string filePath;

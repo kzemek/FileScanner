@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
+    /// <summary>
+    /// Main interface used to parse files.
+    /// </summary>
     public interface IFileParser
     {
         StreamReader ParseFile();
