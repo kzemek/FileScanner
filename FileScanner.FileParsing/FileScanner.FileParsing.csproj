@@ -51,7 +51,7 @@
     <Compile Include="ParseMode\ParseStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParseMode\RemoveCapitalLettersStrategy.cs" />
-    <Compile Include="ParseMode\ReplaceNonASCIIStrategye.cs" />
+    <Compile Include="ParseMode\ReplaceNonASCIIStrategy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
