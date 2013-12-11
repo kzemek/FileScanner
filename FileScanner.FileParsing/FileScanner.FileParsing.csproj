@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="FileParser\BaseFileParser.cs" />
     <Compile Include="ParseStrategy\BaseParseStrategy.cs" />
-    <Compile Include="FileParser\FileParserBuilder.cs" />
+    <Compile Include="FileParser\FileParserFactory.cs" />
     <Compile Include="FileParser\HtmlFileParser.cs" />
     <Compile Include="FileParser\IFileParser.cs" />
     <Compile Include="ParseStrategy\IParseStrategy.cs" />

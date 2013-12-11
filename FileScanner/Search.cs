@@ -45,9 +45,9 @@ namespace FileScanner
 
         private StreamReader GetParsedFileStream(IParseStrategy parseStrategy)
         {
-            var fileParserBuilder = new FileParserBuilder(_searchFile, parseStrategy);
+            var fileParserFactory = new FileParserFactory(_searchFile, parseStrategy);
 
-            var fileParser = fileParserBuilder.Create();
+            var fileParser = fileParserFactory.Create();
             var streamReader = fileParser.ParseFile();
 
             return streamReader;

@@ -48,7 +48,7 @@ This is a new sentence without a paragraph break, in bold italics.
                 sw.WriteLine(s);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8);
+            FileParserFactory fileParserBuilder = new FileParserFactory(filePath, Encoding.UTF8);
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
@@ -70,7 +70,7 @@ This is a new sentence without a paragraph break, in bold italics.
                 sw.WriteLine(s);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8, ParseStrategy.ReplaceNonASCII());
+            FileParserFactory fileParserBuilder = new FileParserFactory(filePath, Encoding.UTF8, ParseStrategy.ReplaceNonASCII());
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
@@ -92,7 +92,7 @@ This is a new sentence without a paragraph break, in bold italics.
                 sw.WriteLine(s);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8, ParseStrategy.ReplaceCapitalLetters());
+            FileParserFactory fileParserBuilder = new FileParserFactory(filePath, Encoding.UTF8, ParseStrategy.ReplaceCapitalLetters());
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
@@ -113,7 +113,7 @@ This is a new sentence without a paragraph break, in bold italics.
             sw.Write(htmlTest);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8);
+            FileParserFactory fileParserBuilder = new FileParserFactory(filePath, Encoding.UTF8);
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 
@@ -129,7 +129,7 @@ This is a new sentence without a paragraph break, in bold italics.
             sw.Write(htmlTest);
             sw.Close();
 
-            FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath, Encoding.UTF8);
+            FileParserFactory fileParserBuilder = new FileParserFactory(filePath, Encoding.UTF8);
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
 

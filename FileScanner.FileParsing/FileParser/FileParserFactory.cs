@@ -11,28 +11,28 @@ namespace FileScanner.FileParsing
     /// A builder pattern, factory pattern crosover which allows us to get the appropriate file parser
     /// as well as specify the file path, encoding, and parse strategy.
     /// </summary>
-    public class FileParserBuilder
+    public class FileParserFactory
     {
         public string FilePath { get; set; }
         public Encoding Encoding { get; set; }
         public IParseStrategy ParseStrategy { get; set; }
 
         #region Constructors
-        public FileParserBuilder(string filePath)
+        public FileParserFactory(string filePath)
         {
             this.FilePath = filePath;
         }
-        public FileParserBuilder(string filePath, Encoding encoding)
+        public FileParserFactory(string filePath, Encoding encoding)
         {
             this.FilePath = filePath;
             this.Encoding = encoding;
         }
-        public FileParserBuilder(string filePath, IParseStrategy parseStrategy)
+        public FileParserFactory(string filePath, IParseStrategy parseStrategy)
         {
             this.FilePath = filePath;
             this.ParseStrategy = parseStrategy;
         }
-        public FileParserBuilder(string filePath, Encoding encoding, IParseStrategy parseStrategy)
+        public FileParserFactory(string filePath, Encoding encoding, IParseStrategy parseStrategy)
         {
             this.FilePath = filePath;
             this.ParseStrategy = parseStrategy;
