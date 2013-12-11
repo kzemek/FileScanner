@@ -52,11 +52,10 @@
   <ItemGroup>
     <Compile Include="AbstractSearch.cs" />
     <Compile Include="HistorySearch.cs" />
-    <Compile Include="Interfaces\ISaveMethod.cs" />
     <Compile Include="Interfaces\ISQLDatabase.cs" />
     <Compile Include="MatchingFile.cs" />
     <Compile Include="Search.cs" />
-    <Compile Include="SerializationSaveMethod.cs" />
+    <Compile Include="SerializationPersistenceManager.cs" />
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="Interfaces\ISearch.cs" />
     <Compile Include="Interfaces\IPersistanceManager.cs" />

@@ -4,36 +4,35 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
-    internal class SerializationSaveMethod : ISaveMethod
+    public class SerializationPersistenceManager : IPersistanceManager
     {
-        private readonly String _fileName;
+        public String FileName { get; set; }
 
-        public SerializationSaveMethod(string fileName)
+        public SerializationPersistenceManager(string fileName)
         {
-            this._fileName = fileName;
+            this.FileName = fileName;
         }
 
-        public void Save(ISearch search)
+        public void SaveSearch(ISearch search)
         {
-
             Stream stream;
             var bformatter = new BinaryFormatter();
             ICollection<ISearch> historySearches;
 
-            if (File.Exists(_fileName))
+            if (File.Exists(FileName))
             {
-                stream = File.Open(_fileName, FileMode.Open);
-                historySearches = (ICollection<ISearch>) bformatter.Deserialize(stream);
+                stream = File.Open(FileName, FileMode.Open);
+                historySearches = (ICollection<ISearch>)bformatter.Deserialize(stream);
+                stream.Close();
+                stream = File.Open(FileName, FileMode.Create);
             }
             else
             {
-                stream = File.Open(_fileName, FileMode.Create);
+                stream = File.Open(FileName, FileMode.Create);
                 historySearches = new Collection<ISearch>();
             }
             historySearches.Add(search);
@@ -44,16 +43,21 @@ namespace FileScanner.PersistanceManager
 
         public ICollection<ISearch> GetFullHistory()
         {
-            Stream stream = File.Open(_fileName, FileMode.Open);
+            Stream stream = File.Open(FileName, FileMode.Open);
             try
             {
                 var bformatter = new BinaryFormatter();
-                return (ICollection<ISearch>) bformatter.Deserialize(stream);
+                return (ICollection<ISearch>)bformatter.Deserialize(stream);
             }
             finally
             {
                 stream.Close();
             }
+        }
+
+        public ISearch GetLastSearch()
+        {
+            return GetFullHistory().Last();
         }
     }
 }
