@@ -8,21 +8,25 @@ using NUnit.Framework;
 namespace FileScanner.PersistanceManager.Tests
 {
     [TestFixture]
-    public class PersistanceManagerTests
+    public class SerializationPersistenceManagerTests
     {
-        private const string TestDatabaseFileName = "TestDatabase.s3db";
-        private readonly SqLitePersistanceManager _persistenceManager = new SqLitePersistanceManager(TestDatabaseFileName);
+        private const string TestDatabaseFileName = "TestDatabase.fsbin";
+        private readonly SerializationPersistenceManager _persistenceManager = new SerializationPersistenceManager(TestDatabaseFileName);
 
         [Test]
         public void SaveSearch_SavesSearchInDatabase_GetLastSearch_GetsItBack()
         {
             string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + TestDatabaseFileName;
             _persistenceManager.FileName = testDatabaseFileName;
+            if (File.Exists(testDatabaseFileName))
+            {
+                File.Delete(testDatabaseFileName);
+            }
 
-            string[] phrases = {"Ala", "ma", "kota"};
-            Match[] file1Matches = {new Match(10, "Ala"), new Match(20, "kota"), new Match(30, "kota")};
-            Match[] file2Matches = {new Match(8, "ma"), new Match(11, "ma"), new Match(999, "kota")};
-            MatchingFile[] matchingFiles = {new MatchingFile("plik1.txt", "C:/plik1.txt", 123, file1Matches), new MatchingFile("plik2.txt", "C:/plik2.txt", 123, file2Matches)};
+            string[] phrases = { "Ala", "ma", "kota" };
+            Match[] file1Matches = { new Match(10, "Ala"), new Match(20, "kota"), new Match(30, "kota") };
+            Match[] file2Matches = { new Match(8, "ma"), new Match(11, "ma"), new Match(999, "kota") };
+            MatchingFile[] matchingFiles = { new MatchingFile("plik1.txt", "C:/plik1.txt", 123, file1Matches), new MatchingFile("plik2.txt", "C:/plik2.txt", 123, file2Matches) };
             var savedSearch = new Search(DateTime.Now, DateTime.Now.AddMinutes(1.0), 123, phrases, matchingFiles);
 
             _persistenceManager.SaveSearch(savedSearch);
@@ -35,11 +39,11 @@ namespace FileScanner.PersistanceManager.Tests
         public void SaveSearch_SavesSearchesInNewDatabaseFile_GetFullHistory_GetsSearchesBack()
         {
             string testDatabaseFileName = System.Reflection.MethodBase.GetCurrentMethod().Name + TestDatabaseFileName;
-
             if (File.Exists(testDatabaseFileName))
             {
                 File.Delete(testDatabaseFileName);
             }
+
             string[][] phrases =
             {
                 new string[] {"Ala", "ma", "kota"},
