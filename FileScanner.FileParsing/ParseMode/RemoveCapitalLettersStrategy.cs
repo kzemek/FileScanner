@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
-    class RemoveCapitalLettersMode : BaseParseMode
+    class RemoveCapitalLettersStrategy : BaseParseStrategy
     {
-        public RemoveCapitalLettersMode() : base() { }
-        public RemoveCapitalLettersMode(IParseMode parseMode) : base(parseMode) { }
+        public RemoveCapitalLettersStrategy() : base() { }
+        public RemoveCapitalLettersStrategy(IParseStrategy parseStrategy) : base(parseStrategy) { }
 
         protected override string InternalExecute(string text)
         {
             text = text.ToLower();
-            if (parseMode != null)
-                return parseMode.Parse(text);
+            if (parseStrategy != null)
+                return parseStrategy.Parse(text);
             return text;
         }
     }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
-    class ReplaceNonASCIIMode : BaseParseMode
+    class ReplaceNonASCIIStrategy : BaseParseStrategy
     {
-        public ReplaceNonASCIIMode() : base() { }
-        public ReplaceNonASCIIMode(IParseMode parseMode) : base(parseMode) { }
+        public ReplaceNonASCIIStrategy() : base() { }
+        public ReplaceNonASCIIStrategy(IParseStrategy parseStrategy) : base(parseStrategy) { }
 
         protected override string InternalExecute(string text)
         {
@@ -35,8 +35,8 @@ namespace FileScanner.FileParsing
             text = sb.ToString();
             //byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(text);
             //text = System.Text.Encoding.ASCII.GetString(bytes);
-            if(parseMode!=null)
-                return parseMode.Parse(text);
+            if(parseStrategy!=null)
+                return parseStrategy.Parse(text);
             return text;
         }
     }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace FileScanner.FileParsing
 {
     /// <summary>
-    /// Strategy pattern implementation component containing the action to be performed by all IParseMode implementations.
+    /// Strategy pattern implementation component containing the action to be performed by all IParseStrategy implementations.
     /// </summary>
-    public interface IParseMode
+    public interface IParseStrategy
     {
         string Parse(string text);
     }

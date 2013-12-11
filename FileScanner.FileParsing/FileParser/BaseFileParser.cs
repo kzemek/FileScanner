@@ -11,18 +11,18 @@ namespace FileScanner.FileParsing
     {
         protected string filePath;
         protected Encoding encoding;
-        protected IParseMode parseMode;
+        protected IParseStrategy parseStrategy;
 
-        public BaseFileParser(string filePath, Encoding encoding, IParseMode parseMode)
+        public BaseFileParser(string filePath, Encoding encoding, IParseStrategy parseStrategy)
         {
             this.filePath = filePath;
             this.encoding = encoding;
-            this.parseMode = parseMode;
+            this.parseStrategy = parseStrategy;
         }
         protected virtual string InternalParse()
         {
             StreamReader fileReader = new StreamReader(filePath, encoding);
-            string parsedText = parseMode.Parse(fileReader.ReadToEnd());
+            string parsedText = parseStrategy.Parse(fileReader.ReadToEnd());
             fileReader.Close();
             return parsedText;
         }

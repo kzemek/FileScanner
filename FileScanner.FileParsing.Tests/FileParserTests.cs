@@ -50,7 +50,7 @@ namespace FileScanner.FileParsing.Tests
             FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
             {
                 Encoding = Encoding.UTF8,
-                ParseMode = ParseMode.ReplaceNonASCII()
+                ParseStrategy = ParseStrategy.ReplaceNonASCII()
             };
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();
@@ -76,7 +76,7 @@ namespace FileScanner.FileParsing.Tests
             FileParserBuilder fileParserBuilder = new FileParserBuilder(filePath)
             {
                 Encoding = Encoding.UTF8,
-                ParseMode = ParseMode.ReplaceCapitalLetters()
+                ParseStrategy = ParseStrategy.ReplaceCapitalLetters()
             };
             IFileParser fileParser = fileParserBuilder.Create();
             StreamReader sr = fileParser.ParseFile();

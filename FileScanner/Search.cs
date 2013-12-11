@@ -16,7 +16,7 @@ namespace FileScanner
     public class Search
     {
         private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";
-        private readonly IParseMode DefaultParseMode = ParseMode.ReplaceCapitalLetters().ReplaceNonASCII();
+        private readonly IParseStrategy DefaultParseStrategy = ParseStrategy.ReplaceCapitalLetters().ReplaceNonASCII();
 
         private string _searchFile;
         private string _searchPhrase;
@@ -33,7 +33,7 @@ namespace FileScanner
         {
             var searchStartDate = DateTime.Now;
 
-            var streamReader = GetParsedFileStream(DefaultParseMode);
+            var streamReader = GetParsedFileStream(DefaultParseStrategy);
             var phrases = GetPhrases();
 
             FindMatches(streamReader, phrases);
@@ -43,10 +43,9 @@ namespace FileScanner
         }
 
 
-        private StreamReader GetParsedFileStream(IParseMode parseMode)
+        private StreamReader GetParsedFileStream(IParseStrategy parseStrategy)
         {
-            var fileParserBuilder = new FileParserBuilder(_searchFile);
-            fileParserBuilder.ParseMode = parseMode;
+            var fileParserBuilder = new FileParserBuilder(_searchFile, parseStrategy);
 
             var fileParser = fileParserBuilder.Create();
             var streamReader = fileParser.ParseFile();

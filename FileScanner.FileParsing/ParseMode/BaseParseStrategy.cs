@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace FileScanner.FileParsing
 {
-    class BaseParseMode : IParseMode
+    class BaseParseStrategy : IParseStrategy
     {
-        protected IParseMode parseMode;
-        public BaseParseMode(){}
-        public BaseParseMode(IParseMode parseMode)
+        protected IParseStrategy parseStrategy;
+        public BaseParseStrategy(){}
+        public BaseParseStrategy(IParseStrategy parseStrategy)
         {
-            this.parseMode = parseMode;
+            this.parseStrategy = parseStrategy;
         }
         protected virtual string InternalExecute(string text)
         {
             return text;
         }
-        string IParseMode.Parse(string text)
+        string IParseStrategy.Parse(string text)
         {
             return InternalExecute(text);
         }
