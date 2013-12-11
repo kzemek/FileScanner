@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MatcherFactoryTest.cs" />
     <Compile Include="MatcherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
