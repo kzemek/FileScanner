@@ -7,6 +7,7 @@ using FileScanner.PatternMatching;
 
 namespace FileScanner.PersistanceManager
 {
+    [Serializable()]
     public class MatchingFile
     {
         public MatchingFile(string fileName, string fullPath, long sizeInBytes, IEnumerable<Match> matches)

@@ -7,6 +7,7 @@ using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
+    [Serializable()]
     internal class HistorySearch : AbstractSearch
     {
         private readonly ISQLDatabase _database;

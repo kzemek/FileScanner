@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
+    [Serializable()]
     public class Search : AbstractSearch
     {
         public const string EndTimeEarlierThanStartTimeExceptionMessage = "Given end time was earlier than start time.";

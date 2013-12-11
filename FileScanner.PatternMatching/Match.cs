@@ -1,9 +1,12 @@
-﻿namespace FileScanner.PatternMatching
+﻿using System;
+
+namespace FileScanner.PatternMatching
 {
     /// <summary>
     /// The Match object represents a single match of a pattern given, in text
     /// given to a <see cref="FileScanner.PatternMatching.Matcher"/> method.
     /// </summary>
+    [Serializable()]
     public class Match
     {
         private int _index;

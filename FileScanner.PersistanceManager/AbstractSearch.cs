@@ -2,12 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FileScanner.PersistanceManager.Interfaces;
 
 namespace FileScanner.PersistanceManager
 {
+    [Serializable()]
     public abstract class AbstractSearch : ISearch
     {
         public DateTime StartTime { get; protected set; }
