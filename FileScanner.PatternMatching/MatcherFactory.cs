@@ -26,7 +26,7 @@ namespace FileScanner.PatternMatching
         /// <param name="algorithm">
         /// The algorithm used for underlying implementation.
         /// </param>
-        public IMatcher create(List<string> patterns, MatchAlgorithm algorithm = MatchAlgorithm.AhoCorasick)
+        public IMatcher Create(List<string> patterns, MatchAlgorithm algorithm = MatchAlgorithm.AhoCorasick)
         {
             if (patterns.Count == 0)
                 throw new ArgumentException("No patterns were given.");

@@ -13,7 +13,7 @@ namespace FileScanner.PatternMatching.Tests
         public void Construct_GivenNoPatterns_ThrowsArgumentException()
         {
             FileScanner.PatternMatching.MatcherFactory factory = new MatcherFactory();
-            factory.create(new List<string>());
+            factory.Create(new List<string>());
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace FileScanner.PatternMatching.Tests
             FileScanner.PatternMatching.MatcherFactory factory = new MatcherFactory();
             var patterns = new List<string>{ "a", "b", "c" };
 
-            Assert.AreEqual(factory.create(patterns).GetType().Name, "AhoMatcher");
+            Assert.AreEqual(factory.Create(patterns).GetType().Name, "AhoMatcher");
         }
 
         [Test]
@@ -31,8 +31,8 @@ namespace FileScanner.PatternMatching.Tests
             FileScanner.PatternMatching.MatcherFactory factory = new MatcherFactory();
             var patterns = new List<string>{ "a", "b", "c" };
 
-            Assert.AreEqual(factory.create(patterns, MatcherFactory.MatchAlgorithm.AhoCorasick).GetType().Name, "AhoMatcher");
-            Assert.AreEqual(factory.create(patterns, MatcherFactory.MatchAlgorithm.Regex).GetType().Name, "RegexMatcher");
+            Assert.AreEqual(factory.Create(patterns, MatcherFactory.MatchAlgorithm.AhoCorasick).GetType().Name, "AhoMatcher");
+            Assert.AreEqual(factory.Create(patterns, MatcherFactory.MatchAlgorithm.Regex).GetType().Name, "RegexMatcher");
         }
     }
 }

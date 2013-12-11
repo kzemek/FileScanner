@@ -1,5 +1,4 @@
-﻿using System;
-namespace FileScanner.PatternMatching
+﻿namespace FileScanner.PatternMatching
 {
     /// <summary>
     /// Classes implementing IMatcher interface serve to find any of given

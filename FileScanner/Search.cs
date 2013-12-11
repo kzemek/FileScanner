@@ -65,7 +65,7 @@ namespace FileScanner
 
         private void FindMatches(StreamReader streamReader, IEnumerable<string> phrases)
         {
-            var matcher = new MatcherFactory().create(phrases.ToList());
+            var matcher = new MatcherFactory().Create(phrases.ToList());
             _matches = matcher.Matches(streamReader);
         }
 

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
 
 namespace FileScanner.PatternMatching.Tests
 {
@@ -25,7 +25,7 @@ namespace FileScanner.PatternMatching.Tests
         public void IsMatch_GivenTextWithNoMatches_ReturnsFalse(MatcherFactory.MatchAlgorithm algorithm,
                                                                 List<string> patterns, String testString)
         {
-            var matcher = factory.create(patterns, algorithm);
+            var matcher = factory.Create(patterns, algorithm);
             Assert.IsFalse(matcher.IsMatch(new StringReader(testString)));
         }
 
@@ -57,7 +57,7 @@ namespace FileScanner.PatternMatching.Tests
                                                              List<string> patterns, String testString,
                                                              Match expectedMatch)
         {
-            var matcher = factory.create(patterns, algorithm);
+            var matcher = factory.Create(patterns, algorithm);
             Assert.IsTrue(matcher.IsMatch(new StringReader(testString)));
         }
 
@@ -65,7 +65,7 @@ namespace FileScanner.PatternMatching.Tests
         public void Match_GivenTextWithNoMatches_ReturnsNull(MatcherFactory.MatchAlgorithm algorithm,
                                                              List<string> patterns, String testString)
         {
-            var matcher = factory.create(patterns, algorithm);
+            var matcher = factory.Create(patterns, algorithm);
             Assert.IsNull(matcher.Match(new StringReader(testString)));
         }
 
@@ -74,7 +74,7 @@ namespace FileScanner.PatternMatching.Tests
                                                             List<string> patterns, String testString,
                                                             Match expectedMatch)
         {
-            var matcher = factory.create(patterns, algorithm);
+            var matcher = factory.Create(patterns, algorithm);
             Assert.AreEqual(matcher.Match(new StringReader(testString)), expectedMatch);
         }
 
@@ -82,7 +82,7 @@ namespace FileScanner.PatternMatching.Tests
         public void Matches_GivenTextWithNoMatches_ReturnsEmptyList(MatcherFactory.MatchAlgorithm algorithm,
                                                                     List<string> patterns, String testString)
         {
-            var matcher = factory.create(patterns, algorithm);
+            var matcher = factory.Create(patterns, algorithm);
             Assert.IsEmpty(matcher.Matches(new StringReader(testString)));
         }
 
@@ -107,7 +107,7 @@ namespace FileScanner.PatternMatching.Tests
                                                                         List<string> patterns, String testString,
                                                                         List<Match> expectedMatches)
         {
-            var matcher = factory.create(patterns, algorithm);
+            var matcher = factory.Create(patterns, algorithm);
             Assert.IsTrue(Enumerable.SequenceEqual(matcher.Matches(new StringReader(testString)), expectedMatches));
         }
 
@@ -120,7 +120,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("MiscellaneousTests_VariousAlgorithms")]
         public void IsMatch_GivenMultipleLinesStream_AndTextWithAMatch_ReturnsTrue(MatcherFactory.MatchAlgorithm algorithm)
         {
-            var matcher = factory.create(new List<string> { "p1" }, algorithm);
+            var matcher = factory.Create(new List<string> { "p1" }, algorithm);
 
             using (var stream = new MemoryStream())
             {
@@ -138,7 +138,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("MiscellaneousTests_VariousAlgorithms")]
         public void Match_GivenMultipleLinesStream_AndTextWithAMatch_ReturnsTheMatch_CountingTheNewline(MatcherFactory.MatchAlgorithm algorithm)
         {
-            var matcher = factory.create(new List<string> { "p1" }, algorithm);
+            var matcher = factory.Create(new List<string> { "p1" }, algorithm);
 
             using (var stream = new MemoryStream())
             {
@@ -156,7 +156,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("MiscellaneousTests_VariousAlgorithms")]
         public void Matches_GivenMultipleLinesStream_AndTextWithAMatch_ReturnsListWithTheMatch_CountingTheNewline(MatcherFactory.MatchAlgorithm algorithm)
         {
-            var matcher = factory.create(new List<string> { "p1" }, algorithm);
+            var matcher = factory.Create(new List<string> { "p1" }, algorithm);
 
             using (var stream = new MemoryStream())
             {
@@ -175,7 +175,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("MiscellaneousTests_VariousAlgorithms")]
         public void IsMatch_GivenMultipleLinesString_AndTextWithAMatch_ReturnsTrue(MatcherFactory.MatchAlgorithm algorithm)
         {
-            var matcher = factory.create(new List<string> { "p1" }, algorithm);
+            var matcher = factory.Create(new List<string> { "p1" }, algorithm);
             var text = "12\r\np13456\r\n7p189p10";
             Assert.IsTrue(matcher.IsMatch(new StringReader(text)));
         }
@@ -183,7 +183,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("MiscellaneousTests_VariousAlgorithms")]
         public void Match_GivenMultipleLinesString_AndTextWithAMatch_ReturnsTheMatch_CountingTheNewline(MatcherFactory.MatchAlgorithm algorithm)
         {
-            var matcher = factory.create(new List<string> { "p1" }, algorithm);
+            var matcher = factory.Create(new List<string> { "p1" }, algorithm);
             var text = "12\r\np13456\r\n7p189p10";
             Assert.AreEqual(matcher.Match(new StringReader(text)), new Match(4, "p1"));
         }
@@ -191,7 +191,7 @@ namespace FileScanner.PatternMatching.Tests
         [Test, TestCaseSource("MiscellaneousTests_VariousAlgorithms")]
         public void Matches_GivenMultipleLinesSring_AndTextWithAMatch_ReturnsListWithTheMatch_CountingTheNewline(MatcherFactory.MatchAlgorithm algorithm)
         {
-            var matcher = factory.create(new List<string> { "p1" }, algorithm);
+            var matcher = factory.Create(new List<string> { "p1" }, algorithm);
             var text = "12\r\np13456\r\n7p189p10";
             var expectedMatches = new List<Match> { new Match(4, "p1"), new Match(13, "p1"), new Match(17, "p1") };
             Assert.IsTrue(Enumerable.SequenceEqual(matcher.Matches(new StringReader(text)), expectedMatches));
