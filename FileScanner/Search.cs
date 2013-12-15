@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 namespace FileScanner
 {
+    [Obsolete("Search class is replaced with Searcher", true)]
     public class Search
     {
         private const string NoMatchesFoundMessage = "NOOOOOOOOOOOOO!!! There are no matches for your search!";

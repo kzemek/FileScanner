@@ -12,10 +12,15 @@ namespace FileScanner
 {
     public partial class MainWindow : Form
     {
-        private Search search;
+        private MainWindowHelper _helper;
+        private ISearchResult _lastSearchResult;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _helper = new MainWindowHelper();
+            _lastSearchResult = new EmptySearchResult();
         }
 
         #region GUI Helper Methods
@@ -55,10 +60,15 @@ namespace FileScanner
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            search = new Search(searchFileTextBox.Text, searchPhraseTextBox.Text);
-            resultsTextBox.Text = search.SearchResult();
+            var searchees = _helper.GetSearcheeProvider(searchFileTextBox.Text);
+            var phrases = searchPhraseTextBox.Text.Split(' ');
+            var searcher = _helper.Searcher;
+            var resultTextGenerator = _helper.ResultTextGenerator;
 
-            exportResultsButton.Enabled = search.IsMatch();
+            _lastSearchResult = searcher.Search(searchees, phrases);
+
+            resultsTextBox.Text = resultTextGenerator.Generate(_lastSearchResult);
+            exportResultsButton.Enabled = _lastSearchResult.Searchees.Any();
         }
 
         // TODO: czy tych dwóch funkcji nie możnaby złączyć w jedną? np. searchTextBoxes_TextChanged(...)
@@ -84,7 +94,8 @@ namespace FileScanner
 
         private void exportResultsButton_Click(object sender, EventArgs e)
         {
-            search.ExportResults();
+            // TODO:
+            //search.ExportResults();
         }
 
         private void searchPhraseTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -97,12 +108,29 @@ namespace FileScanner
 
         private void searchFileTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) 
+            if (e.KeyCode == Keys.Enter)
                 if (IsSearchDataProvided()) this.searchButton.PerformClick();
                 else
                     this.ActiveControl = searchPhraseTextBox;
         }
 
         #endregion
+    }
+
+    internal class MainWindowHelper
+    {
+        private static readonly Preprocessing.IPreprocessor Preprocessor = new Preprocessing.PreprocessorFactory().GetIPreprocessor();
+        private static readonly PatternMatching.MatcherFactory MatcherFactory = new PatternMatching.MatcherFactory();
+        private static readonly Searcher DefaultSearcher = new Searcher(Preprocessor, MatcherFactory);
+        private static readonly FileParsing.IParseStrategy ParseStrategy = FileParsing.ParseStrategy.ReplaceNonASCII();
+
+        internal Searcher Searcher { get { return DefaultSearcher; } }
+        internal IResultTextGenerator ResultTextGenerator { get { return new SimpleResultTextGenerator(); } }
+
+        internal ISearcheeProvider GetSearcheeProvider(string rootPath)
+        {
+            return new ParsedFileSearcheeProvider(rootPath, ParseStrategy);
+        }
+
     }
 }
