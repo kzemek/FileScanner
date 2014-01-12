@@ -20,8 +20,10 @@ namespace FileScanner.PatternMatching.Tests
         public void Construct_GivenNoAlgorithm_CreatesDefaultMatcher()
         {
             FileScanner.PatternMatching.MatcherFactory factory = new MatcherFactory();
-            var patterns = new List<string>{ "a", "b", "c" };
+            var patterns = new List<string>{ "a", "b" };
+            Assert.AreEqual(factory.Create(patterns).GetType().Name, "RegexMatcher");
 
+            patterns = new List<string> { "a", "b", "c", "d" };
             Assert.AreEqual(factory.Create(patterns).GetType().Name, "AhoMatcher");
         }
 

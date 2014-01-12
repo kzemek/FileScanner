@@ -14,6 +14,7 @@ namespace FileScanner.PatternMatching
         /// </summary>
         public enum MatchAlgorithm
         {
+            Default,
             Regex,
             AhoCorasick
         }
@@ -26,13 +27,19 @@ namespace FileScanner.PatternMatching
         /// <param name="algorithm">
         /// The algorithm used for underlying implementation.
         /// </param>
-        public IMatcher Create(List<string> patterns, MatchAlgorithm algorithm = MatchAlgorithm.AhoCorasick)
+        public IMatcher Create(List<string> patterns, MatchAlgorithm algorithm = MatchAlgorithm.Default)
         {
             if (patterns.Count == 0)
                 throw new ArgumentException("No patterns were given.");
 
             switch (algorithm)
             {
+                case MatchAlgorithm.Default:
+                    if (patterns.Count < 3)
+                        return new RegexMatcher(patterns);
+
+                    return new AhoMatcher(patterns);
+
                 case MatchAlgorithm.AhoCorasick:
                     return new AhoMatcher(patterns);
 
