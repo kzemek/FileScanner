@@ -28,7 +28,7 @@ namespace FileScanner.FileParsing
                 text = Regex.Replace(text, @"<\w+.*?>|</\w+.?>", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
                 return text;
             }
-            return rawText;
+            return "";
         }
     }
 }
