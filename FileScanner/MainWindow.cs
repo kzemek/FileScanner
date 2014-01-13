@@ -1,8 +1,10 @@
-﻿using System;
+﻿using FileScanner.SearchSummary;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +27,7 @@ namespace FileScanner
 
         #region GUI Helper Methods
 
-        private void PickSearchFile()
+        private void PickDatabaseFile()
         {
             using (var dialog = new OpenFileDialog())
             {
@@ -36,9 +38,27 @@ namespace FileScanner
             }
         }
 
+
+        private void PickSearchFile()
+        {
+            using (var dialog = new FolderBrowserDialog())
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    searchFileTextBox.Text = dialog.SelectedPath;
+                }
+            }
+        }
+
+        private bool IsDatabaseProvided()
+        {
+            return File.Exists(dbLocationTextBox.Text);
+        }
+
         private bool IsSearchDataProvided()
         {
-            return !string.IsNullOrEmpty(searchPhraseTextBox.Text) && !string.IsNullOrEmpty(searchFileTextBox.Text);
+            return !string.IsNullOrEmpty(searchPhraseTextBox.Text) && !string.IsNullOrEmpty(searchFileTextBox.Text)
+                && (File.Exists(searchFileTextBox.Text) || Directory.Exists(searchFileTextBox.Text));
         }
 
         #endregion
@@ -71,7 +91,6 @@ namespace FileScanner
             exportResultsButton.Enabled = _lastSearchResult.Searchees.Any();
         }
 
-        // TODO: czy tych dwóch funkcji nie możnaby złączyć w jedną? np. searchTextBoxes_TextChanged(...)
         private void searchPhraseTextBox_TextChanged(object sender, EventArgs e)
         {
             searchButton.Enabled = IsSearchDataProvided();
@@ -82,20 +101,26 @@ namespace FileScanner
             searchButton.Enabled = IsSearchDataProvided();
         }
 
+        private void dbFilePickerButton_Click(object sender, EventArgs e)
+        {
+        }
+
         private void saveResultsButton_Click(object sender, EventArgs e)
         {
-            // TODO: Save search results
+            if (_lastSearchResult == null) return;
+            _helper.PersistResults(_lastSearchResult, dbLocationTextBox.Text);
         }
 
         private void loadResultsButton_Click(object sender, EventArgs e)
         {
-            // TODO: Load search results
+            PickDatabaseFile();
         }
 
         private void exportResultsButton_Click(object sender, EventArgs e)
         {
-            // TODO:
-            //search.ExportResults();
+            var searchResults = _helper.BuildSearchSummary(_lastSearchResult);
+
+            _helper.GenerateSearchSummary(searchResults, _lastSearchResult);
         }
 
         private void searchPhraseTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -112,6 +137,41 @@ namespace FileScanner
                 if (IsSearchDataProvided()) this.searchButton.PerformClick();
                 else
                     this.ActiveControl = searchPhraseTextBox;
+        }
+
+        private void dbLocationTextBox_TextChanged(object sender, EventArgs e)
+        {
+            saveResultsButton.Enabled = IsDatabaseProvided();
+            if (IsDatabaseProvided())
+            {
+                var dbPath = dbLocationTextBox.Text;
+                var history = new PersistanceManager.SqLitePersistanceManager(dbPath).GetFullHistory();
+
+                foreach (var historyItem in history)
+                {
+                    var startTime = historyItem.StartTime.ToString();
+                    var endTime = historyItem.StartTime.ToString();
+                    var files = Convert.ToString(historyItem.ProcessedFilesCount);
+                    var searchPhrases = String.Join(" ", historyItem.Phrases);
+
+                    var listItem = new ListViewItem(new[] { startTime, endTime, files, searchPhrases });
+                    listItem.Tag = new SearchResultAdapter(historyItem);
+
+                    dbContentListView.Items.Add(listItem);
+                }
+            }
+
+
+        }
+
+        private void dbContentListView_ItemActivate(object sender, EventArgs e)
+        {
+            if (dbContentListView.SelectedItems.Count == 0) return;
+
+            var historyItem = (ISearchResult)dbContentListView.SelectedItems[0].Tag;
+            resultsTextBox.Text = _helper.ResultTextGenerator.Generate(_lastSearchResult);
+
+            exportResultsButton.Enabled = false;
         }
 
         #endregion
@@ -132,5 +192,47 @@ namespace FileScanner
             return new ParsedFileSearcheeProvider(rootPath, ParseStrategy);
         }
 
+        internal List<MatchingFile> BuildSearchSummary(ISearchResult result)
+        {
+            var q = from r in result.Searchees
+                    select
+                        new MatchingFile()
+                        {
+                            accuracy = 1,
+                            fileInfo = new FileInfo(r.Searchee.Path),
+                            fileReader = new StreamReader(r.Searchee.Path, Encoding.Default),
+                            searchResults = r.Matches.GroupBy(m => m.Value).ToDictionary(g => g.Key, g => g.Select(m => m.Index))
+                        };
+
+            return q.ToList();
+        }
+
+        internal void GenerateSearchSummary(List<MatchingFile> searchResults, ISearchResult result)
+        {
+            var inputPaths = from p in result.Searchees select p.Searchee.Path;
+            var summaryGenerator = SummaryGeneratorFactory.Create();
+            var searchQuery = string.Join(" ", result.Phrases);
+
+            summaryGenerator.Generate(searchQuery, inputPaths, searchResults);
+        }
+
+        internal void PersistResults(ISearchResult results, string dbPath)
+        {
+            var matchingFiles = new List<PersistanceManager.MatchingFile>(results.Searchees.Count());
+
+            foreach (var hit in results.Searchees)
+            {
+                var info = new FileInfo(hit.Searchee.Path);
+                var matchingFile =
+                    new PersistanceManager.MatchingFile(info.Name, hit.Searchee.Path, info.Length, hit.Matches);
+
+                matchingFiles.Add(matchingFile);
+            }
+
+            var storedSearch = new PersistanceManager.Search(results.StartDate, results.EndDate,
+                (uint)results.ProcessedSearcheesCount, results.Phrases, matchingFiles);
+
+            new PersistanceManager.SqLitePersistanceManager(dbPath).SaveSearch(storedSearch);
+        }
     }
 }
