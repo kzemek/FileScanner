@@ -33,7 +33,7 @@ namespace FileScanner
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    searchFileTextBox.Text = dialog.FileName;
+                    dbLocationTextBox.Text = dialog.FileName;
                 }
             }
         }
@@ -109,6 +109,7 @@ namespace FileScanner
         {
             if (_lastSearchResult == null) return;
             _helper.PersistResults(_lastSearchResult, dbLocationTextBox.Text);
+            _helper.RenderDatabaseHistory(dbLocationTextBox.Text, dbContentListView);
         }
 
         private void loadResultsButton_Click(object sender, EventArgs e)
@@ -144,32 +145,15 @@ namespace FileScanner
             saveResultsButton.Enabled = IsDatabaseProvided();
             if (IsDatabaseProvided())
             {
-                var dbPath = dbLocationTextBox.Text;
-                var history = new PersistanceManager.SqLitePersistanceManager(dbPath).GetFullHistory();
-
-                foreach (var historyItem in history)
-                {
-                    var startTime = historyItem.StartTime.ToString();
-                    var endTime = historyItem.StartTime.ToString();
-                    var files = Convert.ToString(historyItem.ProcessedFilesCount);
-                    var searchPhrases = String.Join(" ", historyItem.Phrases);
-
-                    var listItem = new ListViewItem(new[] { startTime, endTime, files, searchPhrases });
-                    listItem.Tag = new SearchResultAdapter(historyItem);
-
-                    dbContentListView.Items.Add(listItem);
-                }
+                _helper.RenderDatabaseHistory(dbLocationTextBox.Text, dbContentListView);
             }
-
-
         }
 
-        private void dbContentListView_ItemActivate(object sender, EventArgs e)
-        {
-            if (dbContentListView.SelectedItems.Count == 0) return;
 
-            var historyItem = (ISearchResult)dbContentListView.SelectedItems[0].Tag;
-            resultsTextBox.Text = _helper.ResultTextGenerator.Generate(_lastSearchResult);
+        private void dbContentListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            var historyItem = (ISearchResult)e.Item.Tag;
+            resultsTextBox.Text = _helper.ResultTextGenerator.Generate(historyItem);
 
             exportResultsButton.Enabled = false;
         }
@@ -233,6 +217,30 @@ namespace FileScanner
                 (uint)results.ProcessedSearcheesCount, results.Phrases, matchingFiles);
 
             new PersistanceManager.SqLitePersistanceManager(dbPath).SaveSearch(storedSearch);
+        }
+
+        internal void RenderDatabaseHistory(string dbPath, ListView dbContentListView)
+        {
+            var history = new PersistanceManager.SqLitePersistanceManager(dbPath).GetFullHistory();
+
+            dbContentListView.Items.Clear();
+            dbContentListView.View = View.Details;
+
+            foreach (var historyItem in history)
+            {
+                var startTime = historyItem.StartTime.ToString();
+                var endTime = historyItem.StartTime.ToString();
+                var files = Convert.ToString(historyItem.ProcessedFilesCount);
+                var searchPhrases = String.Join(" ", historyItem.Phrases);
+
+                var listItem = new ListViewItem(new[] { startTime, endTime, files, searchPhrases });
+                
+                listItem.Tag = new SearchResultAdapter(historyItem);
+
+                dbContentListView.Items.Add(listItem);
+            }
+
+            dbContentListView.Refresh();
         }
     }
 }

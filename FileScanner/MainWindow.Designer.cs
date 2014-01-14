@@ -245,7 +245,7 @@
             this.dbContentListView.Size = new System.Drawing.Size(360, 408);
             this.dbContentListView.TabIndex = 0;
             this.dbContentListView.UseCompatibleStateImageBehavior = false;
-            this.dbContentListView.ItemActivate += new System.EventHandler(this.dbContentListView_ItemActivate);
+            this.dbContentListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.dbContentListView_ItemSelectionChanged);
             // 
             // StartTime
             // 
