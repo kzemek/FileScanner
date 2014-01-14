@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace FileScanner.PatternMatching
@@ -27,7 +27,7 @@ namespace FileScanner.PatternMatching
         /// <param name="algorithm">
         /// The algorithm used for underlying implementation.
         /// </param>
-        public IMatcher Create(List<string> patterns, MatchAlgorithm algorithm = MatchAlgorithm.Default)
+        public virtual IMatcher Create(List<string> patterns, MatchAlgorithm algorithm = MatchAlgorithm.Default)
         {
             if (patterns.Count == 0)
                 throw new ArgumentException("No patterns were given.");

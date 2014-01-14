@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{95895C
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileScanner.Tests", "FileScanner.Tests\FileScanner.Tests.csproj", "{F66FFDD9-6B75-43D9-B39C-AE344A990C0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{7CC2A681-7C33-4766-A338-387356ECE08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CC2A681-7C33-4766-A338-387356ECE08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CC2A681-7C33-4766-A338-387356ECE08C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66FFDD9-6B75-43D9-B39C-AE344A990C0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66FFDD9-6B75-43D9-B39C-AE344A990C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66FFDD9-6B75-43D9-B39C-AE344A990C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66FFDD9-6B75-43D9-B39C-AE344A990C0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
